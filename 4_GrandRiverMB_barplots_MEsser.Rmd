@@ -1,17 +1,20 @@
 ---
-title: "GrandRiver22_microbiome_taxabarplots"
+title: "Grand River 2022 - microbiome taxa bar plots"
 author: "Milena Esser"
 date: "2025-05-20"
-output: pdf_document
-editor_options: 
+output:
+  html_document: 
+    toc: true
+    toc_depth: 4
+    number_sections: true
+    toc_float: true
+  pdf_document: default
+editor_options:
   chunk_output_type: console
 ---
 
-# Set up
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      results = "hide")
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 rm(list=ls()) #Clears environment
 #Change margin size to be smaller so graphs fit in the plot panel
 par(mar = c(2, 2, 2, 2)) # Set the margin on all sides to 2
@@ -41,27 +44,19 @@ library(forcats)
 
 ```
 
-## Loading Data
-
-Loading the phyloseq objects
-
-```{r Loading data}
+```{r loading-data-and-setup}
 #not rarefied dataset "ps2"
-load("GrandRiverMB_phyloseq_filt_unnorm.RData")
+load("R_output//ps_objects//GrandRiverMB_phyloseq_filt_unnorm.RData")
 
 #rarefied dataset "ps_rare"
-load("GrandRiverMB_phyloseq_filt_rar.RData")
+load("R_output//ps_objects//GrandRiverMB_phyloseq_filt_rar.RData")
 
 #css-normalized dataset "ps_css"
-load("GrandRiverMB_phyloseq_filt_css.RData")
+load("R_output//ps_objects//GrandRiverMB_phyloseq_filt_css.RData")
 
 #TSS-normalized dataset "ps_prop"
-load("GrandRiverMB_phyloseq_filt_propnorm.RData")
-```
+load("R_output//ps_objects//GrandRiverMB_phyloseq_filt_propnorm.RData")
 
-#### Select data set for analysis
-
-```{r}
 #### USER INPUTS ####
 dataset <- "_final"
 ps <- get(paste0("ps", dataset))
@@ -71,10 +66,6 @@ output_dir <- paste0("R_output//taxabarplot")
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 #### USER INPUTS ####
-taxrank <- "Family"   # "or "Phylum", "Family", etc.
-top_n <- 12           # Number of top taxa to display
-
-
 desired_taxa_order <- c("Chironomidae", "Heptageniidae", "Hydropsychidae", "Araneid", "Tetragnatha")
 
 #select color brewer palette
@@ -82,9 +73,17 @@ desired_taxa_order <- c("Chironomidae", "Heptageniidae", "Hydropsychidae", "Aran
 pal<-"Paired"
 ```
 
-## Create plots
+## Phylum level
 
-```{r}
+```{r select-phylum-number-taxa}
+taxrank <- "Phylum"   # "or "Phylum", "Family", etc.
+top_n <- 9           # Number of top taxa to display
+
+```
+
+### Individual plots by city
+
+```{r plots-by-sample-type-phy, results='asis', fig.height=6, fig.width=12}
 #### STEP 1: Aggregate and transform to relative abundance ####
 ps_tax <- tax_glom(ps, taxrank = taxrank)
 ps_relabund <- transform_sample_counts(ps_tax, function(x) x / sum(x))
@@ -168,9 +167,12 @@ for (current_city in cities) {
       legend.text = element_text(size = 12)
     )
   
+  # === ADD DYNAMIC HEADER ===
+  cat("\n\n#### City: ", current_city, "\n\n")
   print(p)
   
-  output_base <- file.path(output_dir, paste0(tolower(taxrank), "_top",top_n, "_plot_", current_city))
+  # === SAVE PLOTS ===
+  output_base <- file.path(output_dir, paste0(tolower(taxrank), "_top", top_n, "_plot_", current_city))
   ggsave(paste0(output_base, ".png"), plot = p, width = 12, height = 6, dpi = 300)
   ggsave(paste0(output_base, ".pdf"), plot = p, width = 12, height = 6, dpi = 300)
   
@@ -178,9 +180,9 @@ for (current_city in cities) {
 }
 ```
 
-##### Taxa barplot for all combined
+### Barplot all together
 
-```{r}
+```{r plots-all-together-phy, fig.height=8, fig.width=30}
 # Combined plot faceted by city:
 p_combined <- ggplot(plot_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
   geom_bar(stat = "identity", position = "stack", color = "black") +
@@ -210,7 +212,141 @@ ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_
        plot = p_combined, width = 30, height = 8, dpi = 300)
 ```
 
-## Different faceting
+## Family level
 
-```{r}
+```{r select-family-number-taxa}
+taxrank <- "Family"   # "or "Phylum", "Family", etc.
+top_n <- 12           # Number of top taxa to display
+
+```
+
+### Individual plots by city
+
+```{r plots-by-sample-type-fam, results='asis', fig.height=6, fig.width=12}
+#### STEP 1: Aggregate and transform to relative abundance ####
+ps_tax <- tax_glom(ps, taxrank = taxrank)
+ps_relabund <- transform_sample_counts(ps_tax, function(x) x / sum(x))
+df <- psmelt(ps_relabund)
+
+#### STEP 2: Clean variables ####
+df[[taxrank]] <- as.character(df[[taxrank]])
+df[[taxrank]][is.na(df[[taxrank]])] <- "Unclassified"
+
+df <- df %>%
+  mutate(
+    location = as.factor(Location),
+    site = as.factor(Site_ID),
+    sample_type = as.factor(Sample_Type),
+    taxa = factor(Taxa, levels = desired_taxa_order),
+    lifestage = as.factor(Lifestage),
+    city = as.factor(Site)
+  )
+
+df$location <- factor(df$location, levels = c("UP", "DWN"))
+
+
+
+#### STEP 3: Calculate mean across replicates ####
+group_means <- df %>%
+  group_by(site, location, city, taxa, lifestage, .data[[taxrank]]) %>%
+  summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop")
+
+#### STEP 4: Identify top N taxa by total abundance ####
+top_taxa <- group_means %>%
+  group_by(.data[[taxrank]]) %>%
+  summarise(total_mean_abundance = sum(mean_abundance), .groups = "drop") %>%
+  slice_max(order_by = total_mean_abundance, n = top_n) %>%
+  pull(.data[[taxrank]])
+
+#### STEP 5: Recode low-abundance taxa as 'Other' ####
+group_means[[taxrank]] <- fct_other(group_means[[taxrank]], keep = top_taxa, other_level = "Other")
+
+#### STEP 6: Aggregate again to sum 'Other' values ####
+plot_data <- group_means %>%
+  group_by(site, location, city, taxa, lifestage, .data[[taxrank]]) %>%
+  summarise(mean_abundance = sum(mean_abundance), .groups = "drop")
+
+#### STEP 7: Ensure consistent taxa and location order ####
+plot_data$taxa <- factor(plot_data$taxa, levels = c(desired_taxa_order, setdiff(unique(plot_data$taxa), desired_taxa_order)))
+
+#### STEP 8: Generate color palette ####
+n_taxa <- length(unique(plot_data[[taxrank]]))
+
+if (n_taxa <= 8) {
+  fill_scale <- scale_fill_brewer(palette = pal, name = taxrank)
+} else {
+  fill_colors <- colorRampPalette(brewer.pal(8, pal))(n_taxa)
+  fill_scale <- scale_fill_manual(values = fill_colors, name = taxrank)
+}
+
+#### STEP 9: Loop through cities and create plots ####
+cities <- unique(plot_data$city)
+plot_list <- list()
+
+for (current_city in cities) {
+  
+  city_data <- plot_data %>% filter(city == current_city)
+  
+  p <- ggplot(city_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
+    geom_bar(stat = "identity", position = "stack", color = "black") +
+    facet_nested_wrap(~ taxa + lifestage, scales = "free_x", nrow = 1) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    fill_scale +
+    labs(
+    #  title = paste("City:", current_city),
+      x = "Location",
+      y = "Mean Relative Abundance"
+    ) +
+    theme_bw(base_size = 14) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      strip.text = element_text(size = 14, face = "bold"),
+      legend.position = "right",
+      legend.title = element_text(size = 14),
+      legend.text = element_text(size = 12)
+    )
+  
+# === ADD DYNAMIC HEADER ===
+  cat("\n\n#### City: ", current_city, "\n\n")
+  print(p)
+  
+  # === SAVE PLOTS ===
+  output_base <- file.path(output_dir, paste0(tolower(taxrank), "_top", top_n, "_plot_", current_city))
+  ggsave(paste0(output_base, ".png"), plot = p, width = 12, height = 6, dpi = 300)
+  ggsave(paste0(output_base, ".pdf"), plot = p, width = 12, height = 6, dpi = 300)
+  
+  plot_list[[as.character(current_city)]] <- p
+}
+```
+
+### Barplot all together
+
+```{r plots-all-together-fam, fig.height=8, fig.width=30}
+# Combined plot faceted by city:
+p_combined <- ggplot(plot_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
+  geom_bar(stat = "identity", position = "stack", color = "black") +
+  facet_nested_wrap(city ~ taxa + lifestage, scales = "free_x", nrow = 1) +  # city as rows, taxa+lifestage as columns
+  scale_y_continuous(labels = scales::percent_format()) +
+  fill_scale +
+  labs(
+    title = paste("Mean Relative Abundance by City"),
+    x = "Location",
+    y = "Mean Relative Abundance"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.position = "bottom",
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
+
+print(p_combined)
+
+# Save the combined plot
+ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_plot_combined.png")), 
+       plot = p_combined, width = 30, height = 8, dpi = 300)
+ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_plot_combined.pdf")), 
+       plot = p_combined, width = 30, height = 8, dpi = 300)
 ```
