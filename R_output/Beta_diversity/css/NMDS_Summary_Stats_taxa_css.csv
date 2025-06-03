@@ -1,0 +1,6 @@
+"Taxa","Permanova_Site_R2","Permanova_Site_p","Permanova_Location_R2","Permanova_Location_p","Permanova_Lifestage_R2","Permanova_Lifestage_p","Betadispersion_Site_p","Betadispersion_Location_p","Betadispersion_Lifestage_p","NMDS_Stress"
+"Hydropsychidae",0.129,0.001,0.013,0.266,0.222,0.001,0.9455,0.544,0,0.138
+"Chironomidae",0.134,0.001,0.017,0.094,0.138,0.001,0.1881,0.3681,0,0.165
+"Heptageniidae",0.123,0.026,0.01,0.372,0.414,0.001,0.9999,0.6147,0,0.075
+"Araneid",0.232,0.003,0.038,0.059,NA,NA,0.1327,0.0571,NA,0.072
+"Tetragnatha",0.276,0.004,0.041,0.16,NA,NA,0.0024,0.5507,NA,0.201

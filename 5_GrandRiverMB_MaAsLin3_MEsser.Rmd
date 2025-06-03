@@ -1,0 +1,225 @@
+---
+title: "GrandRiver22:microbiome_MaAsLin3 (Multivariate Association with Linear Models) analysis"
+author: "Milena Esser"
+date: "2025-05-20"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Set up
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      results = "hide")
+rm(list=ls()) #Clears environment
+#Change margin size to be smaller so graphs fit in the plot panel
+par(mar = c(2, 2, 2, 2)) # Set the margin on all sides to 2
+#setwd("C:\\Users\\milen\\OneDrive - McMaster University\\Bow river microbiome\\R_analysis")
+
+###Loading packages
+library(phyloseq) #phyloseq will be the main package used for structuring microbiome data and diversity comparisons
+library(ggplot2) #For creating graphs
+library(ggtext)
+library(plyr) #if you load this after dpylr it messes up the dplyr functions
+library(dplyr) #Helps with data wrangling 
+library(vegan)
+library(tidyverse) #data wrangling
+library(knitr) #For R Markdown knitting
+library(RColorBrewer)
+library(ggpubr)
+library(MicEco) #to prune based on prevalence
+library(picante)
+library(ggh4x) # For facet_nested_wrap()
+library(multcompView)
+library(microbiome) #abundances function Retrieves the taxon abundance table from phyloseq-class object and ensures it is systematically returned as taxa x samples matrix.
+library(rdacca.hp) #package for hierarchical and variation partitioning in multiple regression and canonical ananlysis
+library(data.table)
+
+library(maaslin3)
+```
+
+## Loading Data
+
+Loading the phyloseq objects
+
+```{r Loading data}
+#not rarefied dataset "ps_final"
+load("GrandRiverMB_phyloseq_filt_unnorm.RData")
+
+```
+
+Create output directory
+
+```{r}
+# Create output directory
+output_dir <- file.path("R_output", "MaAsLin3")
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+
+```
+
+#### Prepare data for analysis
+
+```{r}
+# Extract abundance (e.g., genus level) Species recommended
+ps<- tax_glom(ps_final, taxrank = "Species")
+
+otu <- as.data.frame(otu_table(ps))  # Features
+if (taxa_are_rows(ps)) {
+  otu <- t(otu)
+}
+
+otu <- as.data.frame(otu)
+otu <- otu[, sapply(otu, is.numeric)]
+# Ensure OTU table is a numeric data frame
+otu <- as.data.frame(otu)
+otu <- otu[, sapply(otu, is.numeric)]
+
+# Metadata
+meta <- as(sample_data(ps), "data.frame")
+
+sapply(meta[, c("Location", "Site")], class)
+str(meta[, c("Location", "Site")])
+
+# Drop rows not shared between OTU and meta
+shared_ids <- intersect(rownames(otu), rownames(meta))
+otu <- otu[shared_ids, , drop = FALSE]
+meta <- meta[shared_ids, , drop = FALSE]
+
+# Sort to make sure sample order matches
+otu <- otu[order(rownames(otu)), ]
+meta <- meta[order(rownames(meta)), ]
+
+# Final sanity check
+stopifnot(identical(rownames(otu), rownames(meta)))
+
+
+# Extract taxonomy table from phyloseq
+tax_table_df <- as.data.frame(tax_table(ps))
+
+# Make sure rownames are ASV IDs (should be already)
+taxonomy_df <- tax_table_df
+
+# Optional: check taxonomy columns
+head(taxonomy_df)
+```
+
+## Run MaAsLin3
+
+```{r}
+fit_data <- maaslin3(
+  input_data = otu,
+  input_metadata = meta,
+  output = paste0(output_dir),
+  fixed_effects = c("Location"),  # Customize
+  random_effects = c("Site"),                     # Optional, e.g., random intercept for Subject
+  normalization = "TSS",                    # Already proportional
+  transform = "LOG",
+  correction = "BH",
+  standardize = FALSE                        # Only needed if not log-transforming
+)
+
+
+
+```
+
+MaAsLin3 by Tacxon (with Lifestage and Location)
+
+```{r}
+
+# Customize this as needed
+taxa_list <- unique(meta$Taxa)
+
+output_base <- file.path(output_dir, "MaAsLin3_by_taxon")
+dir.create(output_base, recursive = TRUE, showWarnings = FALSE)
+
+# Loop over each taxon
+for (taxon in unique(meta$Taxa)) {
+  message("Processing: ", taxon)
+
+  # Subset metadata
+  meta_sub <- subset(meta, Taxa == taxon)
+  
+  # Convert fixed effects to factors
+meta_sub$Site <- factor(meta_sub$Site)
+meta_sub$Location <- factor(meta_sub$Location)
+meta_sub$Lifestage <- factor(meta_sub$Lifestage)
+  
+  # Skip if too few samples
+  if (nrow(meta_sub) < 10) {
+    message("  Skipping (too few samples)")
+    next
+  }
+
+  # Skip if not both life stages
+  if (length(unique(meta_sub$Lifestage)) < 2) {
+    message("  Skipping (not both life stages)")
+    next
+  }
+
+  # Subset OTU
+  otu_sub <- otu[rownames(meta_sub), , drop = FALSE]
+
+  # Drop features with no variance
+  otu_sub <- otu_sub[, apply(otu_sub, 2, var) > 0]
+
+  # Match sample order
+  meta_sub <- meta_sub[order(rownames(meta_sub)), ]
+  otu_sub <- otu_sub[order(rownames(otu_sub)), ]
+  stopifnot(identical(rownames(meta_sub), rownames(otu_sub)))
+
+  # Define output directory for taxon
+  output_dir_tax <- file.path(output_base, paste0("Taxon_", gsub("[^A-Za-z0-9]", "_", taxon)))
+  dir.create(output_dir_tax, recursive = TRUE, showWarnings = FALSE)
+
+  # Run MaAsLin3
+  fit_data <-maaslin3(
+    input_data = otu_sub,
+    input_metadata = meta_sub,
+    output = output_dir_tax,
+    fixed_effects = c("Location", "Lifestage"),
+    random_effects = c("Site"),
+    normalization = "TSS",
+    transform = "LOG",
+    correction = "BH",
+    summary_plot_first_n = 25,
+    standardize = FALSE
+  )
+}
+```
+
+Script joining taxonomy data into it so I can see what each ASV is
+
+```{r}
+# Base directory of MaAsLin3 results
+base_results_dir <- "R_output/MaAsLin3/MaAsLin3_by_taxon"
+
+# List all taxon result folders
+taxon_folders <- list.dirs(base_results_dir, recursive = FALSE, full.names = TRUE)
+
+for (folder in taxon_folders) {
+  taxon_name <- gsub(".*Taxon_", "", folder)
+  result_file <- file.path(folder, "significant_results.tsv")
+
+  if (file.exists(result_file)) {
+    res <- read.delim(result_file)
+
+    # Join taxonomy info by ASV ID stored in res$feature
+    annotated_res <- cbind(res, taxonomy_df[res$feature, , drop = FALSE])
+
+    # Write annotated results back to folder
+    output_file <- file.path(folder, "all_significant_results_with_taxonomy.tsv")
+    write.table(annotated_res, output_file, sep = "\t", quote = FALSE, row.names = FALSE)
+
+    message("✅ Annotated results written for ", taxon_name)
+  } else {
+    warning("⚠️ Result file not found for: ", taxon_name)
+  }
+}
+```
+
+Create more plots with taxonomic info
+
+```{r}
+
+```

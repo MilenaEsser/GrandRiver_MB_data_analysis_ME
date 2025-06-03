@@ -1,0 +1,1344 @@
+2025-06-02 17:33:21.583985 INFO::Writing function arguments to log file
+2025-06-02 17:33:21.591433 DEBUG::Function arguments
+2025-06-02 17:33:21.59606 DEBUG::Output folder: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae
+2025-06-02 17:33:21.601246 DEBUG::Formula:
+2025-06-02 17:33:21.60464 DEBUG::Fixed effects: Location,Lifestage
+2025-06-02 17:33:21.608335 DEBUG::Reference:
+2025-06-02 17:33:21.611839 DEBUG::Random effects: Site
+2025-06-02 17:33:21.615555 DEBUG::Group effects:
+2025-06-02 17:33:21.620269 DEBUG::Ordered effects:
+2025-06-02 17:33:21.625446 DEBUG::Strata effects:
+2025-06-02 17:33:21.630713 DEBUG::Min Abundance: 0.000000
+2025-06-02 17:33:21.636219 DEBUG::Min Prevalence: 0.000000
+2025-06-02 17:33:21.640225 DEBUG::Zero Threshold: 0.000000
+2025-06-02 17:33:21.643937 DEBUG::Min variance: 0.000000
+2025-06-02 17:33:21.651213 DEBUG::Max significance: 0.100000
+2025-06-02 17:33:21.656747 DEBUG::Normalization: TSS
+2025-06-02 17:33:21.660316 DEBUG::Transform: LOG
+2025-06-02 17:33:21.663705 DEBUG::Correction method: BH
+2025-06-02 17:33:21.668163 DEBUG::Standardize: FALSE
+2025-06-02 17:33:21.671744 DEBUG::Abundance median comparison: TRUE
+2025-06-02 17:33:21.675205 DEBUG::Prevalence median comparison: FALSE
+2025-06-02 17:33:21.678748 DEBUG::Abundance median comparison threshold: 0
+2025-06-02 17:33:21.682163 DEBUG::Prevalence median comparison threshold: 0
+2025-06-02 17:33:21.686129 DEBUG::Subtract median: FALSE
+2025-06-02 17:33:21.689818 DEBUG::Warn prevalence: TRUE
+2025-06-02 17:33:21.693567 DEBUG::Small random effects: FALSE
+2025-06-02 17:33:21.697794 DEBUG::Augment: TRUE
+2025-06-02 17:33:21.71892 DEBUG::Evaluate only:
+2025-06-02 17:33:21.722876 DEBUG::Cores: 1
+2025-06-02 17:33:21.726529 DEBUG::Balanced Summary plot: FALSE
+2025-06-02 17:33:21.730591 INFO::Verifying options selected are valid
+2025-06-02 17:33:21.736742 INFO::Determining format of input files
+2025-06-02 17:33:21.743351 INFO::Input format is data samples as rows and metadata samples as rows
+2025-06-02 17:33:21.749146 DEBUG::A total of 91 samples were found in both the data and metadata
+2025-06-02 17:33:21.753585 DEBUG::Reordering data/metadata to use same sample ordering
+2025-06-02 17:33:21.763138 INFO::Formula for random effects: expr ~ (1 | Site)
+2025-06-02 17:33:21.770347 INFO::Formula for fixed effects: expr ~  Location + Lifestage
+2025-06-02 17:33:21.798036 INFO::Running selected normalization method: TSS
+2025-06-02 17:33:21.826634 INFO::Writing normalized data to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/features/data_norm.tsv
+2025-06-02 17:33:21.90822 INFO::Filter data based on min abundance and min prevalence
+2025-06-02 17:33:21.937283 INFO::Total samples in data: 91
+2025-06-02 17:33:21.942653 INFO::Min samples required with min abundance for a feature not to be filtered: 0.000000
+2025-06-02 17:33:22.100549 INFO::Total filtered features: 0
+2025-06-02 17:33:22.10686 INFO::Filtered feature names from abundance and prevalence filtering:
+2025-06-02 17:33:22.144494 INFO::Total features filtered by non-zero variance filtering: 147
+2025-06-02 17:33:22.153617 INFO::Filtered feature names from variance filtering: ASV265, ASV346, ASV387, ASV402, ASV498, ASV672, ASV863, ASV1025, ASV1119, ASV1147, ASV1158, ASV1201, ASV1250, ASV1375, ASV1454, ASV1530, ASV1641, ASV1763, ASV2038, ASV2045, ASV2281, ASV2282, ASV2419, ASV2526, ASV2631, ASV2771, ASV2779, ASV2921, ASV2940, ASV3032, ASV3090, ASV3172, ASV3449, ASV3496, ASV3500, ASV3538, ASV3566, ASV3618, ASV3640, ASV3701, ASV3713, ASV3721, ASV3746, ASV3836, ASV3837, ASV3870, ASV3908, ASV3926, ASV4004, ASV4158, ASV4259, ASV4412, ASV4444, ASV4553, ASV4603, ASV4765, ASV4772, ASV4825, ASV4956, ASV5275, ASV5353, ASV5430, ASV5446, ASV5494, ASV5556, ASV5801, ASV5873, ASV5995, ASV6001, ASV6060, ASV6202, ASV6447, ASV6581, ASV6624, ASV6628, ASV6861, ASV6980, ASV7104, ASV7129, ASV7218, ASV7250, ASV7619, ASV7670, ASV7717, ASV7873, ASV7877, ASV7966, ASV8121, ASV8152, ASV8251, ASV8261, ASV8305, ASV8631, ASV8744, ASV8911, ASV9097, ASV9183, ASV9189, ASV9429, ASV9539, ASV9644, ASV9796, ASV9986, ASV10096, ASV10152, ASV10697, ASV10750, ASV10850, ASV10883, ASV10925, ASV11208, ASV11288, ASV11344, ASV11462, ASV11755, ASV11762, ASV11919, ASV11953, ASV12344, ASV12640, ASV12717, ASV13076, ASV13149, ASV13187, ASV13197, ASV13656, ASV14120, ASV14524, ASV15163, ASV15252, ASV15517, ASV15770, ASV16110, ASV16113, ASV16153, ASV16264, ASV16265, ASV16740, ASV16842, ASV17253, ASV17361, ASV17440, ASV17674, ASV18127, ASV18133, ASV18213, ASV18633
+2025-06-02 17:33:22.161499 INFO::Writing filtered data to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/features/filtered_data.tsv
+2025-06-02 17:33:22.221156 INFO::Running selected transform method: LOG
+2025-06-02 17:33:22.252318 INFO::Writing normalized, filtered, transformed data to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/features/data_transformed.tsv
+2025-06-02 17:33:22.319886 INFO::Factor detected for categorial metadata 'Location'. Using as-is.
+2025-06-02 17:33:22.32573 INFO::Factor detected for categorial metadata 'Lifestage'. Using as-is.
+2025-06-02 17:33:22.331983 INFO::Bypass z-score application to metadata
+2025-06-02 17:33:22.339357 INFO::Running the linear model component
+2025-06-02 17:33:22.354826 DEBUG::Object: augment, Size: 56
+2025-06-02 17:33:22.361391 DEBUG::Object: cluster, Size: 0
+2025-06-02 17:33:22.366846 DEBUG::Object: cores, Size: 56
+2025-06-02 17:33:22.372923 DEBUG::Object: correction, Size: 112
+2025-06-02 17:33:22.378148 DEBUG::Object: extract_out, Size: 2144
+2025-06-02 17:33:22.384822 DEBUG::Object: feature_specific_covariate, Size: 0
+2025-06-02 17:33:22.390646 DEBUG::Object: feature_specific_covariate_name, Size: 0
+2025-06-02 17:33:22.395644 DEBUG::Object: feature_specific_covariate_record, Size: 0
+2025-06-02 17:33:22.400986 DEBUG::Object: features, Size: 281424
+2025-06-02 17:33:22.40635 DEBUG::Object: formula, Size: 1736
+2025-06-02 17:33:22.411411 DEBUG::Object: fun_list, Size: 124640
+2025-06-02 17:33:22.416913 DEBUG::Object: func_to_run, Size: 435336
+2025-06-02 17:33:22.422218 DEBUG::Object: groups, Size: 48
+2025-06-02 17:33:22.427852 DEBUG::Object: median_comparison, Size: 56
+2025-06-02 17:33:22.433559 DEBUG::Object: median_comparison_threshold, Size: 56
+2025-06-02 17:33:22.440121 DEBUG::Object: metadata, Size: 32120
+2025-06-02 17:33:22.446354 DEBUG::Object: model, Size: 112
+2025-06-02 17:33:22.452815 DEBUG::Object: model_function, Size: 71464
+2025-06-02 17:33:22.458065 DEBUG::Object: ordereds, Size: 48
+2025-06-02 17:33:22.464433 DEBUG::Object: random_effects_formula, Size: 1176
+2025-06-02 17:33:22.470291 DEBUG::Object: ranef_function, Size: 1240
+2025-06-02 17:33:22.476372 DEBUG::Object: save_models, Size: 56
+2025-06-02 17:33:22.482104 DEBUG::Object: small_random_effects, Size: 56
+2025-06-02 17:33:22.487609 DEBUG::Object: strata, Size: 48
+2025-06-02 17:33:22.495292 DEBUG::Object: subtract_median, Size: 56
+2025-06-02 17:33:22.501475 DEBUG::Object: summary_function, Size: 51456
+2025-06-02 17:33:22.507017 DEBUG::Object: func_to_run, Size: 435336
+2025-06-02 17:33:22.513167 INFO::Fitting model to feature number 1, ASV3
+2025-06-02 17:33:22.671065 INFO::Fitting model to feature number 2, ASV5
+2025-06-02 17:33:22.768101 INFO::Fitting model to feature number 3, ASV14
+2025-06-02 17:33:22.844038 INFO::Fitting model to feature number 4, ASV19
+2025-06-02 17:33:22.859281 INFO::Fitting model to feature number 5, ASV40
+2025-06-02 17:33:22.939445 INFO::Fitting model to feature number 6, ASV42
+2025-06-02 17:33:23.028996 INFO::Fitting model to feature number 7, ASV58
+2025-06-02 17:33:23.052382 INFO::Fitting model to feature number 8, ASV67
+2025-06-02 17:33:23.075648 INFO::Fitting model to feature number 9, ASV74
+2025-06-02 17:33:23.092078 INFO::Fitting model to feature number 10, ASV75
+2025-06-02 17:33:23.184559 INFO::Fitting model to feature number 11, ASV93
+2025-06-02 17:33:23.207133 INFO::Fitting model to feature number 12, ASV99
+2025-06-02 17:33:23.232892 INFO::Fitting model to feature number 13, ASV121
+2025-06-02 17:33:23.323615 INFO::Fitting model to feature number 14, ASV135
+2025-06-02 17:33:23.341173 INFO::Fitting model to feature number 15, ASV146
+2025-06-02 17:33:23.365407 INFO::Fitting model to feature number 16, ASV147
+2025-06-02 17:33:23.525824 INFO::Fitting model to feature number 17, ASV163
+2025-06-02 17:33:23.571346 WARNING::Fitting problem for feature 17 returning NA
+2025-06-02 17:33:23.583417 INFO::Fitting model to feature number 18, ASV191
+2025-06-02 17:33:23.659071 INFO::Fitting model to feature number 19, ASV192
+2025-06-02 17:33:23.676585 INFO::Fitting model to feature number 20, ASV199
+2025-06-02 17:33:23.714427 WARNING::Fitting problem for feature 20 returning NA
+2025-06-02 17:33:23.726775 INFO::Fitting model to feature number 21, ASV201
+2025-06-02 17:33:23.848377 INFO::Fitting model to feature number 22, ASV207
+2025-06-02 17:33:23.897022 WARNING::Fitting problem for feature 22 returning NA
+2025-06-02 17:33:23.910749 INFO::Fitting model to feature number 23, ASV260
+2025-06-02 17:33:23.997515 INFO::Fitting model to feature number 24, ASV262
+2025-06-02 17:33:24.089907 INFO::Fitting model to feature number 25, ASV279
+2025-06-02 17:33:24.188422 INFO::Fitting model to feature number 26, ASV280
+2025-06-02 17:33:24.282657 INFO::Fitting model to feature number 27, ASV302
+2025-06-02 17:33:24.303364 INFO::Fitting model to feature number 28, ASV307
+2025-06-02 17:33:24.320555 INFO::Fitting model to feature number 29, ASV309
+2025-06-02 17:33:24.340784 INFO::Fitting model to feature number 30, ASV315
+2025-06-02 17:33:24.36114 INFO::Fitting model to feature number 31, ASV316
+2025-06-02 17:33:24.376369 INFO::Fitting model to feature number 32, ASV340
+2025-06-02 17:33:24.462259 INFO::Fitting model to feature number 33, ASV389
+2025-06-02 17:33:24.532532 INFO::Fitting model to feature number 34, ASV423
+2025-06-02 17:33:24.602928 INFO::Fitting model to feature number 35, ASV436
+2025-06-02 17:33:24.618887 INFO::Fitting model to feature number 36, ASV465
+2025-06-02 17:33:24.758372 INFO::Fitting model to feature number 37, ASV468
+2025-06-02 17:33:24.774845 INFO::Fitting model to feature number 38, ASV477
+2025-06-02 17:33:24.847011 INFO::Fitting model to feature number 39, ASV488
+2025-06-02 17:33:24.918441 INFO::Fitting model to feature number 40, ASV489
+2025-06-02 17:33:24.938382 INFO::Fitting model to feature number 41, ASV499
+2025-06-02 17:33:25.018327 INFO::Fitting model to feature number 42, ASV500
+2025-06-02 17:33:25.123415 INFO::Fitting model to feature number 43, ASV503
+2025-06-02 17:33:25.216633 INFO::Fitting model to feature number 44, ASV512
+2025-06-02 17:33:25.306923 INFO::Fitting model to feature number 45, ASV533
+2025-06-02 17:33:25.396708 INFO::Fitting model to feature number 46, ASV548
+2025-06-02 17:33:25.450143 WARNING::Fitting problem for feature 46 returning NA
+2025-06-02 17:33:25.463577 INFO::Fitting model to feature number 47, ASV558
+2025-06-02 17:33:25.479904 INFO::Fitting model to feature number 48, ASV582
+2025-06-02 17:33:25.497227 INFO::Fitting model to feature number 49, ASV583
+2025-06-02 17:33:25.520945 INFO::Fitting model to feature number 50, ASV622
+2025-06-02 17:33:25.603887 INFO::Fitting model to feature number 51, ASV624
+2025-06-02 17:33:25.678144 INFO::Fitting model to feature number 52, ASV629
+2025-06-02 17:33:25.728056 WARNING::Fitting problem for feature 52 returning NA
+2025-06-02 17:33:25.741748 INFO::Fitting model to feature number 53, ASV638
+2025-06-02 17:33:25.822843 INFO::Fitting model to feature number 54, ASV645
+2025-06-02 17:33:25.843961 INFO::Fitting model to feature number 55, ASV667
+2025-06-02 17:33:25.988809 INFO::Fitting model to feature number 56, ASV702
+2025-06-02 17:33:26.060677 INFO::Fitting model to feature number 57, ASV725
+2025-06-02 17:33:26.081314 INFO::Fitting model to feature number 58, ASV730
+2025-06-02 17:33:26.163249 INFO::Fitting model to feature number 59, ASV755
+2025-06-02 17:33:26.241913 INFO::Fitting model to feature number 60, ASV761
+2025-06-02 17:33:26.261908 INFO::Fitting model to feature number 61, ASV783
+2025-06-02 17:33:26.335384 INFO::Fitting model to feature number 62, ASV798
+2025-06-02 17:33:26.351548 INFO::Fitting model to feature number 63, ASV809
+2025-06-02 17:33:26.367852 INFO::Fitting model to feature number 64, ASV824
+2025-06-02 17:33:26.386806 INFO::Fitting model to feature number 65, ASV847
+2025-06-02 17:33:26.405366 INFO::Fitting model to feature number 66, ASV860
+2025-06-02 17:33:26.451364 WARNING::Fitting problem for feature 66 returning NA
+2025-06-02 17:33:26.463294 INFO::Fitting model to feature number 67, ASV862
+2025-06-02 17:33:26.485175 INFO::Fitting model to feature number 68, ASV869
+2025-06-02 17:33:26.509569 INFO::Fitting model to feature number 69, ASV870
+2025-06-02 17:33:26.531683 INFO::Fitting model to feature number 70, ASV896
+2025-06-02 17:33:26.616965 INFO::Fitting model to feature number 71, ASV904
+2025-06-02 17:33:26.687418 INFO::Fitting model to feature number 72, ASV905
+2025-06-02 17:33:26.709289 INFO::Fitting model to feature number 73, ASV914
+2025-06-02 17:33:26.781604 INFO::Fitting model to feature number 74, ASV944
+2025-06-02 17:33:26.85992 INFO::Fitting model to feature number 75, ASV957
+2025-06-02 17:33:26.897443 WARNING::Fitting problem for feature 75 returning NA
+2025-06-02 17:33:26.909422 INFO::Fitting model to feature number 76, ASV1030
+2025-06-02 17:33:26.926539 INFO::Fitting model to feature number 77, ASV1037
+2025-06-02 17:33:27.06271 INFO::Fitting model to feature number 78, ASV1045
+2025-06-02 17:33:27.144195 INFO::Fitting model to feature number 79, ASV1054
+2025-06-02 17:33:27.160658 INFO::Fitting model to feature number 80, ASV1056
+2025-06-02 17:33:27.231945 INFO::Fitting model to feature number 81, ASV1064
+2025-06-02 17:33:27.302353 INFO::Fitting model to feature number 82, ASV1066
+2025-06-02 17:33:27.317421 INFO::Fitting model to feature number 83, ASV1071
+2025-06-02 17:33:27.382004 WARNING::Fitting problem for feature 83 returning NA
+2025-06-02 17:33:27.39445 INFO::Fitting model to feature number 84, ASV1079
+2025-06-02 17:33:27.483371 INFO::Fitting model to feature number 85, ASV1084
+2025-06-02 17:33:27.554122 INFO::Fitting model to feature number 86, ASV1086
+2025-06-02 17:33:27.573592 INFO::Fitting model to feature number 87, ASV1105
+2025-06-02 17:33:27.594277 INFO::Fitting model to feature number 88, ASV1107
+2025-06-02 17:33:27.670529 INFO::Fitting model to feature number 89, ASV1161
+2025-06-02 17:33:27.693638 INFO::Fitting model to feature number 90, ASV1209
+2025-06-02 17:33:27.780461 INFO::Fitting model to feature number 91, ASV1214
+2025-06-02 17:33:27.800887 INFO::Fitting model to feature number 92, ASV1226
+2025-06-02 17:33:27.845646 WARNING::Fitting problem for feature 92 returning NA
+2025-06-02 17:33:27.85863 INFO::Fitting model to feature number 93, ASV1240
+2025-06-02 17:33:27.877016 INFO::Fitting model to feature number 94, ASV1293
+2025-06-02 17:33:27.89366 INFO::Fitting model to feature number 95, ASV1304
+2025-06-02 17:33:27.91129 INFO::Fitting model to feature number 96, ASV1316
+2025-06-02 17:33:27.932363 INFO::Fitting model to feature number 97, ASV1342
+2025-06-02 17:33:27.952327 INFO::Fitting model to feature number 98, ASV1346
+2025-06-02 17:33:28.037028 INFO::Fitting model to feature number 99, ASV1348
+2025-06-02 17:33:28.058003 INFO::Fitting model to feature number 100, ASV1416
+2025-06-02 17:33:28.076038 INFO::Fitting model to feature number 101, ASV1417
+2025-06-02 17:33:28.093736 INFO::Fitting model to feature number 102, ASV1485
+2025-06-02 17:33:28.115038 INFO::Fitting model to feature number 103, ASV1500
+2025-06-02 17:33:28.241695 INFO::Fitting model to feature number 104, ASV1501
+2025-06-02 17:33:28.258617 INFO::Fitting model to feature number 105, ASV1526
+2025-06-02 17:33:28.274396 INFO::Fitting model to feature number 106, ASV1536
+2025-06-02 17:33:28.352968 INFO::Fitting model to feature number 107, ASV1543
+2025-06-02 17:33:28.374014 INFO::Fitting model to feature number 108, ASV1547
+2025-06-02 17:33:28.39578 INFO::Fitting model to feature number 109, ASV1564
+2025-06-02 17:33:28.41155 INFO::Fitting model to feature number 110, ASV1583
+2025-06-02 17:33:28.428297 INFO::Fitting model to feature number 111, ASV1597
+2025-06-02 17:33:28.502831 INFO::Fitting model to feature number 112, ASV1614
+2025-06-02 17:33:28.542223 WARNING::Fitting problem for feature 112 returning NA
+2025-06-02 17:33:28.554905 INFO::Fitting model to feature number 113, ASV1764
+2025-06-02 17:33:28.571756 INFO::Fitting model to feature number 114, ASV1783
+2025-06-02 17:33:28.617362 WARNING::Fitting problem for feature 114 returning NA
+2025-06-02 17:33:28.631174 INFO::Fitting model to feature number 115, ASV1827
+2025-06-02 17:33:28.711634 INFO::Fitting model to feature number 116, ASV1832
+2025-06-02 17:33:28.786201 INFO::Fitting model to feature number 117, ASV1834
+2025-06-02 17:33:28.807774 INFO::Fitting model to feature number 118, ASV1835
+2025-06-02 17:33:28.826143 INFO::Fitting model to feature number 119, ASV1838
+2025-06-02 17:33:28.844141 INFO::Fitting model to feature number 120, ASV1843
+2025-06-02 17:33:28.922773 INFO::Fitting model to feature number 121, ASV1863
+2025-06-02 17:33:28.94734 INFO::Fitting model to feature number 122, ASV1904
+2025-06-02 17:33:28.974845 INFO::Fitting model to feature number 123, ASV1931
+2025-06-02 17:33:29.04762 INFO::Fitting model to feature number 124, ASV1957
+2025-06-02 17:33:29.068077 INFO::Fitting model to feature number 125, ASV1973
+2025-06-02 17:33:29.219883 INFO::Fitting model to feature number 126, ASV1977
+2025-06-02 17:33:29.302381 INFO::Fitting model to feature number 127, ASV1995
+2025-06-02 17:33:29.323546 INFO::Fitting model to feature number 128, ASV2009
+2025-06-02 17:33:29.340469 INFO::Fitting model to feature number 129, ASV2019
+2025-06-02 17:33:29.414353 INFO::Fitting model to feature number 130, ASV2091
+2025-06-02 17:33:29.487554 INFO::Fitting model to feature number 131, ASV2159
+2025-06-02 17:33:29.505452 INFO::Fitting model to feature number 132, ASV2178
+2025-06-02 17:33:29.530891 INFO::Fitting model to feature number 133, ASV2216
+2025-06-02 17:33:29.613394 INFO::Fitting model to feature number 134, ASV2255
+2025-06-02 17:33:29.666925 WARNING::Fitting problem for feature 134 returning NA
+2025-06-02 17:33:29.679759 INFO::Fitting model to feature number 135, ASV2319
+2025-06-02 17:33:29.729744 WARNING::Fitting problem for feature 135 returning NA
+2025-06-02 17:33:29.742009 INFO::Fitting model to feature number 136, ASV2323
+2025-06-02 17:33:29.763452 INFO::Fitting model to feature number 137, ASV2328
+2025-06-02 17:33:29.785476 INFO::Fitting model to feature number 138, ASV2385
+2025-06-02 17:33:29.899673 INFO::Fitting model to feature number 139, ASV2449
+2025-06-02 17:33:29.917882 INFO::Fitting model to feature number 140, ASV2521
+2025-06-02 17:33:29.969151 WARNING::Fitting problem for feature 140 returning NA
+2025-06-02 17:33:29.98347 INFO::Fitting model to feature number 141, ASV2528
+2025-06-02 17:33:30.001107 INFO::Fitting model to feature number 142, ASV2549
+2025-06-02 17:33:30.023127 INFO::Fitting model to feature number 143, ASV2551
+2025-06-02 17:33:30.043934 INFO::Fitting model to feature number 144, ASV2642
+2025-06-02 17:33:30.195739 INFO::Fitting model to feature number 145, ASV2650
+2025-06-02 17:33:30.271726 INFO::Fitting model to feature number 146, ASV2679
+2025-06-02 17:33:30.296477 INFO::Fitting model to feature number 147, ASV2721
+2025-06-02 17:33:30.314143 INFO::Fitting model to feature number 148, ASV2730
+2025-06-02 17:33:30.332042 INFO::Fitting model to feature number 149, ASV2737
+2025-06-02 17:33:30.378287 WARNING::Fitting problem for feature 149 returning NA
+2025-06-02 17:33:30.391687 INFO::Fitting model to feature number 150, ASV2764
+2025-06-02 17:33:30.41384 INFO::Fitting model to feature number 151, ASV2784
+2025-06-02 17:33:30.47093 WARNING::Fitting problem for feature 151 returning NA
+2025-06-02 17:33:30.488872 INFO::Fitting model to feature number 152, ASV2786
+2025-06-02 17:33:30.546428 WARNING::Fitting problem for feature 152 returning NA
+2025-06-02 17:33:30.558869 INFO::Fitting model to feature number 153, ASV2796
+2025-06-02 17:33:30.580819 INFO::Fitting model to feature number 154, ASV2813
+2025-06-02 17:33:30.602287 INFO::Fitting model to feature number 155, ASV2964
+2025-06-02 17:33:30.687008 INFO::Fitting model to feature number 156, ASV2994
+2025-06-02 17:33:30.710662 INFO::Fitting model to feature number 157, ASV2999
+2025-06-02 17:33:30.738594 INFO::Fitting model to feature number 158, ASV3005
+2025-06-02 17:33:30.833859 INFO::Fitting model to feature number 159, ASV3081
+2025-06-02 17:33:30.90735 INFO::Fitting model to feature number 160, ASV3132
+2025-06-02 17:33:30.985543 INFO::Fitting model to feature number 161, ASV3199
+2025-06-02 17:33:31.011763 INFO::Fitting model to feature number 162, ASV3233
+2025-06-02 17:33:31.182991 WARNING::Fitting problem for feature 162 a warning was issued
+2025-06-02 17:33:31.218456 WARNING::Fitting problem for feature 162 a warning was issued
+2025-06-02 17:33:31.251109 INFO::Fitting model to feature number 163, ASV3245
+2025-06-02 17:33:31.269439 INFO::Fitting model to feature number 164, ASV3283
+2025-06-02 17:33:31.29284 INFO::Fitting model to feature number 165, ASV3298
+2025-06-02 17:33:31.450076 INFO::Fitting model to feature number 166, ASV3333
+2025-06-02 17:33:31.530508 INFO::Fitting model to feature number 167, ASV3338
+2025-06-02 17:33:31.55622 INFO::Fitting model to feature number 168, ASV3399
+2025-06-02 17:33:31.608839 WARNING::Fitting problem for feature 168 returning NA
+2025-06-02 17:33:31.622995 INFO::Fitting model to feature number 169, ASV3415
+2025-06-02 17:33:31.650504 INFO::Fitting model to feature number 170, ASV3439
+2025-06-02 17:33:31.739768 INFO::Fitting model to feature number 171, ASV3453
+2025-06-02 17:33:31.76125 INFO::Fitting model to feature number 172, ASV3464
+2025-06-02 17:33:31.83761 INFO::Fitting model to feature number 173, ASV3493
+2025-06-02 17:33:31.856083 INFO::Fitting model to feature number 174, ASV3516
+2025-06-02 17:33:31.896192 WARNING::Fitting problem for feature 174 returning NA
+2025-06-02 17:33:31.909128 INFO::Fitting model to feature number 175, ASV3524
+2025-06-02 17:33:32.029435 WARNING::Fitting problem for feature 175 returning NA
+2025-06-02 17:33:32.044173 INFO::Fitting model to feature number 176, ASV3542
+2025-06-02 17:33:32.066278 INFO::Fitting model to feature number 177, ASV3569
+2025-06-02 17:33:32.165787 INFO::Fitting model to feature number 178, ASV3605
+2025-06-02 17:33:32.245833 INFO::Fitting model to feature number 179, ASV3609
+2025-06-02 17:33:32.34069 INFO::Fitting model to feature number 180, ASV3775
+2025-06-02 17:33:32.423893 WARNING::Fitting problem for feature 180 returning NA
+2025-06-02 17:33:32.438797 INFO::Fitting model to feature number 181, ASV3799
+2025-06-02 17:33:32.500793 WARNING::Fitting problem for feature 181 returning NA
+2025-06-02 17:33:32.567883 INFO::Fitting model to feature number 182, ASV3809
+2025-06-02 17:33:32.668703 INFO::Fitting model to feature number 183, ASV3817
+2025-06-02 17:33:32.746868 INFO::Fitting model to feature number 184, ASV3835
+2025-06-02 17:33:32.772913 INFO::Fitting model to feature number 185, ASV3860
+2025-06-02 17:33:32.796374 INFO::Fitting model to feature number 186, ASV3878
+2025-06-02 17:33:32.819496 INFO::Fitting model to feature number 187, ASV3882
+2025-06-02 17:33:32.868904 WARNING::Fitting problem for feature 187 returning NA
+2025-06-02 17:33:32.883315 INFO::Fitting model to feature number 188, ASV3890
+2025-06-02 17:33:32.970259 INFO::Fitting model to feature number 189, ASV3902
+2025-06-02 17:33:33.042421 INFO::Fitting model to feature number 190, ASV3913
+2025-06-02 17:33:33.060854 INFO::Fitting model to feature number 191, ASV4023
+2025-06-02 17:33:33.112491 WARNING::Fitting problem for feature 191 returning NA
+2025-06-02 17:33:33.126363 INFO::Fitting model to feature number 192, ASV4037
+2025-06-02 17:33:33.193174 WARNING::Fitting problem for feature 192 returning NA
+2025-06-02 17:33:33.206808 INFO::Fitting model to feature number 193, ASV4057
+2025-06-02 17:33:33.252366 WARNING::Fitting problem for feature 193 returning NA
+2025-06-02 17:33:33.266051 INFO::Fitting model to feature number 194, ASV4094
+2025-06-02 17:33:33.346579 INFO::Fitting model to feature number 195, ASV4102
+2025-06-02 17:33:33.364879 INFO::Fitting model to feature number 196, ASV4116
+2025-06-02 17:33:33.548361 WARNING::Fitting problem for feature 196 a warning was issued
+2025-06-02 17:33:33.581169 INFO::Fitting model to feature number 197, ASV4138
+2025-06-02 17:33:33.64733 INFO::Fitting model to feature number 198, ASV4189
+2025-06-02 17:33:33.682014 INFO::Fitting model to feature number 199, ASV4242
+2025-06-02 17:33:33.762017 WARNING::Fitting problem for feature 199 returning NA
+2025-06-02 17:33:33.777385 INFO::Fitting model to feature number 200, ASV4243
+2025-06-02 17:33:33.932461 WARNING::Fitting problem for feature 200 a warning was issued
+2025-06-02 17:33:33.943732 WARNING::Fitting problem for feature 200 returning NA
+2025-06-02 17:33:33.958693 INFO::Fitting model to feature number 201, ASV4265
+2025-06-02 17:33:34.043671 INFO::Fitting model to feature number 202, ASV4273
+2025-06-02 17:33:34.080476 INFO::Fitting model to feature number 203, ASV4315
+2025-06-02 17:33:34.137695 WARNING::Fitting problem for feature 203 returning NA
+2025-06-02 17:33:34.154638 INFO::Fitting model to feature number 204, ASV4322
+2025-06-02 17:33:34.206515 WARNING::Fitting problem for feature 204 returning NA
+2025-06-02 17:33:34.222642 INFO::Fitting model to feature number 205, ASV4339
+2025-06-02 17:33:34.329976 WARNING::Fitting problem for feature 205 a warning was issued
+2025-06-02 17:33:34.351099 WARNING::Fitting problem for feature 205 a warning was issued
+2025-06-02 17:33:34.465086 WARNING::Fitting problem for feature 205 a warning was issued
+2025-06-02 17:33:34.513324 INFO::Fitting model to feature number 206, ASV4518
+2025-06-02 17:33:34.533908 INFO::Fitting model to feature number 207, ASV4542
+2025-06-02 17:33:34.555466 INFO::Fitting model to feature number 208, ASV4543
+2025-06-02 17:33:34.577454 INFO::Fitting model to feature number 209, ASV4547
+2025-06-02 17:33:34.599762 INFO::Fitting model to feature number 210, ASV4565
+2025-06-02 17:33:34.674815 INFO::Fitting model to feature number 211, ASV4592
+2025-06-02 17:33:34.760529 INFO::Fitting model to feature number 212, ASV4598
+2025-06-02 17:33:34.846982 WARNING::Fitting problem for feature 212 a warning was issued
+2025-06-02 17:33:34.880735 WARNING::Fitting problem for feature 212 a warning was issued
+2025-06-02 17:33:34.911496 INFO::Fitting model to feature number 213, ASV4662
+2025-06-02 17:33:35.053573 WARNING::Fitting problem for feature 213 returning NA
+2025-06-02 17:33:35.066767 INFO::Fitting model to feature number 214, ASV4700
+2025-06-02 17:33:35.092537 INFO::Fitting model to feature number 215, ASV4744
+2025-06-02 17:33:35.115455 INFO::Fitting model to feature number 216, ASV4755
+2025-06-02 17:33:35.139739 INFO::Fitting model to feature number 217, ASV4810
+2025-06-02 17:33:35.195536 WARNING::Fitting problem for feature 217 returning NA
+2025-06-02 17:33:35.208808 INFO::Fitting model to feature number 218, ASV4852
+2025-06-02 17:33:35.287189 INFO::Fitting model to feature number 219, ASV4892
+2025-06-02 17:33:35.337508 WARNING::Fitting problem for feature 219 returning NA
+2025-06-02 17:33:35.352155 INFO::Fitting model to feature number 220, ASV5024
+2025-06-02 17:33:35.373807 INFO::Fitting model to feature number 221, ASV5025
+2025-06-02 17:33:35.396321 INFO::Fitting model to feature number 222, ASV5029
+2025-06-02 17:33:35.491992 WARNING::Fitting problem for feature 222 a warning was issued
+2025-06-02 17:33:35.502076 WARNING::Fitting problem for feature 222 a warning was issued
+2025-06-02 17:33:35.537938 WARNING::Fitting problem for feature 222 a warning was issued
+2025-06-02 17:33:35.567648 INFO::Fitting model to feature number 223, ASV5131
+2025-06-02 17:33:35.664926 WARNING::Fitting problem for feature 223 a warning was issued
+2025-06-02 17:33:35.701377 WARNING::Fitting problem for feature 223 a warning was issued
+2025-06-02 17:33:35.732771 INFO::Fitting model to feature number 224, ASV5145
+2025-06-02 17:33:35.755351 INFO::Fitting model to feature number 225, ASV5164
+2025-06-02 17:33:35.776795 INFO::Fitting model to feature number 226, ASV5302
+2025-06-02 17:33:35.843673 WARNING::Fitting problem for feature 226 returning NA
+2025-06-02 17:33:35.858004 INFO::Fitting model to feature number 227, ASV5304
+2025-06-02 17:33:36.019192 WARNING::Fitting problem for feature 227 a warning was issued
+2025-06-02 17:33:36.053489 WARNING::Fitting problem for feature 227 a warning was issued
+2025-06-02 17:33:36.084287 INFO::Fitting model to feature number 228, ASV5340
+2025-06-02 17:33:36.16145 INFO::Fitting model to feature number 229, ASV5469
+2025-06-02 17:33:36.184221 INFO::Fitting model to feature number 230, ASV5501
+2025-06-02 17:33:36.201305 INFO::Fitting model to feature number 231, ASV5593
+2025-06-02 17:33:36.227201 INFO::Fitting model to feature number 232, ASV5616
+2025-06-02 17:33:36.289914 WARNING::Fitting problem for feature 232 returning NA
+2025-06-02 17:33:36.304224 INFO::Fitting model to feature number 233, ASV5622
+2025-06-02 17:33:36.326791 INFO::Fitting model to feature number 234, ASV5658
+2025-06-02 17:33:36.40629 INFO::Fitting model to feature number 235, ASV5728
+2025-06-02 17:33:36.427559 INFO::Fitting model to feature number 236, ASV5764
+2025-06-02 17:33:36.463787 INFO::Fitting model to feature number 237, ASV5775
+2025-06-02 17:33:36.533107 WARNING::Fitting problem for feature 237 returning NA
+2025-06-02 17:33:36.547697 INFO::Fitting model to feature number 238, ASV5785
+2025-06-02 17:33:36.585631 INFO::Fitting model to feature number 239, ASV5848
+2025-06-02 17:33:36.643296 WARNING::Fitting problem for feature 239 returning NA
+2025-06-02 17:33:36.661772 INFO::Fitting model to feature number 240, ASV5856
+2025-06-02 17:33:36.694409 INFO::Fitting model to feature number 241, ASV5899
+2025-06-02 17:33:36.718775 INFO::Fitting model to feature number 242, ASV5905
+2025-06-02 17:33:36.740249 INFO::Fitting model to feature number 243, ASV5954
+2025-06-02 17:33:36.758961 INFO::Fitting model to feature number 244, ASV5960
+2025-06-02 17:33:36.850198 INFO::Fitting model to feature number 245, ASV6025
+2025-06-02 17:33:37.01214 INFO::Fitting model to feature number 246, ASV6062
+2025-06-02 17:33:37.085346 WARNING::Fitting problem for feature 246 returning NA
+2025-06-02 17:33:37.09908 INFO::Fitting model to feature number 247, ASV6106
+2025-06-02 17:33:37.180949 WARNING::Fitting problem for feature 247 returning NA
+2025-06-02 17:33:37.205948 INFO::Fitting model to feature number 248, ASV6258
+2025-06-02 17:33:37.273108 INFO::Fitting model to feature number 249, ASV6392
+2025-06-02 17:33:37.393208 INFO::Fitting model to feature number 250, ASV6436
+2025-06-02 17:33:37.415137 INFO::Fitting model to feature number 251, ASV6450
+2025-06-02 17:33:37.434173 INFO::Fitting model to feature number 252, ASV6454
+2025-06-02 17:33:37.520727 INFO::Fitting model to feature number 253, ASV6654
+2025-06-02 17:33:37.563036 WARNING::Fitting problem for feature 253 returning NA
+2025-06-02 17:33:37.576902 INFO::Fitting model to feature number 254, ASV6655
+2025-06-02 17:33:37.60154 INFO::Fitting model to feature number 255, ASV6681
+2025-06-02 17:33:37.625236 INFO::Fitting model to feature number 256, ASV6741
+2025-06-02 17:33:37.647006 INFO::Fitting model to feature number 257, ASV6767
+2025-06-02 17:33:37.690902 WARNING::Fitting problem for feature 257 returning NA
+2025-06-02 17:33:37.705084 INFO::Fitting model to feature number 258, ASV6852
+2025-06-02 17:33:37.723549 INFO::Fitting model to feature number 259, ASV6870
+2025-06-02 17:33:37.745932 INFO::Fitting model to feature number 260, ASV7133
+2025-06-02 17:33:37.792186 INFO::Fitting model to feature number 261, ASV7202
+2025-06-02 17:33:37.866772 WARNING::Fitting problem for feature 261 returning NA
+2025-06-02 17:33:37.887109 INFO::Fitting model to feature number 262, ASV7440
+2025-06-02 17:33:37.970242 WARNING::Fitting problem for feature 262 returning NA
+2025-06-02 17:33:37.986598 INFO::Fitting model to feature number 263, ASV7496
+2025-06-02 17:33:38.015386 INFO::Fitting model to feature number 264, ASV7581
+2025-06-02 17:33:38.091054 WARNING::Fitting problem for feature 264 returning NA
+2025-06-02 17:33:38.13373 INFO::Fitting model to feature number 265, ASV7687
+2025-06-02 17:33:38.202313 WARNING::Fitting problem for feature 265 returning NA
+2025-06-02 17:33:38.222223 INFO::Fitting model to feature number 266, ASV7715
+2025-06-02 17:33:38.272917 WARNING::Fitting problem for feature 266 returning NA
+2025-06-02 17:33:38.293025 INFO::Fitting model to feature number 267, ASV7787
+2025-06-02 17:33:38.315541 INFO::Fitting model to feature number 268, ASV7791
+2025-06-02 17:33:38.340325 INFO::Fitting model to feature number 269, ASV7794
+2025-06-02 17:33:38.367246 INFO::Fitting model to feature number 270, ASV7797
+2025-06-02 17:33:38.398721 INFO::Fitting model to feature number 271, ASV7801
+2025-06-02 17:33:38.424475 INFO::Fitting model to feature number 272, ASV7990
+2025-06-02 17:33:38.480926 WARNING::Fitting problem for feature 272 returning NA
+2025-06-02 17:33:38.502501 INFO::Fitting model to feature number 273, ASV8089
+2025-06-02 17:33:38.53397 INFO::Fitting model to feature number 274, ASV8252
+2025-06-02 17:33:38.575221 INFO::Fitting model to feature number 275, ASV8257
+2025-06-02 17:33:38.773637 WARNING::Fitting problem for feature 275 a warning was issued
+2025-06-02 17:33:38.783878 WARNING::Fitting problem for feature 275 returning NA
+2025-06-02 17:33:38.798935 INFO::Fitting model to feature number 276, ASV8339
+2025-06-02 17:33:38.828055 INFO::Fitting model to feature number 277, ASV8386
+2025-06-02 17:33:38.855356 INFO::Fitting model to feature number 278, ASV8388
+2025-06-02 17:33:38.882476 INFO::Fitting model to feature number 279, ASV8394
+2025-06-02 17:33:38.906077 INFO::Fitting model to feature number 280, ASV8426
+2025-06-02 17:33:38.963755 WARNING::Fitting problem for feature 280 returning NA
+2025-06-02 17:33:38.978035 INFO::Fitting model to feature number 281, ASV8557
+2025-06-02 17:33:39.106152 WARNING::Fitting problem for feature 281 a warning was issued
+2025-06-02 17:33:39.137219 INFO::Fitting model to feature number 282, ASV8565
+2025-06-02 17:33:39.218342 WARNING::Fitting problem for feature 282 returning NA
+2025-06-02 17:33:39.277483 INFO::Fitting model to feature number 283, ASV8648
+2025-06-02 17:33:39.329151 WARNING::Fitting problem for feature 283 returning NA
+2025-06-02 17:33:39.345514 INFO::Fitting model to feature number 284, ASV8895
+2025-06-02 17:33:39.379305 INFO::Fitting model to feature number 285, ASV8900
+2025-06-02 17:33:39.417559 INFO::Fitting model to feature number 286, ASV9125
+2025-06-02 17:33:39.442679 INFO::Fitting model to feature number 287, ASV9254
+2025-06-02 17:33:39.473728 INFO::Fitting model to feature number 288, ASV9496
+2025-06-02 17:33:39.496223 INFO::Fitting model to feature number 289, ASV9537
+2025-06-02 17:33:39.531251 INFO::Fitting model to feature number 290, ASV9542
+2025-06-02 17:33:39.556944 INFO::Fitting model to feature number 291, ASV9691
+2025-06-02 17:33:39.61426 WARNING::Fitting problem for feature 291 returning NA
+2025-06-02 17:33:39.629689 INFO::Fitting model to feature number 292, ASV9792
+2025-06-02 17:33:39.651957 INFO::Fitting model to feature number 293, ASV9955
+2025-06-02 17:33:39.722091 WARNING::Fitting problem for feature 293 returning NA
+2025-06-02 17:33:39.740951 INFO::Fitting model to feature number 294, ASV10007
+2025-06-02 17:33:39.76409 INFO::Fitting model to feature number 295, ASV10037
+2025-06-02 17:33:39.792547 INFO::Fitting model to feature number 296, ASV10229
+2025-06-02 17:33:39.824477 INFO::Fitting model to feature number 297, ASV10284
+2025-06-02 17:33:39.874206 WARNING::Fitting problem for feature 297 returning NA
+2025-06-02 17:33:39.89039 INFO::Fitting model to feature number 298, ASV10370
+2025-06-02 17:33:39.921822 INFO::Fitting model to feature number 299, ASV10375
+2025-06-02 17:33:39.948046 INFO::Fitting model to feature number 300, ASV10534
+2025-06-02 17:33:40.153799 WARNING::Fitting problem for feature 300 returning NA
+2025-06-02 17:33:40.187507 INFO::Fitting model to feature number 301, ASV10779
+2025-06-02 17:33:40.259 WARNING::Fitting problem for feature 301 returning NA
+2025-06-02 17:33:40.276078 INFO::Fitting model to feature number 302, ASV11168
+2025-06-02 17:33:40.30843 INFO::Fitting model to feature number 303, ASV11309
+2025-06-02 17:33:40.510159 WARNING::Fitting problem for feature 303 a warning was issued
+2025-06-02 17:33:40.521202 WARNING::Fitting problem for feature 303 returning NA
+2025-06-02 17:33:40.535806 INFO::Fitting model to feature number 304, ASV11310
+2025-06-02 17:33:40.563031 INFO::Fitting model to feature number 305, ASV11366
+2025-06-02 17:33:40.58574 INFO::Fitting model to feature number 306, ASV11951
+2025-06-02 17:33:40.604742 INFO::Fitting model to feature number 307, ASV11961
+2025-06-02 17:33:40.62789 INFO::Fitting model to feature number 308, ASV12223
+2025-06-02 17:33:40.673051 WARNING::Fitting problem for feature 308 returning NA
+2025-06-02 17:33:40.688093 INFO::Fitting model to feature number 309, ASV12706
+2025-06-02 17:33:40.719764 INFO::Fitting model to feature number 310, ASV12754
+2025-06-02 17:33:40.740258 INFO::Fitting model to feature number 311, ASV12817
+2025-06-02 17:33:40.771369 INFO::Fitting model to feature number 312, ASV12951
+2025-06-02 17:33:40.799284 INFO::Fitting model to feature number 313, ASV12959
+2025-06-02 17:33:40.992792 WARNING::Fitting problem for feature 313 a warning was issued
+2025-06-02 17:33:41.025239 INFO::Fitting model to feature number 314, ASV14385
+2025-06-02 17:33:41.054776 INFO::Fitting model to feature number 315, ASV14888
+2025-06-02 17:33:41.100809 WARNING::Fitting problem for feature 315 returning NA
+2025-06-02 17:33:41.152942 INFO::Fitting model to feature number 316, ASV15093
+2025-06-02 17:33:41.206225 INFO::Fitting model to feature number 317, ASV15820
+2025-06-02 17:33:41.248563 WARNING::Fitting problem for feature 317 returning NA
+2025-06-02 17:33:41.265275 INFO::Fitting model to feature number 318, ASV16123
+2025-06-02 17:33:41.307098 WARNING::Fitting problem for feature 318 returning NA
+2025-06-02 17:33:41.323623 INFO::Fitting model to feature number 319, ASV16626
+2025-06-02 17:33:41.375448 WARNING::Fitting problem for feature 319 returning NA
+2025-06-02 17:33:41.393654 INFO::Fitting model to feature number 320, ASV16684
+2025-06-02 17:33:41.425715 INFO::Fitting model to feature number 321, ASV17097
+2025-06-02 17:33:41.450065 INFO::Fitting model to feature number 322, ASV17930
+2025-06-02 17:33:41.473205 INFO::Fitting model to feature number 323, ASV20363
+2025-06-02 17:33:41.497077 INFO::Fitting model to feature number 324, ASV21388
+2025-06-02 17:33:41.574054 INFO::Performing tests against medians
+2025-06-02 17:33:43.099891 INFO::Counting total values for each feature
+2025-06-02 17:33:43.123717 INFO::Running the logistic model component
+2025-06-02 17:33:43.141798 DEBUG::Object: augment, Size: 56
+2025-06-02 17:33:43.153148 DEBUG::Object: cluster, Size: 0
+2025-06-02 17:33:43.16245 DEBUG::Object: cores, Size: 56
+2025-06-02 17:33:43.173147 DEBUG::Object: correction, Size: 112
+2025-06-02 17:33:43.182176 DEBUG::Object: extract_out, Size: 2144
+2025-06-02 17:33:43.191936 DEBUG::Object: feature_specific_covariate, Size: 0
+2025-06-02 17:33:43.201757 DEBUG::Object: feature_specific_covariate_name, Size: 0
+2025-06-02 17:33:43.211592 DEBUG::Object: feature_specific_covariate_record, Size: 0
+2025-06-02 17:33:43.220678 DEBUG::Object: features, Size: 263168
+2025-06-02 17:33:43.230137 DEBUG::Object: formula, Size: 1736
+2025-06-02 17:33:43.239078 DEBUG::Object: fun_list, Size: 212584
+2025-06-02 17:33:43.248252 DEBUG::Object: func_to_run, Size: 435336
+2025-06-02 17:33:43.257192 DEBUG::Object: groups, Size: 48
+2025-06-02 17:33:43.266647 DEBUG::Object: median_comparison, Size: 56
+2025-06-02 17:33:43.276741 DEBUG::Object: median_comparison_threshold, Size: 56
+2025-06-02 17:33:43.287825 DEBUG::Object: metadata, Size: 32120
+2025-06-02 17:33:43.29793 DEBUG::Object: model, Size: 120
+2025-06-02 17:33:43.307196 DEBUG::Object: model_function, Size: 161200
+2025-06-02 17:33:43.320127 DEBUG::Object: ordereds, Size: 48
+2025-06-02 17:33:43.33076 DEBUG::Object: random_effects_formula, Size: 1176
+2025-06-02 17:33:43.342567 DEBUG::Object: ranef_function, Size: 1240
+2025-06-02 17:33:43.351974 DEBUG::Object: save_models, Size: 56
+2025-06-02 17:33:43.361821 DEBUG::Object: small_random_effects, Size: 56
+2025-06-02 17:33:43.370906 DEBUG::Object: strata, Size: 48
+2025-06-02 17:33:43.400034 DEBUG::Object: subtract_median, Size: 56
+2025-06-02 17:33:43.409297 DEBUG::Object: summary_function, Size: 49664
+2025-06-02 17:33:43.418679 DEBUG::Object: func_to_run, Size: 435336
+2025-06-02 17:33:43.428384 INFO::Fitting model to feature number 1, ASV3
+2025-06-02 17:33:43.590863 INFO::Fitting model to feature number 2, ASV5
+2025-06-02 17:33:43.738887 INFO::Fitting model to feature number 3, ASV14
+2025-06-02 17:33:43.86507 INFO::Fitting model to feature number 4, ASV19
+2025-06-02 17:33:44.095276 INFO::Fitting model to feature number 5, ASV40
+2025-06-02 17:33:44.277187 INFO::Fitting model to feature number 6, ASV42
+2025-06-02 17:33:44.416601 INFO::Fitting model to feature number 7, ASV58
+2025-06-02 17:33:44.816675 INFO::Fitting model to feature number 8, ASV67
+2025-06-02 17:33:45.006399 INFO::Fitting model to feature number 9, ASV74
+2025-06-02 17:33:46.229901 INFO::Fitting model to feature number 10, ASV75
+2025-06-02 17:33:46.355799 INFO::Fitting model to feature number 11, ASV93
+2025-06-02 17:33:46.548908 INFO::Fitting model to feature number 12, ASV99
+2025-06-02 17:33:46.803151 INFO::Fitting model to feature number 13, ASV121
+2025-06-02 17:33:46.932101 INFO::Fitting model to feature number 14, ASV135
+2025-06-02 17:33:47.220297 INFO::Fitting model to feature number 15, ASV146
+2025-06-02 17:33:47.433545 INFO::Fitting model to feature number 16, ASV147
+2025-06-02 17:33:47.57178 INFO::Fitting model to feature number 17, ASV163
+2025-06-02 17:33:47.794501 INFO::Fitting model to feature number 18, ASV191
+2025-06-02 17:33:47.931688 INFO::Fitting model to feature number 19, ASV192
+2025-06-02 17:33:48.146324 INFO::Fitting model to feature number 20, ASV199
+2025-06-02 17:33:48.367974 INFO::Fitting model to feature number 21, ASV201
+2025-06-02 17:33:48.513494 INFO::Fitting model to feature number 22, ASV207
+2025-06-02 17:33:48.980022 INFO::Fitting model to feature number 23, ASV260
+2025-06-02 17:33:49.117314 INFO::Fitting model to feature number 24, ASV262
+2025-06-02 17:33:49.244722 INFO::Fitting model to feature number 25, ASV279
+2025-06-02 17:33:49.438206 INFO::Fitting model to feature number 26, ASV280
+2025-06-02 17:33:49.579738 INFO::Fitting model to feature number 27, ASV302
+2025-06-02 17:33:49.864936 INFO::Fitting model to feature number 28, ASV307
+2025-06-02 17:33:50.107447 INFO::Fitting model to feature number 29, ASV309
+2025-06-02 17:33:50.334933 INFO::Fitting model to feature number 30, ASV315
+2025-06-02 17:33:50.599364 INFO::Fitting model to feature number 31, ASV316
+2025-06-02 17:33:50.910852 INFO::Fitting model to feature number 32, ASV340
+2025-06-02 17:33:51.058235 INFO::Fitting model to feature number 33, ASV389
+2025-06-02 17:33:51.233312 INFO::Fitting model to feature number 34, ASV423
+2025-06-02 17:33:51.421876 INFO::Fitting model to feature number 35, ASV436
+2025-06-02 17:33:51.737375 INFO::Fitting model to feature number 36, ASV465
+2025-06-02 17:33:51.897611 INFO::Fitting model to feature number 37, ASV468
+2025-06-02 17:33:52.14708 INFO::Fitting model to feature number 38, ASV477
+2025-06-02 17:33:52.333437 INFO::Fitting model to feature number 39, ASV488
+2025-06-02 17:33:52.507726 INFO::Fitting model to feature number 40, ASV489
+2025-06-02 17:33:52.846432 INFO::Fitting model to feature number 41, ASV499
+2025-06-02 17:33:53.063308 INFO::Fitting model to feature number 42, ASV500
+2025-06-02 17:33:53.218 INFO::Fitting model to feature number 43, ASV503
+2025-06-02 17:33:53.427239 INFO::Fitting model to feature number 44, ASV512
+2025-06-02 17:33:53.62609 INFO::Fitting model to feature number 45, ASV533
+2025-06-02 17:33:53.826501 INFO::Fitting model to feature number 46, ASV548
+2025-06-02 17:33:54.052682 INFO::Fitting model to feature number 47, ASV558
+2025-06-02 17:33:54.315715 INFO::Fitting model to feature number 48, ASV582
+2025-06-02 17:33:54.630864 INFO::Fitting model to feature number 49, ASV583
+2025-06-02 17:33:59.402171 WARNING::Fitting problem for feature 49 a warning was issued
+2025-06-02 17:33:59.40683 WARNING::Fitting problem for feature 49 a warning was issued
+2025-06-02 17:33:59.429542 INFO::Fitting model to feature number 50, ASV622
+2025-06-02 17:33:59.562465 INFO::Fitting model to feature number 51, ASV624
+2025-06-02 17:33:59.673162 INFO::Fitting model to feature number 52, ASV629
+2025-06-02 17:33:59.924849 INFO::Fitting model to feature number 53, ASV638
+2025-06-02 17:34:00.08296 INFO::Fitting model to feature number 54, ASV645
+2025-06-02 17:34:00.338282 INFO::Fitting model to feature number 55, ASV667
+2025-06-02 17:34:00.507533 INFO::Fitting model to feature number 56, ASV702
+2025-06-02 17:34:00.64997 INFO::Fitting model to feature number 57, ASV725
+2025-06-02 17:34:01.244153 INFO::Fitting model to feature number 58, ASV730
+2025-06-02 17:34:01.486862 INFO::Fitting model to feature number 59, ASV755
+2025-06-02 17:34:01.692733 INFO::Fitting model to feature number 60, ASV761
+2025-06-02 17:34:02.14892 INFO::Fitting model to feature number 61, ASV783
+2025-06-02 17:34:02.271428 INFO::Fitting model to feature number 62, ASV798
+2025-06-02 17:34:02.770434 INFO::Fitting model to feature number 63, ASV809
+2025-06-02 17:34:03.113203 INFO::Fitting model to feature number 64, ASV824
+2025-06-02 17:34:03.312236 INFO::Fitting model to feature number 65, ASV847
+2025-06-02 17:34:03.501686 INFO::Fitting model to feature number 66, ASV860
+2025-06-02 17:34:03.698664 INFO::Fitting model to feature number 67, ASV862
+2025-06-02 17:34:03.887169 INFO::Fitting model to feature number 68, ASV869
+2025-06-02 17:34:04.105873 INFO::Fitting model to feature number 69, ASV870
+2025-06-02 17:34:04.34725 INFO::Fitting model to feature number 70, ASV896
+2025-06-02 17:34:04.504674 INFO::Fitting model to feature number 71, ASV904
+2025-06-02 17:34:04.631081 INFO::Fitting model to feature number 72, ASV905
+2025-06-02 17:34:04.971703 INFO::Fitting model to feature number 73, ASV914
+2025-06-02 17:34:05.108379 INFO::Fitting model to feature number 74, ASV944
+2025-06-02 17:34:05.315016 INFO::Fitting model to feature number 75, ASV957
+2025-06-02 17:34:05.547212 INFO::Fitting model to feature number 76, ASV1030
+2025-06-02 17:34:05.881576 INFO::Fitting model to feature number 77, ASV1037
+2025-06-02 17:34:06.048655 INFO::Fitting model to feature number 78, ASV1045
+2025-06-02 17:34:06.180532 INFO::Fitting model to feature number 79, ASV1054
+2025-06-02 17:34:06.407413 INFO::Fitting model to feature number 80, ASV1056
+2025-06-02 17:34:06.65245 INFO::Fitting model to feature number 81, ASV1064
+2025-06-02 17:34:06.775042 INFO::Fitting model to feature number 82, ASV1066
+2025-06-02 17:34:06.984076 INFO::Fitting model to feature number 83, ASV1071
+2025-06-02 17:34:07.245592 INFO::Fitting model to feature number 84, ASV1079
+2025-06-02 17:34:07.421558 INFO::Fitting model to feature number 85, ASV1084
+2025-06-02 17:34:07.757743 INFO::Fitting model to feature number 86, ASV1086
+2025-06-02 17:34:08.032636 INFO::Fitting model to feature number 87, ASV1105
+2025-06-02 17:34:08.403849 INFO::Fitting model to feature number 88, ASV1107
+2025-06-02 17:34:08.547706 INFO::Fitting model to feature number 89, ASV1161
+2025-06-02 17:34:08.773471 INFO::Fitting model to feature number 90, ASV1209
+2025-06-02 17:34:08.971003 INFO::Fitting model to feature number 91, ASV1214
+2025-06-02 17:34:09.511646 INFO::Fitting model to feature number 92, ASV1226
+2025-06-02 17:34:09.76277 INFO::Fitting model to feature number 93, ASV1240
+2025-06-02 17:34:13.304983 WARNING::Fitting problem for feature 93 a warning was issued
+2025-06-02 17:34:13.344222 INFO::Fitting model to feature number 94, ASV1293
+2025-06-02 17:34:13.581353 INFO::Fitting model to feature number 95, ASV1304
+2025-06-02 17:34:14.133349 INFO::Fitting model to feature number 96, ASV1316
+2025-06-02 17:34:14.529763 INFO::Fitting model to feature number 97, ASV1342
+2025-06-02 17:34:14.903282 INFO::Fitting model to feature number 98, ASV1346
+2025-06-02 17:34:15.030278 INFO::Fitting model to feature number 99, ASV1348
+2025-06-02 17:34:15.319678 INFO::Fitting model to feature number 100, ASV1416
+2025-06-02 17:34:15.514232 INFO::Fitting model to feature number 101, ASV1417
+2025-06-02 17:34:15.703312 INFO::Fitting model to feature number 102, ASV1485
+2025-06-02 17:34:15.866131 INFO::Fitting model to feature number 103, ASV1500
+2025-06-02 17:34:15.999518 INFO::Fitting model to feature number 104, ASV1501
+2025-06-02 17:34:16.225509 INFO::Fitting model to feature number 105, ASV1526
+2025-06-02 17:34:16.482098 INFO::Fitting model to feature number 106, ASV1536
+2025-06-02 17:34:16.626621 INFO::Fitting model to feature number 107, ASV1543
+2025-06-02 17:34:16.846092 INFO::Fitting model to feature number 108, ASV1547
+2025-06-02 17:34:17.050792 INFO::Fitting model to feature number 109, ASV1564
+2025-06-02 17:34:17.249702 INFO::Fitting model to feature number 110, ASV1583
+2025-06-02 17:34:17.453019 INFO::Fitting model to feature number 111, ASV1597
+2025-06-02 17:34:17.597629 INFO::Fitting model to feature number 112, ASV1614
+2025-06-02 17:34:17.751533 INFO::Fitting model to feature number 113, ASV1764
+2025-06-02 17:34:17.949787 INFO::Fitting model to feature number 114, ASV1783
+2025-06-02 17:34:18.348686 INFO::Fitting model to feature number 115, ASV1827
+2025-06-02 17:34:18.459727 INFO::Fitting model to feature number 116, ASV1832
+2025-06-02 17:34:18.578118 INFO::Fitting model to feature number 117, ASV1834
+2025-06-02 17:34:18.868921 INFO::Fitting model to feature number 118, ASV1835
+2025-06-02 17:34:19.054749 INFO::Fitting model to feature number 119, ASV1838
+2025-06-02 17:34:19.184599 INFO::Fitting model to feature number 120, ASV1843
+2025-06-02 17:34:19.306 INFO::Fitting model to feature number 121, ASV1863
+2025-06-02 17:34:19.504257 INFO::Fitting model to feature number 122, ASV1904
+2025-06-02 17:34:19.8936 INFO::Fitting model to feature number 123, ASV1931
+2025-06-02 17:34:20.012352 INFO::Fitting model to feature number 124, ASV1957
+2025-06-02 17:34:20.206435 INFO::Fitting model to feature number 125, ASV1973
+2025-06-02 17:34:20.323548 INFO::Fitting model to feature number 126, ASV1977
+2025-06-02 17:34:20.450714 INFO::Fitting model to feature number 127, ASV1995
+2025-06-02 17:34:20.539917 INFO::Fitting model to feature number 128, ASV2009
+2025-06-02 17:34:20.737405 INFO::Fitting model to feature number 129, ASV2019
+2025-06-02 17:34:20.848796 INFO::Fitting model to feature number 130, ASV2091
+2025-06-02 17:34:20.970654 INFO::Fitting model to feature number 131, ASV2159
+2025-06-02 17:34:21.146721 INFO::Fitting model to feature number 132, ASV2178
+2025-06-02 17:34:21.382527 INFO::Fitting model to feature number 133, ASV2216
+2025-06-02 17:34:21.495834 INFO::Fitting model to feature number 134, ASV2255
+2025-06-02 17:34:21.843496 INFO::Fitting model to feature number 135, ASV2319
+2025-06-02 17:34:22.034152 INFO::Fitting model to feature number 136, ASV2323
+2025-06-02 17:34:22.123111 INFO::Fitting model to feature number 137, ASV2328
+2025-06-02 17:34:22.408754 INFO::Fitting model to feature number 138, ASV2385
+2025-06-02 17:34:22.546389 INFO::Fitting model to feature number 139, ASV2449
+2025-06-02 17:34:22.7799 INFO::Fitting model to feature number 140, ASV2521
+2025-06-02 17:34:22.99805 INFO::Fitting model to feature number 141, ASV2528
+2025-06-02 17:34:23.180959 INFO::Fitting model to feature number 142, ASV2549
+2025-06-02 17:34:23.470962 INFO::Fitting model to feature number 143, ASV2551
+2025-06-02 17:34:23.65877 INFO::Fitting model to feature number 144, ASV2642
+2025-06-02 17:34:23.781702 INFO::Fitting model to feature number 145, ASV2650
+2025-06-02 17:34:23.905143 INFO::Fitting model to feature number 146, ASV2679
+2025-06-02 17:34:24.071353 INFO::Fitting model to feature number 147, ASV2721
+2025-06-02 17:34:24.483586 INFO::Fitting model to feature number 148, ASV2730
+2025-06-02 17:34:24.712734 INFO::Fitting model to feature number 149, ASV2737
+2025-06-02 17:34:24.947268 INFO::Fitting model to feature number 150, ASV2764
+2025-06-02 17:34:25.041864 INFO::Fitting model to feature number 151, ASV2784
+2025-06-02 17:34:25.296928 INFO::Fitting model to feature number 152, ASV2786
+2025-06-02 17:34:25.499841 INFO::Fitting model to feature number 153, ASV2796
+2025-06-02 17:34:25.599341 INFO::Fitting model to feature number 154, ASV2813
+2025-06-02 17:34:25.872033 INFO::Fitting model to feature number 155, ASV2964
+2025-06-02 17:34:25.996747 INFO::Fitting model to feature number 156, ASV2994
+2025-06-02 17:34:26.094365 INFO::Fitting model to feature number 157, ASV2999
+2025-06-02 17:34:26.335795 INFO::Fitting model to feature number 158, ASV3005
+2025-06-02 17:34:26.440812 INFO::Fitting model to feature number 159, ASV3081
+2025-06-02 17:34:26.582459 INFO::Fitting model to feature number 160, ASV3132
+2025-06-02 17:34:26.712286 INFO::Fitting model to feature number 161, ASV3199
+2025-06-02 17:34:26.96391 INFO::Fitting model to feature number 162, ASV3233
+2025-06-02 17:34:27.079435 INFO::Fitting model to feature number 163, ASV3245
+2025-06-02 17:34:27.239416 INFO::Fitting model to feature number 164, ASV3283
+2025-06-02 17:34:27.403315 INFO::Fitting model to feature number 165, ASV3298
+2025-06-02 17:34:27.535643 INFO::Fitting model to feature number 166, ASV3333
+2025-06-02 17:34:27.65053 INFO::Fitting model to feature number 167, ASV3338
+2025-06-02 17:34:27.919818 INFO::Fitting model to feature number 168, ASV3399
+2025-06-02 17:34:28.138344 INFO::Fitting model to feature number 169, ASV3415
+2025-06-02 17:34:28.300439 INFO::Fitting model to feature number 170, ASV3439
+2025-06-02 17:34:28.419675 INFO::Fitting model to feature number 171, ASV3453
+2025-06-02 17:34:28.762496 INFO::Fitting model to feature number 172, ASV3464
+2025-06-02 17:34:28.896814 INFO::Fitting model to feature number 173, ASV3493
+2025-06-02 17:34:29.065948 INFO::Fitting model to feature number 174, ASV3516
+2025-06-02 17:34:29.179389 INFO::Fitting model to feature number 175, ASV3524
+2025-06-02 17:34:29.368789 INFO::Fitting model to feature number 176, ASV3542
+2025-06-02 17:34:29.566428 INFO::Fitting model to feature number 177, ASV3569
+2025-06-02 17:34:29.682377 INFO::Fitting model to feature number 178, ASV3605
+2025-06-02 17:34:29.786692 INFO::Fitting model to feature number 179, ASV3609
+2025-06-02 17:34:29.935071 INFO::Fitting model to feature number 180, ASV3775
+2025-06-02 17:34:30.167474 INFO::Fitting model to feature number 181, ASV3799
+2025-06-02 17:34:30.35538 INFO::Fitting model to feature number 182, ASV3809
+2025-06-02 17:34:30.527301 INFO::Fitting model to feature number 183, ASV3817
+2025-06-02 17:34:30.644973 INFO::Fitting model to feature number 184, ASV3835
+2025-06-02 17:34:30.845153 INFO::Fitting model to feature number 185, ASV3860
+2025-06-02 17:34:31.193026 INFO::Fitting model to feature number 186, ASV3878
+2025-06-02 17:34:31.375081 INFO::Fitting model to feature number 187, ASV3882
+2025-06-02 17:34:31.594751 INFO::Fitting model to feature number 188, ASV3890
+2025-06-02 17:34:31.728259 INFO::Fitting model to feature number 189, ASV3902
+2025-06-02 17:34:31.869442 INFO::Fitting model to feature number 190, ASV3913
+2025-06-02 17:34:32.024305 INFO::Fitting model to feature number 191, ASV4023
+2025-06-02 17:34:32.214075 INFO::Fitting model to feature number 192, ASV4037
+2025-06-02 17:34:32.54044 INFO::Fitting model to feature number 193, ASV4057
+2025-06-02 17:34:32.758497 INFO::Fitting model to feature number 194, ASV4094
+2025-06-02 17:34:32.877892 INFO::Fitting model to feature number 195, ASV4102
+2025-06-02 17:34:33.107195 INFO::Fitting model to feature number 196, ASV4116
+2025-06-02 17:34:33.313319 INFO::Fitting model to feature number 197, ASV4138
+2025-06-02 17:34:33.495246 INFO::Fitting model to feature number 198, ASV4189
+2025-06-02 17:34:33.685322 INFO::Fitting model to feature number 199, ASV4242
+2025-06-02 17:34:33.957541 INFO::Fitting model to feature number 200, ASV4243
+2025-06-02 17:34:34.160078 INFO::Fitting model to feature number 201, ASV4265
+2025-06-02 17:34:34.323696 INFO::Fitting model to feature number 202, ASV4273
+2025-06-02 17:34:34.755113 INFO::Fitting model to feature number 203, ASV4315
+2025-06-02 17:34:35.037345 INFO::Fitting model to feature number 204, ASV4322
+2025-06-02 17:34:35.266367 INFO::Fitting model to feature number 205, ASV4339
+2025-06-02 17:34:35.397826 INFO::Fitting model to feature number 206, ASV4518
+2025-06-02 17:34:35.689314 INFO::Fitting model to feature number 207, ASV4542
+2025-06-02 17:34:35.953432 INFO::Fitting model to feature number 208, ASV4543
+2025-06-02 17:34:36.045091 INFO::Fitting model to feature number 209, ASV4547
+2025-06-02 17:34:36.254389 INFO::Fitting model to feature number 210, ASV4565
+2025-06-02 17:34:36.385208 INFO::Fitting model to feature number 211, ASV4592
+2025-06-02 17:34:36.51407 INFO::Fitting model to feature number 212, ASV4598
+2025-06-02 17:34:36.651045 INFO::Fitting model to feature number 213, ASV4662
+2025-06-02 17:34:36.868178 INFO::Fitting model to feature number 214, ASV4700
+2025-06-02 17:34:37.109197 INFO::Fitting model to feature number 215, ASV4744
+2025-06-02 17:34:37.269112 INFO::Fitting model to feature number 216, ASV4755
+2025-06-02 17:34:37.420447 INFO::Fitting model to feature number 217, ASV4810
+2025-06-02 17:34:37.61856 INFO::Fitting model to feature number 218, ASV4852
+2025-06-02 17:34:37.749483 INFO::Fitting model to feature number 219, ASV4892
+2025-06-02 17:34:37.88174 INFO::Fitting model to feature number 220, ASV5024
+2025-06-02 17:34:38.339224 INFO::Fitting model to feature number 221, ASV5025
+2025-06-02 17:34:38.605643 INFO::Fitting model to feature number 222, ASV5029
+2025-06-02 17:34:38.723857 INFO::Fitting model to feature number 223, ASV5131
+2025-06-02 17:34:38.858631 INFO::Fitting model to feature number 224, ASV5145
+2025-06-02 17:34:39.036499 INFO::Fitting model to feature number 225, ASV5164
+2025-06-02 17:34:39.355569 INFO::Fitting model to feature number 226, ASV5302
+2025-06-02 17:34:39.538577 INFO::Fitting model to feature number 227, ASV5304
+2025-06-02 17:34:39.659553 INFO::Fitting model to feature number 228, ASV5340
+2025-06-02 17:34:39.788482 INFO::Fitting model to feature number 229, ASV5469
+2025-06-02 17:34:39.978753 INFO::Fitting model to feature number 230, ASV5501
+2025-06-02 17:34:42.135828 INFO::Fitting model to feature number 231, ASV5593
+2025-06-02 17:34:42.414422 INFO::Fitting model to feature number 232, ASV5616
+2025-06-02 17:34:42.56207 INFO::Fitting model to feature number 233, ASV5622
+2025-06-02 17:34:42.905369 INFO::Fitting model to feature number 234, ASV5658
+2025-06-02 17:34:43.04962 INFO::Fitting model to feature number 235, ASV5728
+2025-06-02 17:34:43.343755 INFO::Fitting model to feature number 236, ASV5764
+2025-06-02 17:34:43.574427 INFO::Fitting model to feature number 237, ASV5775
+2025-06-02 17:34:43.77967 INFO::Fitting model to feature number 238, ASV5785
+2025-06-02 17:34:46.35745 WARNING::Fitting problem for feature 238 a warning was issued
+2025-06-02 17:34:46.382548 INFO::Fitting model to feature number 239, ASV5848
+2025-06-02 17:34:46.62226 INFO::Fitting model to feature number 240, ASV5856
+2025-06-02 17:34:47.05148 INFO::Fitting model to feature number 241, ASV5899
+2025-06-02 17:34:47.141361 INFO::Fitting model to feature number 242, ASV5905
+2025-06-02 17:34:47.339037 INFO::Fitting model to feature number 243, ASV5954
+2025-06-02 17:34:47.600378 INFO::Fitting model to feature number 244, ASV5960
+2025-06-02 17:34:47.713322 INFO::Fitting model to feature number 245, ASV6025
+2025-06-02 17:34:47.847613 INFO::Fitting model to feature number 246, ASV6062
+2025-06-02 17:34:48.061261 INFO::Fitting model to feature number 247, ASV6106
+2025-06-02 17:34:48.304785 INFO::Fitting model to feature number 248, ASV6258
+2025-06-02 17:34:48.533253 INFO::Fitting model to feature number 249, ASV6392
+2025-06-02 17:34:48.661174 INFO::Fitting model to feature number 250, ASV6436
+2025-06-02 17:34:48.839177 INFO::Fitting model to feature number 251, ASV6450
+2025-06-02 17:34:49.049519 INFO::Fitting model to feature number 252, ASV6454
+2025-06-02 17:34:49.179754 INFO::Fitting model to feature number 253, ASV6654
+2025-06-02 17:34:49.270688 INFO::Fitting model to feature number 254, ASV6655
+2025-06-02 17:34:49.581741 INFO::Fitting model to feature number 255, ASV6681
+2025-06-02 17:34:49.866242 INFO::Fitting model to feature number 256, ASV6741
+2025-06-02 17:34:50.094835 INFO::Fitting model to feature number 257, ASV6767
+2025-06-02 17:34:50.230585 INFO::Fitting model to feature number 258, ASV6852
+2025-06-02 17:34:50.451495 INFO::Fitting model to feature number 259, ASV6870
+2025-06-02 17:34:50.608901 INFO::Fitting model to feature number 260, ASV7133
+2025-06-02 17:34:50.70337 INFO::Fitting model to feature number 261, ASV7202
+2025-06-02 17:34:50.874992 INFO::Fitting model to feature number 262, ASV7440
+2025-06-02 17:34:50.962846 INFO::Fitting model to feature number 263, ASV7496
+2025-06-02 17:34:55.160752 WARNING::Fitting problem for feature 263 a warning was issued
+2025-06-02 17:34:55.180306 INFO::Fitting model to feature number 264, ASV7581
+2025-06-02 17:34:55.319972 INFO::Fitting model to feature number 265, ASV7687
+2025-06-02 17:34:55.426989 INFO::Fitting model to feature number 266, ASV7715
+2025-06-02 17:34:55.613379 INFO::Fitting model to feature number 267, ASV7787
+2025-06-02 17:34:55.823784 INFO::Fitting model to feature number 268, ASV7791
+2025-06-02 17:34:55.998476 INFO::Fitting model to feature number 269, ASV7794
+2025-06-02 17:34:57.103153 INFO::Fitting model to feature number 270, ASV7797
+2025-06-02 17:35:01.244074 WARNING::Fitting problem for feature 270 a warning was issued
+2025-06-02 17:35:01.264575 INFO::Fitting model to feature number 271, ASV7801
+2025-06-02 17:35:01.496443 INFO::Fitting model to feature number 272, ASV7990
+2025-06-02 17:35:01.645621 INFO::Fitting model to feature number 273, ASV8089
+2025-06-02 17:35:01.853469 INFO::Fitting model to feature number 274, ASV8252
+2025-06-02 17:35:05.629417 WARNING::Fitting problem for feature 274 a warning was issued
+2025-06-02 17:35:05.64888 INFO::Fitting model to feature number 275, ASV8257
+2025-06-02 17:35:05.771603 INFO::Fitting model to feature number 276, ASV8339
+2025-06-02 17:35:05.986544 INFO::Fitting model to feature number 277, ASV8386
+2025-06-02 17:35:06.505785 INFO::Fitting model to feature number 278, ASV8388
+2025-06-02 17:35:06.791475 INFO::Fitting model to feature number 279, ASV8394
+2025-06-02 17:35:07.151942 INFO::Fitting model to feature number 280, ASV8426
+2025-06-02 17:35:07.420754 INFO::Fitting model to feature number 281, ASV8557
+2025-06-02 17:35:07.533873 INFO::Fitting model to feature number 282, ASV8565
+2025-06-02 17:35:07.641292 INFO::Fitting model to feature number 283, ASV8648
+2025-06-02 17:35:07.725069 INFO::Fitting model to feature number 284, ASV8895
+2025-06-02 17:35:07.880181 INFO::Fitting model to feature number 285, ASV8900
+2025-06-02 17:35:08.104519 INFO::Fitting model to feature number 286, ASV9125
+2025-06-02 17:35:08.415815 INFO::Fitting model to feature number 287, ASV9254
+2025-06-02 17:35:08.680218 INFO::Fitting model to feature number 288, ASV9496
+2025-06-02 17:35:08.851019 INFO::Fitting model to feature number 289, ASV9537
+2025-06-02 17:35:12.996419 WARNING::Fitting problem for feature 289 a warning was issued
+2025-06-02 17:35:13.016648 INFO::Fitting model to feature number 290, ASV9542
+2025-06-02 17:35:13.240123 INFO::Fitting model to feature number 291, ASV9691
+2025-06-02 17:35:13.365075 INFO::Fitting model to feature number 292, ASV9792
+2025-06-02 17:35:13.5766 INFO::Fitting model to feature number 293, ASV9955
+2025-06-02 17:35:13.660848 INFO::Fitting model to feature number 294, ASV10007
+2025-06-02 17:35:13.812229 INFO::Fitting model to feature number 295, ASV10037
+2025-06-02 17:35:14.087836 INFO::Fitting model to feature number 296, ASV10229
+2025-06-02 17:35:15.283962 WARNING::Fitting problem for feature 296 a warning was issued
+2025-06-02 17:35:15.303413 INFO::Fitting model to feature number 297, ASV10284
+2025-06-02 17:35:15.440586 INFO::Fitting model to feature number 298, ASV10370
+2025-06-02 17:35:15.746688 INFO::Fitting model to feature number 299, ASV10375
+2025-06-02 17:35:16.027232 INFO::Fitting model to feature number 300, ASV10534
+2025-06-02 17:35:18.558703 WARNING::Fitting problem for feature 300 a warning was issued
+2025-06-02 17:35:18.578968 INFO::Fitting model to feature number 301, ASV10779
+2025-06-02 17:35:18.761944 INFO::Fitting model to feature number 302, ASV11168
+2025-06-02 17:35:18.919858 INFO::Fitting model to feature number 303, ASV11309
+2025-06-02 17:35:19.046303 INFO::Fitting model to feature number 304, ASV11310
+2025-06-02 17:35:19.287843 INFO::Fitting model to feature number 305, ASV11366
+2025-06-02 17:35:19.72186 INFO::Fitting model to feature number 306, ASV11951
+2025-06-02 17:35:19.895753 INFO::Fitting model to feature number 307, ASV11961
+2025-06-02 17:35:19.985285 INFO::Fitting model to feature number 308, ASV12223
+2025-06-02 17:35:20.256342 INFO::Fitting model to feature number 309, ASV12706
+2025-06-02 17:35:20.56748 INFO::Fitting model to feature number 310, ASV12754
+2025-06-02 17:35:20.715978 INFO::Fitting model to feature number 311, ASV12817
+2025-06-02 17:35:20.91349 INFO::Fitting model to feature number 312, ASV12951
+2025-06-02 17:35:21.174287 INFO::Fitting model to feature number 313, ASV12959
+2025-06-02 17:35:21.326089 INFO::Fitting model to feature number 314, ASV14385
+2025-06-02 17:35:25.296122 WARNING::Fitting problem for feature 314 a warning was issued
+2025-06-02 17:35:25.32059 INFO::Fitting model to feature number 315, ASV14888
+2025-06-02 17:35:25.505629 INFO::Fitting model to feature number 316, ASV15093
+2025-06-02 17:35:26.066445 INFO::Fitting model to feature number 317, ASV15820
+2025-06-02 17:35:26.282827 INFO::Fitting model to feature number 318, ASV16123
+2025-06-02 17:35:26.382094 INFO::Fitting model to feature number 319, ASV16626
+2025-06-02 17:35:29.911107 WARNING::Fitting problem for feature 319 a warning was issued
+2025-06-02 17:35:29.916505 WARNING::Fitting problem for feature 319 a warning was issued
+2025-06-02 17:35:29.940795 INFO::Fitting model to feature number 320, ASV16684
+2025-06-02 17:35:30.162432 INFO::Fitting model to feature number 321, ASV17097
+2025-06-02 17:35:30.253534 INFO::Fitting model to feature number 322, ASV17930
+2025-06-02 17:35:30.653456 INFO::Fitting model to feature number 323, ASV20363
+2025-06-02 17:35:34.502334 WARNING::Fitting problem for feature 323 a warning was issued
+2025-06-02 17:35:34.522957 INFO::Fitting model to feature number 324, ASV21388
+2025-06-02 17:35:34.939853 INFO::Counting total values for each feature
+2025-06-02 17:35:34.958897 INFO::Re-running abundances for warn_prevalence
+2025-06-02 17:35:34.962076 INFO::Running selected normalization method: TSS
+2025-06-02 17:35:34.980453 INFO::Running selected transform method: LOG
+2025-06-02 17:35:34.994655 DEBUG::Object: augment, Size: 56
+2025-06-02 17:35:34.996716 DEBUG::Object: cluster, Size: 0
+2025-06-02 17:35:34.998867 DEBUG::Object: cores, Size: 56
+2025-06-02 17:35:35.00112 DEBUG::Object: correction, Size: 112
+2025-06-02 17:35:35.003847 DEBUG::Object: extract_out, Size: 2144
+2025-06-02 17:35:35.006026 DEBUG::Object: feature_specific_covariate, Size: 0
+2025-06-02 17:35:35.008176 DEBUG::Object: feature_specific_covariate_name, Size: 0
+2025-06-02 17:35:35.010361 DEBUG::Object: feature_specific_covariate_record, Size: 0
+2025-06-02 17:35:35.012743 DEBUG::Object: features, Size: 281424
+2025-06-02 17:35:35.014852 DEBUG::Object: formula, Size: 1736
+2025-06-02 17:35:35.017065 DEBUG::Object: fun_list, Size: 124640
+2025-06-02 17:35:35.019923 DEBUG::Object: func_to_run, Size: 435336
+2025-06-02 17:35:35.022217 DEBUG::Object: groups, Size: 48
+2025-06-02 17:35:35.024491 DEBUG::Object: median_comparison, Size: 56
+2025-06-02 17:35:35.026632 DEBUG::Object: median_comparison_threshold, Size: 56
+2025-06-02 17:35:35.02873 DEBUG::Object: metadata, Size: 32120
+2025-06-02 17:35:35.030853 DEBUG::Object: model, Size: 112
+2025-06-02 17:35:35.033062 DEBUG::Object: model_function, Size: 71464
+2025-06-02 17:35:35.035312 DEBUG::Object: ordereds, Size: 48
+2025-06-02 17:35:35.037277 DEBUG::Object: random_effects_formula, Size: 1176
+2025-06-02 17:35:35.039362 DEBUG::Object: ranef_function, Size: 1240
+2025-06-02 17:35:35.041276 DEBUG::Object: save_models, Size: 56
+2025-06-02 17:35:35.043223 DEBUG::Object: small_random_effects, Size: 56
+2025-06-02 17:35:35.045115 DEBUG::Object: strata, Size: 48
+2025-06-02 17:35:35.04709 DEBUG::Object: subtract_median, Size: 56
+2025-06-02 17:35:35.049013 DEBUG::Object: summary_function, Size: 51456
+2025-06-02 17:35:35.051218 DEBUG::Object: func_to_run, Size: 435336
+2025-06-02 17:35:35.053702 INFO::Fitting model to feature number 1, ASV3
+2025-06-02 17:35:35.110599 INFO::Fitting model to feature number 2, ASV5
+2025-06-02 17:35:35.176558 INFO::Fitting model to feature number 3, ASV14
+2025-06-02 17:35:35.248677 INFO::Fitting model to feature number 4, ASV19
+2025-06-02 17:35:35.261107 INFO::Fitting model to feature number 5, ASV40
+2025-06-02 17:35:35.329614 INFO::Fitting model to feature number 6, ASV42
+2025-06-02 17:35:35.4033 INFO::Fitting model to feature number 7, ASV58
+2025-06-02 17:35:35.417522 INFO::Fitting model to feature number 8, ASV67
+2025-06-02 17:35:35.431343 INFO::Fitting model to feature number 9, ASV74
+2025-06-02 17:35:35.441554 INFO::Fitting model to feature number 10, ASV75
+2025-06-02 17:35:35.499131 INFO::Fitting model to feature number 11, ASV93
+2025-06-02 17:35:35.51251 INFO::Fitting model to feature number 12, ASV99
+2025-06-02 17:35:35.523314 INFO::Fitting model to feature number 13, ASV121
+2025-06-02 17:35:35.580795 INFO::Fitting model to feature number 14, ASV135
+2025-06-02 17:35:35.591232 INFO::Fitting model to feature number 15, ASV146
+2025-06-02 17:35:35.605655 INFO::Fitting model to feature number 16, ASV147
+2025-06-02 17:35:35.676982 INFO::Fitting model to feature number 17, ASV163
+2025-06-02 17:35:35.711912 WARNING::Fitting problem for feature 17 returning NA
+2025-06-02 17:35:35.718981 INFO::Fitting model to feature number 18, ASV191
+2025-06-02 17:35:35.780552 INFO::Fitting model to feature number 19, ASV192
+2025-06-02 17:35:35.794196 INFO::Fitting model to feature number 20, ASV199
+2025-06-02 17:35:35.823208 WARNING::Fitting problem for feature 20 returning NA
+2025-06-02 17:35:35.830497 INFO::Fitting model to feature number 21, ASV201
+2025-06-02 17:35:35.888782 INFO::Fitting model to feature number 22, ASV207
+2025-06-02 17:35:35.9231 WARNING::Fitting problem for feature 22 returning NA
+2025-06-02 17:35:35.930764 INFO::Fitting model to feature number 23, ASV260
+2025-06-02 17:35:36.011996 INFO::Fitting model to feature number 24, ASV262
+2025-06-02 17:35:36.079227 INFO::Fitting model to feature number 25, ASV279
+2025-06-02 17:35:36.146416 INFO::Fitting model to feature number 26, ASV280
+2025-06-02 17:35:36.212297 INFO::Fitting model to feature number 27, ASV302
+2025-06-02 17:35:36.226769 INFO::Fitting model to feature number 28, ASV307
+2025-06-02 17:35:36.23872 INFO::Fitting model to feature number 29, ASV309
+2025-06-02 17:35:36.253498 INFO::Fitting model to feature number 30, ASV315
+2025-06-02 17:35:36.273069 INFO::Fitting model to feature number 31, ASV316
+2025-06-02 17:35:36.285207 INFO::Fitting model to feature number 32, ASV340
+2025-06-02 17:35:36.364953 INFO::Fitting model to feature number 33, ASV389
+2025-06-02 17:35:36.42913 INFO::Fitting model to feature number 34, ASV423
+2025-06-02 17:35:36.497399 INFO::Fitting model to feature number 35, ASV436
+2025-06-02 17:35:36.50883 INFO::Fitting model to feature number 36, ASV465
+2025-06-02 17:35:36.569706 INFO::Fitting model to feature number 37, ASV468
+2025-06-02 17:35:36.58528 INFO::Fitting model to feature number 38, ASV477
+2025-06-02 17:35:36.652946 INFO::Fitting model to feature number 39, ASV488
+2025-06-02 17:35:36.711126 INFO::Fitting model to feature number 40, ASV489
+2025-06-02 17:35:36.725325 INFO::Fitting model to feature number 41, ASV499
+2025-06-02 17:35:36.808166 INFO::Fitting model to feature number 42, ASV500
+2025-06-02 17:35:36.875044 INFO::Fitting model to feature number 43, ASV503
+2025-06-02 17:35:36.94504 INFO::Fitting model to feature number 44, ASV512
+2025-06-02 17:35:37.006031 INFO::Fitting model to feature number 45, ASV533
+2025-06-02 17:35:37.064398 INFO::Fitting model to feature number 46, ASV548
+2025-06-02 17:35:37.106149 WARNING::Fitting problem for feature 46 returning NA
+2025-06-02 17:35:37.112929 INFO::Fitting model to feature number 47, ASV558
+2025-06-02 17:35:37.123427 INFO::Fitting model to feature number 48, ASV582
+2025-06-02 17:35:37.134274 INFO::Fitting model to feature number 49, ASV583
+2025-06-02 17:35:37.150378 INFO::Fitting model to feature number 50, ASV622
+2025-06-02 17:35:37.22304 INFO::Fitting model to feature number 51, ASV624
+2025-06-02 17:35:37.285271 INFO::Fitting model to feature number 52, ASV629
+2025-06-02 17:35:37.323361 WARNING::Fitting problem for feature 52 returning NA
+2025-06-02 17:35:37.332223 INFO::Fitting model to feature number 53, ASV638
+2025-06-02 17:35:37.401295 INFO::Fitting model to feature number 54, ASV645
+2025-06-02 17:35:37.420247 INFO::Fitting model to feature number 55, ASV667
+2025-06-02 17:35:37.503592 INFO::Fitting model to feature number 56, ASV702
+2025-06-02 17:35:37.590989 INFO::Fitting model to feature number 57, ASV725
+2025-06-02 17:35:37.605731 INFO::Fitting model to feature number 58, ASV730
+2025-06-02 17:35:37.664799 INFO::Fitting model to feature number 59, ASV755
+2025-06-02 17:35:37.739686 INFO::Fitting model to feature number 60, ASV761
+2025-06-02 17:35:37.758403 INFO::Fitting model to feature number 61, ASV783
+2025-06-02 17:35:37.833116 INFO::Fitting model to feature number 62, ASV798
+2025-06-02 17:35:37.843767 INFO::Fitting model to feature number 63, ASV809
+2025-06-02 17:35:37.854721 INFO::Fitting model to feature number 64, ASV824
+2025-06-02 17:35:37.865851 INFO::Fitting model to feature number 65, ASV847
+2025-06-02 17:35:37.882674 INFO::Fitting model to feature number 66, ASV860
+2025-06-02 17:35:37.914401 WARNING::Fitting problem for feature 66 returning NA
+2025-06-02 17:35:37.921429 INFO::Fitting model to feature number 67, ASV862
+2025-06-02 17:35:37.934744 INFO::Fitting model to feature number 68, ASV869
+2025-06-02 17:35:37.948289 INFO::Fitting model to feature number 69, ASV870
+2025-06-02 17:35:37.962136 INFO::Fitting model to feature number 70, ASV896
+2025-06-02 17:35:38.023082 INFO::Fitting model to feature number 71, ASV904
+2025-06-02 17:35:38.080374 INFO::Fitting model to feature number 72, ASV905
+2025-06-02 17:35:38.094253 INFO::Fitting model to feature number 73, ASV914
+2025-06-02 17:35:38.163394 INFO::Fitting model to feature number 74, ASV944
+2025-06-02 17:35:38.230082 INFO::Fitting model to feature number 75, ASV957
+2025-06-02 17:35:38.260529 WARNING::Fitting problem for feature 75 returning NA
+2025-06-02 17:35:38.267396 INFO::Fitting model to feature number 76, ASV1030
+2025-06-02 17:35:38.277853 INFO::Fitting model to feature number 77, ASV1037
+2025-06-02 17:35:38.34176 INFO::Fitting model to feature number 78, ASV1045
+2025-06-02 17:35:38.404069 INFO::Fitting model to feature number 79, ASV1054
+2025-06-02 17:35:38.414558 INFO::Fitting model to feature number 80, ASV1056
+2025-06-02 17:35:38.482099 INFO::Fitting model to feature number 81, ASV1064
+2025-06-02 17:35:38.540415 INFO::Fitting model to feature number 82, ASV1066
+2025-06-02 17:35:38.55055 INFO::Fitting model to feature number 83, ASV1071
+2025-06-02 17:35:38.58312 WARNING::Fitting problem for feature 83 returning NA
+2025-06-02 17:35:38.590289 INFO::Fitting model to feature number 84, ASV1079
+2025-06-02 17:35:38.658482 INFO::Fitting model to feature number 85, ASV1084
+2025-06-02 17:35:38.764484 INFO::Fitting model to feature number 86, ASV1086
+2025-06-02 17:35:38.783358 INFO::Fitting model to feature number 87, ASV1105
+2025-06-02 17:35:38.804619 INFO::Fitting model to feature number 88, ASV1107
+2025-06-02 17:35:38.88712 INFO::Fitting model to feature number 89, ASV1161
+2025-06-02 17:35:38.903835 INFO::Fitting model to feature number 90, ASV1209
+2025-06-02 17:35:38.98014 INFO::Fitting model to feature number 91, ASV1214
+2025-06-02 17:35:38.996841 INFO::Fitting model to feature number 92, ASV1226
+2025-06-02 17:35:39.032661 WARNING::Fitting problem for feature 92 returning NA
+2025-06-02 17:35:39.040334 INFO::Fitting model to feature number 93, ASV1240
+2025-06-02 17:35:39.050683 INFO::Fitting model to feature number 94, ASV1293
+2025-06-02 17:35:39.062072 INFO::Fitting model to feature number 95, ASV1304
+2025-06-02 17:35:39.077696 INFO::Fitting model to feature number 96, ASV1316
+2025-06-02 17:35:39.094547 INFO::Fitting model to feature number 97, ASV1342
+2025-06-02 17:35:39.117792 INFO::Fitting model to feature number 98, ASV1346
+2025-06-02 17:35:39.187123 INFO::Fitting model to feature number 99, ASV1348
+2025-06-02 17:35:39.200618 INFO::Fitting model to feature number 100, ASV1416
+2025-06-02 17:35:39.211322 INFO::Fitting model to feature number 101, ASV1417
+2025-06-02 17:35:39.221548 INFO::Fitting model to feature number 102, ASV1485
+2025-06-02 17:35:39.23504 INFO::Fitting model to feature number 103, ASV1500
+2025-06-02 17:35:39.291859 INFO::Fitting model to feature number 104, ASV1501
+2025-06-02 17:35:39.302196 INFO::Fitting model to feature number 105, ASV1526
+2025-06-02 17:35:39.31252 INFO::Fitting model to feature number 106, ASV1536
+2025-06-02 17:35:39.384595 INFO::Fitting model to feature number 107, ASV1543
+2025-06-02 17:35:39.399752 INFO::Fitting model to feature number 108, ASV1547
+2025-06-02 17:35:39.415595 INFO::Fitting model to feature number 109, ASV1564
+2025-06-02 17:35:39.427116 INFO::Fitting model to feature number 110, ASV1583
+2025-06-02 17:35:39.44124 INFO::Fitting model to feature number 111, ASV1597
+2025-06-02 17:35:39.518654 INFO::Fitting model to feature number 112, ASV1614
+2025-06-02 17:35:39.548497 WARNING::Fitting problem for feature 112 returning NA
+2025-06-02 17:35:39.555864 INFO::Fitting model to feature number 113, ASV1764
+2025-06-02 17:35:39.566116 INFO::Fitting model to feature number 114, ASV1783
+2025-06-02 17:35:39.594139 WARNING::Fitting problem for feature 114 returning NA
+2025-06-02 17:35:39.600955 INFO::Fitting model to feature number 115, ASV1827
+2025-06-02 17:35:39.680775 INFO::Fitting model to feature number 116, ASV1832
+2025-06-02 17:35:39.769323 INFO::Fitting model to feature number 117, ASV1834
+2025-06-02 17:35:39.78611 INFO::Fitting model to feature number 118, ASV1835
+2025-06-02 17:35:39.799328 INFO::Fitting model to feature number 119, ASV1838
+2025-06-02 17:35:39.812474 INFO::Fitting model to feature number 120, ASV1843
+2025-06-02 17:35:39.874507 INFO::Fitting model to feature number 121, ASV1863
+2025-06-02 17:35:39.887531 INFO::Fitting model to feature number 122, ASV1904
+2025-06-02 17:35:39.900795 INFO::Fitting model to feature number 123, ASV1931
+2025-06-02 17:35:39.967765 INFO::Fitting model to feature number 124, ASV1957
+2025-06-02 17:35:39.985195 INFO::Fitting model to feature number 125, ASV1973
+2025-06-02 17:35:40.069334 INFO::Fitting model to feature number 126, ASV1977
+2025-06-02 17:35:40.140723 INFO::Fitting model to feature number 127, ASV1995
+2025-06-02 17:35:40.156032 INFO::Fitting model to feature number 128, ASV2009
+2025-06-02 17:35:40.167671 INFO::Fitting model to feature number 129, ASV2019
+2025-06-02 17:35:40.234802 INFO::Fitting model to feature number 130, ASV2091
+2025-06-02 17:35:40.305182 INFO::Fitting model to feature number 131, ASV2159
+2025-06-02 17:35:40.317251 INFO::Fitting model to feature number 132, ASV2178
+2025-06-02 17:35:40.332308 INFO::Fitting model to feature number 133, ASV2216
+2025-06-02 17:35:40.408029 INFO::Fitting model to feature number 134, ASV2255
+2025-06-02 17:35:40.45722 WARNING::Fitting problem for feature 134 returning NA
+2025-06-02 17:35:40.464581 INFO::Fitting model to feature number 135, ASV2319
+2025-06-02 17:35:40.505634 WARNING::Fitting problem for feature 135 returning NA
+2025-06-02 17:35:40.513715 INFO::Fitting model to feature number 136, ASV2323
+2025-06-02 17:35:40.529014 INFO::Fitting model to feature number 137, ASV2328
+2025-06-02 17:35:40.543411 INFO::Fitting model to feature number 138, ASV2385
+2025-06-02 17:35:40.605933 INFO::Fitting model to feature number 139, ASV2449
+2025-06-02 17:35:40.616425 INFO::Fitting model to feature number 140, ASV2521
+2025-06-02 17:35:40.657648 WARNING::Fitting problem for feature 140 returning NA
+2025-06-02 17:35:40.666272 INFO::Fitting model to feature number 141, ASV2528
+2025-06-02 17:35:40.678393 INFO::Fitting model to feature number 142, ASV2549
+2025-06-02 17:35:40.695828 INFO::Fitting model to feature number 143, ASV2551
+2025-06-02 17:35:40.711685 INFO::Fitting model to feature number 144, ASV2642
+2025-06-02 17:35:40.787855 INFO::Fitting model to feature number 145, ASV2650
+2025-06-02 17:35:40.856305 INFO::Fitting model to feature number 146, ASV2679
+2025-06-02 17:35:40.874416 INFO::Fitting model to feature number 147, ASV2721
+2025-06-02 17:35:40.884963 INFO::Fitting model to feature number 148, ASV2730
+2025-06-02 17:35:40.89641 INFO::Fitting model to feature number 149, ASV2737
+2025-06-02 17:35:40.947127 WARNING::Fitting problem for feature 149 returning NA
+2025-06-02 17:35:40.954086 INFO::Fitting model to feature number 150, ASV2764
+2025-06-02 17:35:40.967503 INFO::Fitting model to feature number 151, ASV2784
+2025-06-02 17:35:41.015965 WARNING::Fitting problem for feature 151 returning NA
+2025-06-02 17:35:41.025181 INFO::Fitting model to feature number 152, ASV2786
+2025-06-02 17:35:41.093355 WARNING::Fitting problem for feature 152 returning NA
+2025-06-02 17:35:41.103111 INFO::Fitting model to feature number 153, ASV2796
+2025-06-02 17:35:41.122438 INFO::Fitting model to feature number 154, ASV2813
+2025-06-02 17:35:41.147961 INFO::Fitting model to feature number 155, ASV2964
+2025-06-02 17:35:41.227008 INFO::Fitting model to feature number 156, ASV2994
+2025-06-02 17:35:41.242929 INFO::Fitting model to feature number 157, ASV2999
+2025-06-02 17:35:41.263582 INFO::Fitting model to feature number 158, ASV3005
+2025-06-02 17:35:41.352744 INFO::Fitting model to feature number 159, ASV3081
+2025-06-02 17:35:41.443035 INFO::Fitting model to feature number 160, ASV3132
+2025-06-02 17:35:41.513028 INFO::Fitting model to feature number 161, ASV3199
+2025-06-02 17:35:41.535517 INFO::Fitting model to feature number 162, ASV3233
+2025-06-02 17:35:41.69826 WARNING::Fitting problem for feature 162 a warning was issued
+2025-06-02 17:35:41.726572 WARNING::Fitting problem for feature 162 a warning was issued
+2025-06-02 17:35:41.749293 INFO::Fitting model to feature number 163, ASV3245
+2025-06-02 17:35:41.760802 INFO::Fitting model to feature number 164, ASV3283
+2025-06-02 17:35:41.775564 INFO::Fitting model to feature number 165, ASV3298
+2025-06-02 17:35:41.840283 INFO::Fitting model to feature number 166, ASV3333
+2025-06-02 17:35:41.903889 INFO::Fitting model to feature number 167, ASV3338
+2025-06-02 17:35:41.923549 INFO::Fitting model to feature number 168, ASV3399
+2025-06-02 17:35:41.971756 WARNING::Fitting problem for feature 168 returning NA
+2025-06-02 17:35:41.980764 INFO::Fitting model to feature number 169, ASV3415
+2025-06-02 17:35:42.00256 INFO::Fitting model to feature number 170, ASV3439
+2025-06-02 17:35:42.073979 INFO::Fitting model to feature number 171, ASV3453
+2025-06-02 17:35:42.091405 INFO::Fitting model to feature number 172, ASV3464
+2025-06-02 17:35:42.169075 INFO::Fitting model to feature number 173, ASV3493
+2025-06-02 17:35:42.180648 INFO::Fitting model to feature number 174, ASV3516
+2025-06-02 17:35:42.218288 WARNING::Fitting problem for feature 174 returning NA
+2025-06-02 17:35:42.228763 INFO::Fitting model to feature number 175, ASV3524
+2025-06-02 17:35:42.277639 WARNING::Fitting problem for feature 175 returning NA
+2025-06-02 17:35:42.284939 INFO::Fitting model to feature number 176, ASV3542
+2025-06-02 17:35:42.301626 INFO::Fitting model to feature number 177, ASV3569
+2025-06-02 17:35:42.381634 INFO::Fitting model to feature number 178, ASV3605
+2025-06-02 17:35:42.467437 INFO::Fitting model to feature number 179, ASV3609
+2025-06-02 17:35:42.548565 INFO::Fitting model to feature number 180, ASV3775
+2025-06-02 17:35:42.593288 WARNING::Fitting problem for feature 180 returning NA
+2025-06-02 17:35:42.600425 INFO::Fitting model to feature number 181, ASV3799
+2025-06-02 17:35:42.64198 WARNING::Fitting problem for feature 181 returning NA
+2025-06-02 17:35:42.648775 INFO::Fitting model to feature number 182, ASV3809
+2025-06-02 17:35:42.707747 INFO::Fitting model to feature number 183, ASV3817
+2025-06-02 17:35:42.768332 INFO::Fitting model to feature number 184, ASV3835
+2025-06-02 17:35:42.782377 INFO::Fitting model to feature number 185, ASV3860
+2025-06-02 17:35:42.795868 INFO::Fitting model to feature number 186, ASV3878
+2025-06-02 17:35:42.81041 INFO::Fitting model to feature number 187, ASV3882
+2025-06-02 17:35:42.849115 WARNING::Fitting problem for feature 187 returning NA
+2025-06-02 17:35:42.856332 INFO::Fitting model to feature number 188, ASV3890
+2025-06-02 17:35:42.927302 INFO::Fitting model to feature number 189, ASV3902
+2025-06-02 17:35:42.986263 INFO::Fitting model to feature number 190, ASV3913
+2025-06-02 17:35:42.996619 INFO::Fitting model to feature number 191, ASV4023
+2025-06-02 17:35:43.053606 WARNING::Fitting problem for feature 191 returning NA
+2025-06-02 17:35:43.060716 INFO::Fitting model to feature number 192, ASV4037
+2025-06-02 17:35:43.117806 WARNING::Fitting problem for feature 192 returning NA
+2025-06-02 17:35:43.126429 INFO::Fitting model to feature number 193, ASV4057
+2025-06-02 17:35:43.167728 WARNING::Fitting problem for feature 193 returning NA
+2025-06-02 17:35:43.176262 INFO::Fitting model to feature number 194, ASV4094
+2025-06-02 17:35:43.253152 INFO::Fitting model to feature number 195, ASV4102
+2025-06-02 17:35:43.266088 INFO::Fitting model to feature number 196, ASV4116
+2025-06-02 17:35:43.43262 WARNING::Fitting problem for feature 196 a warning was issued
+2025-06-02 17:35:43.457843 INFO::Fitting model to feature number 197, ASV4138
+2025-06-02 17:35:43.477173 INFO::Fitting model to feature number 198, ASV4189
+2025-06-02 17:35:43.48824 INFO::Fitting model to feature number 199, ASV4242
+2025-06-02 17:35:43.540539 WARNING::Fitting problem for feature 199 returning NA
+2025-06-02 17:35:43.548111 INFO::Fitting model to feature number 200, ASV4243
+2025-06-02 17:35:43.663454 WARNING::Fitting problem for feature 200 a warning was issued
+2025-06-02 17:35:43.668157 WARNING::Fitting problem for feature 200 returning NA
+2025-06-02 17:35:43.676239 INFO::Fitting model to feature number 201, ASV4265
+2025-06-02 17:35:43.7415 INFO::Fitting model to feature number 202, ASV4273
+2025-06-02 17:35:43.761093 INFO::Fitting model to feature number 203, ASV4315
+2025-06-02 17:35:43.799389 WARNING::Fitting problem for feature 203 returning NA
+2025-06-02 17:35:43.80731 INFO::Fitting model to feature number 204, ASV4322
+2025-06-02 17:35:43.84831 WARNING::Fitting problem for feature 204 returning NA
+2025-06-02 17:35:43.856098 INFO::Fitting model to feature number 205, ASV4339
+2025-06-02 17:35:43.94188 WARNING::Fitting problem for feature 205 a warning was issued
+2025-06-02 17:35:43.945896 WARNING::Fitting problem for feature 205 a warning was issued
+2025-06-02 17:35:43.970776 WARNING::Fitting problem for feature 205 a warning was issued
+2025-06-02 17:35:43.992185 INFO::Fitting model to feature number 206, ASV4518
+2025-06-02 17:35:44.002891 INFO::Fitting model to feature number 207, ASV4542
+2025-06-02 17:35:44.018357 INFO::Fitting model to feature number 208, ASV4543
+2025-06-02 17:35:44.03401 INFO::Fitting model to feature number 209, ASV4547
+2025-06-02 17:35:44.048935 INFO::Fitting model to feature number 210, ASV4565
+2025-06-02 17:35:44.11657 INFO::Fitting model to feature number 211, ASV4592
+2025-06-02 17:35:44.191377 INFO::Fitting model to feature number 212, ASV4598
+2025-06-02 17:35:44.267041 WARNING::Fitting problem for feature 212 a warning was issued
+2025-06-02 17:35:44.292626 WARNING::Fitting problem for feature 212 a warning was issued
+2025-06-02 17:35:44.314439 INFO::Fitting model to feature number 213, ASV4662
+2025-06-02 17:35:44.354655 WARNING::Fitting problem for feature 213 returning NA
+2025-06-02 17:35:44.362324 INFO::Fitting model to feature number 214, ASV4700
+2025-06-02 17:35:44.379382 INFO::Fitting model to feature number 215, ASV4744
+2025-06-02 17:35:44.392778 INFO::Fitting model to feature number 216, ASV4755
+2025-06-02 17:35:44.406405 INFO::Fitting model to feature number 217, ASV4810
+2025-06-02 17:35:44.458803 WARNING::Fitting problem for feature 217 returning NA
+2025-06-02 17:35:44.465732 INFO::Fitting model to feature number 218, ASV4852
+2025-06-02 17:35:44.534647 INFO::Fitting model to feature number 219, ASV4892
+2025-06-02 17:35:44.566824 WARNING::Fitting problem for feature 219 returning NA
+2025-06-02 17:35:44.573487 INFO::Fitting model to feature number 220, ASV5024
+2025-06-02 17:35:44.587292 INFO::Fitting model to feature number 221, ASV5025
+2025-06-02 17:35:44.600931 INFO::Fitting model to feature number 222, ASV5029
+2025-06-02 17:35:44.675021 WARNING::Fitting problem for feature 222 a warning was issued
+2025-06-02 17:35:44.678995 WARNING::Fitting problem for feature 222 a warning was issued
+2025-06-02 17:35:44.704957 WARNING::Fitting problem for feature 222 a warning was issued
+2025-06-02 17:35:44.725074 INFO::Fitting model to feature number 223, ASV5131
+2025-06-02 17:35:44.80544 WARNING::Fitting problem for feature 223 a warning was issued
+2025-06-02 17:35:44.830653 WARNING::Fitting problem for feature 223 a warning was issued
+2025-06-02 17:35:44.850818 INFO::Fitting model to feature number 224, ASV5145
+2025-06-02 17:35:44.864888 INFO::Fitting model to feature number 225, ASV5164
+2025-06-02 17:35:44.87836 INFO::Fitting model to feature number 226, ASV5302
+2025-06-02 17:35:44.9199 WARNING::Fitting problem for feature 226 returning NA
+2025-06-02 17:35:44.926929 INFO::Fitting model to feature number 227, ASV5304
+2025-06-02 17:35:45.017491 WARNING::Fitting problem for feature 227 a warning was issued
+2025-06-02 17:35:45.044981 WARNING::Fitting problem for feature 227 a warning was issued
+2025-06-02 17:35:45.073065 INFO::Fitting model to feature number 228, ASV5340
+2025-06-02 17:35:45.140581 INFO::Fitting model to feature number 229, ASV5469
+2025-06-02 17:35:45.153952 INFO::Fitting model to feature number 230, ASV5501
+2025-06-02 17:35:45.164411 INFO::Fitting model to feature number 231, ASV5593
+2025-06-02 17:35:45.181141 INFO::Fitting model to feature number 232, ASV5616
+2025-06-02 17:35:45.221205 WARNING::Fitting problem for feature 232 returning NA
+2025-06-02 17:35:45.228571 INFO::Fitting model to feature number 233, ASV5622
+2025-06-02 17:35:45.24166 INFO::Fitting model to feature number 234, ASV5658
+2025-06-02 17:35:45.301729 INFO::Fitting model to feature number 235, ASV5728
+2025-06-02 17:35:45.315094 INFO::Fitting model to feature number 236, ASV5764
+2025-06-02 17:35:45.328954 INFO::Fitting model to feature number 237, ASV5775
+2025-06-02 17:35:45.379053 WARNING::Fitting problem for feature 237 returning NA
+2025-06-02 17:35:45.387192 INFO::Fitting model to feature number 238, ASV5785
+2025-06-02 17:35:45.402239 INFO::Fitting model to feature number 239, ASV5848
+2025-06-02 17:35:45.443473 WARNING::Fitting problem for feature 239 returning NA
+2025-06-02 17:35:45.450604 INFO::Fitting model to feature number 240, ASV5856
+2025-06-02 17:35:45.467339 INFO::Fitting model to feature number 241, ASV5899
+2025-06-02 17:35:45.480837 INFO::Fitting model to feature number 242, ASV5905
+2025-06-02 17:35:45.490967 INFO::Fitting model to feature number 243, ASV5954
+2025-06-02 17:35:45.501193 INFO::Fitting model to feature number 244, ASV5960
+2025-06-02 17:35:45.559922 INFO::Fitting model to feature number 245, ASV6025
+2025-06-02 17:35:45.621458 INFO::Fitting model to feature number 246, ASV6062
+2025-06-02 17:35:45.661565 WARNING::Fitting problem for feature 246 returning NA
+2025-06-02 17:35:45.668573 INFO::Fitting model to feature number 247, ASV6106
+2025-06-02 17:35:45.714667 WARNING::Fitting problem for feature 247 returning NA
+2025-06-02 17:35:45.722715 INFO::Fitting model to feature number 248, ASV6258
+2025-06-02 17:35:45.746752 INFO::Fitting model to feature number 249, ASV6392
+2025-06-02 17:35:45.818592 INFO::Fitting model to feature number 250, ASV6436
+2025-06-02 17:35:45.832444 INFO::Fitting model to feature number 251, ASV6450
+2025-06-02 17:35:45.842864 INFO::Fitting model to feature number 252, ASV6454
+2025-06-02 17:35:45.905146 INFO::Fitting model to feature number 253, ASV6654
+2025-06-02 17:35:45.933623 WARNING::Fitting problem for feature 253 returning NA
+2025-06-02 17:35:45.940427 INFO::Fitting model to feature number 254, ASV6655
+2025-06-02 17:35:45.956937 INFO::Fitting model to feature number 255, ASV6681
+2025-06-02 17:35:45.970284 INFO::Fitting model to feature number 256, ASV6741
+2025-06-02 17:35:45.984271 INFO::Fitting model to feature number 257, ASV6767
+2025-06-02 17:35:46.012363 WARNING::Fitting problem for feature 257 returning NA
+2025-06-02 17:35:46.020561 INFO::Fitting model to feature number 258, ASV6852
+2025-06-02 17:35:46.033421 INFO::Fitting model to feature number 259, ASV6870
+2025-06-02 17:35:46.04982 INFO::Fitting model to feature number 260, ASV7133
+2025-06-02 17:35:46.068698 INFO::Fitting model to feature number 261, ASV7202
+2025-06-02 17:35:46.120929 WARNING::Fitting problem for feature 261 returning NA
+2025-06-02 17:35:46.12771 INFO::Fitting model to feature number 262, ASV7440
+2025-06-02 17:35:46.163735 WARNING::Fitting problem for feature 262 returning NA
+2025-06-02 17:35:46.170634 INFO::Fitting model to feature number 263, ASV7496
+2025-06-02 17:35:46.18804 INFO::Fitting model to feature number 264, ASV7581
+2025-06-02 17:35:46.217673 WARNING::Fitting problem for feature 264 returning NA
+2025-06-02 17:35:46.224901 INFO::Fitting model to feature number 265, ASV7687
+2025-06-02 17:35:46.253281 WARNING::Fitting problem for feature 265 returning NA
+2025-06-02 17:35:46.260196 INFO::Fitting model to feature number 266, ASV7715
+2025-06-02 17:35:46.288395 WARNING::Fitting problem for feature 266 returning NA
+2025-06-02 17:35:46.295354 INFO::Fitting model to feature number 267, ASV7787
+2025-06-02 17:35:46.3059 INFO::Fitting model to feature number 268, ASV7791
+2025-06-02 17:35:46.317323 INFO::Fitting model to feature number 269, ASV7794
+2025-06-02 17:35:46.332101 INFO::Fitting model to feature number 270, ASV7797
+2025-06-02 17:35:46.351759 INFO::Fitting model to feature number 271, ASV7801
+2025-06-02 17:35:46.367521 INFO::Fitting model to feature number 272, ASV7990
+2025-06-02 17:35:46.410762 WARNING::Fitting problem for feature 272 returning NA
+2025-06-02 17:35:46.42065 INFO::Fitting model to feature number 273, ASV8089
+2025-06-02 17:35:46.441302 INFO::Fitting model to feature number 274, ASV8252
+2025-06-02 17:35:46.462101 INFO::Fitting model to feature number 275, ASV8257
+2025-06-02 17:35:46.580832 WARNING::Fitting problem for feature 275 a warning was issued
+2025-06-02 17:35:46.585076 WARNING::Fitting problem for feature 275 returning NA
+2025-06-02 17:35:46.591964 INFO::Fitting model to feature number 276, ASV8339
+2025-06-02 17:35:46.606706 INFO::Fitting model to feature number 277, ASV8386
+2025-06-02 17:35:46.62499 INFO::Fitting model to feature number 278, ASV8388
+2025-06-02 17:35:46.64183 INFO::Fitting model to feature number 279, ASV8394
+2025-06-02 17:35:46.656566 INFO::Fitting model to feature number 280, ASV8426
+2025-06-02 17:35:46.699771 WARNING::Fitting problem for feature 280 returning NA
+2025-06-02 17:35:46.706933 INFO::Fitting model to feature number 281, ASV8557
+2025-06-02 17:35:46.817445 WARNING::Fitting problem for feature 281 a warning was issued
+2025-06-02 17:35:46.837708 INFO::Fitting model to feature number 282, ASV8565
+2025-06-02 17:35:46.868166 WARNING::Fitting problem for feature 282 returning NA
+2025-06-02 17:35:46.87518 INFO::Fitting model to feature number 283, ASV8648
+2025-06-02 17:35:46.907781 WARNING::Fitting problem for feature 283 returning NA
+2025-06-02 17:35:46.914802 INFO::Fitting model to feature number 284, ASV8895
+2025-06-02 17:35:46.928148 INFO::Fitting model to feature number 285, ASV8900
+2025-06-02 17:35:46.941874 INFO::Fitting model to feature number 286, ASV9125
+2025-06-02 17:35:46.95561 INFO::Fitting model to feature number 287, ASV9254
+2025-06-02 17:35:46.972941 INFO::Fitting model to feature number 288, ASV9496
+2025-06-02 17:35:46.985293 INFO::Fitting model to feature number 289, ASV9537
+2025-06-02 17:35:47.002024 INFO::Fitting model to feature number 290, ASV9542
+2025-06-02 17:35:47.012685 INFO::Fitting model to feature number 291, ASV9691
+2025-06-02 17:35:47.04795 WARNING::Fitting problem for feature 291 returning NA
+2025-06-02 17:35:47.056222 INFO::Fitting model to feature number 292, ASV9792
+2025-06-02 17:35:47.089895 INFO::Fitting model to feature number 293, ASV9955
+2025-06-02 17:35:47.127664 WARNING::Fitting problem for feature 293 returning NA
+2025-06-02 17:35:47.135531 INFO::Fitting model to feature number 294, ASV10007
+2025-06-02 17:35:47.147597 INFO::Fitting model to feature number 295, ASV10037
+2025-06-02 17:35:47.175562 INFO::Fitting model to feature number 296, ASV10229
+2025-06-02 17:35:47.194141 INFO::Fitting model to feature number 297, ASV10284
+2025-06-02 17:35:47.226373 WARNING::Fitting problem for feature 297 returning NA
+2025-06-02 17:35:47.234156 INFO::Fitting model to feature number 298, ASV10370
+2025-06-02 17:35:47.25174 INFO::Fitting model to feature number 299, ASV10375
+2025-06-02 17:35:47.265693 INFO::Fitting model to feature number 300, ASV10534
+2025-06-02 17:35:47.299182 WARNING::Fitting problem for feature 300 returning NA
+2025-06-02 17:35:47.306344 INFO::Fitting model to feature number 301, ASV10779
+2025-06-02 17:35:47.336886 WARNING::Fitting problem for feature 301 returning NA
+2025-06-02 17:35:47.344004 INFO::Fitting model to feature number 302, ASV11168
+2025-06-02 17:35:47.359233 INFO::Fitting model to feature number 303, ASV11309
+2025-06-02 17:35:47.47912 WARNING::Fitting problem for feature 303 a warning was issued
+2025-06-02 17:35:47.483993 WARNING::Fitting problem for feature 303 returning NA
+2025-06-02 17:35:47.491779 INFO::Fitting model to feature number 304, ASV11310
+2025-06-02 17:35:47.510569 INFO::Fitting model to feature number 305, ASV11366
+2025-06-02 17:35:47.524602 INFO::Fitting model to feature number 306, ASV11951
+2025-06-02 17:35:47.541949 INFO::Fitting model to feature number 307, ASV11961
+2025-06-02 17:35:47.555713 INFO::Fitting model to feature number 308, ASV12223
+2025-06-02 17:35:47.589642 WARNING::Fitting problem for feature 308 returning NA
+2025-06-02 17:35:47.597036 INFO::Fitting model to feature number 309, ASV12706
+2025-06-02 17:35:47.615936 INFO::Fitting model to feature number 310, ASV12754
+2025-06-02 17:35:47.628021 INFO::Fitting model to feature number 311, ASV12817
+2025-06-02 17:35:47.642108 INFO::Fitting model to feature number 312, ASV12951
+2025-06-02 17:35:47.659404 INFO::Fitting model to feature number 313, ASV12959
+2025-06-02 17:35:47.823785 WARNING::Fitting problem for feature 313 a warning was issued
+2025-06-02 17:35:47.843537 INFO::Fitting model to feature number 314, ASV14385
+2025-06-02 17:35:47.860727 INFO::Fitting model to feature number 315, ASV14888
+2025-06-02 17:35:47.894866 WARNING::Fitting problem for feature 315 returning NA
+2025-06-02 17:35:47.90655 INFO::Fitting model to feature number 316, ASV15093
+2025-06-02 17:35:47.925154 INFO::Fitting model to feature number 317, ASV15820
+2025-06-02 17:35:47.959814 WARNING::Fitting problem for feature 317 returning NA
+2025-06-02 17:35:47.967675 INFO::Fitting model to feature number 318, ASV16123
+2025-06-02 17:35:48.00257 WARNING::Fitting problem for feature 318 returning NA
+2025-06-02 17:35:48.010114 INFO::Fitting model to feature number 319, ASV16626
+2025-06-02 17:35:48.043659 WARNING::Fitting problem for feature 319 returning NA
+2025-06-02 17:35:48.051131 INFO::Fitting model to feature number 320, ASV16684
+2025-06-02 17:35:48.07311 INFO::Fitting model to feature number 321, ASV17097
+2025-06-02 17:35:48.090697 INFO::Fitting model to feature number 322, ASV17930
+2025-06-02 17:35:48.111813 INFO::Fitting model to feature number 323, ASV20363
+2025-06-02 17:35:48.130124 INFO::Fitting model to feature number 324, ASV21388
+2025-06-02 17:35:48.283074 WARNING::Deleting existing residuals file: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/residuals_linear.rds
+2025-06-02 17:35:48.288409 INFO::Writing residuals to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/residuals_linear.rds
+2025-06-02 17:35:48.308686 WARNING::Deleting existing fitted file: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/fitted_linear.rds
+2025-06-02 17:35:48.314871 INFO::Writing fitted values to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/fitted_linear.rds
+2025-06-02 17:35:48.331575 WARNING::Deleting existing ranef file: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/ranef_linear.rds
+2025-06-02 17:35:48.336888 INFO::Writing extracted random effects to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/ranef_linear.rds
+2025-06-02 17:35:48.348254 WARNING::Deleting existing residuals file: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/residuals_logistic.rds
+2025-06-02 17:35:48.353566 INFO::Writing residuals to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/residuals_logistic.rds
+2025-06-02 17:35:48.378774 WARNING::Deleting existing fitted file: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/fitted_logistic.rds
+2025-06-02 17:35:48.384056 INFO::Writing fitted values to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/fitted_logistic.rds
+2025-06-02 17:35:48.40894 WARNING::Deleting existing ranef file: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/ranef_logistic.rds
+2025-06-02 17:35:48.414793 INFO::Writing extracted random effects to file R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/fits/ranef_logistic.rds
+2025-06-02 17:35:48.434171 INFO::Writing all the results to file (ordered 
+            by increasing individual q-values): R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/all_results.tsv
+2025-06-02 17:35:48.482945 INFO::Writing the significant results without errors (those which have joint q-values less than or equal to the threshold of 0.100000 ) to file (ordered by increasing individual q-values): R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/significant_results.tsv
+2025-06-02 17:35:48.495418 INFO::Writing summary plot of significant
+                        results to file: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/figures/summary_plot.pdf
+2025-06-02 17:35:49.915933 INFO::Writing association plots (one for each significant association) to output folder: R_output/MaAsLin3/MaAsLin3_by_taxon/Taxon_Heptageniidae/figures
+2025-06-02 17:35:49.924615 INFO::Plotting associations from most to least significant, grouped by metadata
+2025-06-02 17:35:49.932213 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV702
+2025-06-02 17:35:49.972006 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV121
+2025-06-02 17:35:50.017109 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV280
+2025-06-02 17:35:50.064441 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV499
+2025-06-02 17:35:50.111754 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV260
+2025-06-02 17:35:50.156445 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV279
+2025-06-02 17:35:50.197442 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV667
+2025-06-02 17:35:50.237708 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV914
+2025-06-02 17:35:50.28387 INFO::Creating box plot for categorical data (linear), 
+                        Lifestage vs ASV389
+2025-06-02 17:35:50.31316 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV1107
+2025-06-02 17:35:50.361956 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV3
+2025-06-02 17:35:50.401869 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV201
+2025-06-02 17:35:50.439677 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV638
+2025-06-02 17:35:50.478714 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV262
+2025-06-02 17:35:50.515236 INFO::Creating box plot for categorical data (linear), 
+                        Lifestage vs ASV260
+2025-06-02 17:35:50.540695 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV1977
+2025-06-02 17:35:50.577237 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV3605
+2025-06-02 17:35:50.619662 INFO::Creating box plot for categorical data (linear), 
+                        Lifestage vs ASV667
+2025-06-02 17:35:50.648248 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV1209
+2025-06-02 17:35:50.690407 INFO::Creating box plot for categorical data (linear), 
+                        Lifestage vs ASV121
+2025-06-02 17:35:50.715575 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV512
+2025-06-02 17:35:50.753704 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV896
+2025-06-02 17:35:50.790108 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV1084
+2025-06-02 17:35:50.826638 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV503
+2025-06-02 17:35:50.866276 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV904
+2025-06-02 17:35:50.904281 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV3902
+2025-06-02 17:35:50.976933 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV340
+2025-06-02 17:35:51.04141 INFO::Creating tile plot for categorical data (logistic), Location vs ASV1293
+2025-06-02 17:35:51.102762 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV3439
+2025-06-02 17:35:51.159722 INFO::Creating tile plot for categorical data (logistic), Lifestage vs ASV944

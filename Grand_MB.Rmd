@@ -1,0 +1,834 @@
+---
+title: "Grand_MB"
+author: "BGP"
+date: "2023-06-26"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include=FALSE}
+
+pacman::p_load(tidyverse, phyloseq, vegan, microbiome, colorblindr, lme4, car, performance, emmeans, beepr, data.table, DAtest,pairwiseAdonis, readxl, DESeq2, MASS, emmeans, kableExtra, readxl, microViz, ggh4x, microbiomeutilities)
+library(mvabund)
+
+```
+
+### Not evaluated
+
+```{r load phyloseq, eval=FALSE}
+
+ taxa<-read.csv("Data\\taxa_KKBrittany-GrandRiver-June2023_v34_silva138wsp.csv", header = TRUE)
+ 
+ seqtab_nochim<-read.csv("Data\\seqtab_nochim_transposed_KKBrittany-GrandRiver-June2023_v34.csv", header = TRUE)
+ 
+ metadata<-read_xlsx(path = "Data\\KK-Brittany-sample info sheet June2023.xlsx")
+ 
+ metadata$Lifestage<-ordered(metadata$Lifestage, levels=c("Larvae", "Adult", "Spider"))
+ 
+ metadata_updated <- as.data.frame(metadata)
+ rownames(metadata_updated) <- metadata_updated[,2]
+ metadata_updated_matrix<-as(metadata_updated, "matrix")
+ 
+ seqtab_nochim2_updated <- seqtab_nochim[,-1]
+ rownames(seqtab_nochim2_updated) <- seqtab_nochim[,1]
+ seqtab_nochim2_updated<-as(seqtab_nochim2_updated, "matrix")
+ 
+ taxa2_updated<- taxa
+ rownames(taxa2_updated) <- taxa[,1]
+ taxa2_updated <- taxa2_updated[,-1]
+ taxa2_updated<-as(taxa2_updated, "matrix")
+ 
+ OTU_updated = otu_table(seqtab_nochim2_updated, taxa_are_rows = TRUE)
+ TAX_updated = tax_table(taxa2_updated)
+ sam_data = sample_data(metadata_updated)
+ 
+  head(OTU_updated)
+  head(TAX_updated)
+ 
+ ps <- phyloseq(OTU_updated, sam_data, TAX_updated)
+ 
+ ps
+ 
+ dna_ASV <- Biostrings::DNAStringSet(taxa_names(ps))
+ names(dna_ASV) <- taxa_names(ps)
+ ps <- merge_phyloseq(ps, dna_ASV)
+ taxa_names(ps) <- paste0("ASV", seq(ntaxa(ps)))
+ ps
+ 
+ 
+ BLANK = c("BLANK RINSE", "BLANK SHEET")
+ ps_subset<-subset_samples(ps, ! Lifestage %in% NA)
+ ps_subset
+ 
+#Remove samples with less than 1000 reads per samples.
+ 
+x1 = prune_taxa(taxa_sums(ps_subset) > 0, ps_subset)
+x2 = prune_samples(sample_sums(x1)>=1000, x1)
+ps_alt <- filter_taxa(x2, function(x) sum(x > 10) > (0*length(x)), TRUE)
+ps.21 <- subset_taxa(ps_alt, !is.na(Phylum) & !Phylum %in% c("", "uncharacterized", "NA"))
+ #unrarefied data
+#save to rda file
+#save(ps_alt, file = "ps_alt_Final.rda")
+
+
+ps_alt <- ps_filter(ps.21, Study == "Grand River T3 2022")
+ps_rare <- rarefy_even_depth(ps_alt, rngseed = 999, replace = TRUE)
+ps_alt
+#ps_alt
+#saveRDS(ps_alt, file = "ps_alt.rds")
+
+#readRDS("ps_alt.rds")
+
+#ps_rare <- rarefy_even_depth(ps_alt, rngseed = 999, replace = TRUE)
+
+#prune_5000 = prune_samples(sample_sums(ps_alt)>=5000, ps_alt)
+#(ps_rare_5000 <- rarefy_even_depth(prune_5000, rngseed = 999, replace = TRUE))
+
+```
+
+```{r sequencing depth}
+
+sdt <- data.table(as(sample_data(ps_alt), "data.frame"),
+                 TotalReads = sample_sums(ps_alt), keep.rownames = TRUE)
+setnames(sdt, "rn", "SampleID")
+pSeqDepth = ggplot(sdt, aes(x=TotalReads, fill=Location)) + geom_histogram() + ggtitle("Sequencing Depth")
+pSeqDepth
+pSeqDepth + facet_wrap(~Taxa)
+
+```
+
+```{r alpha diversity}
+
+adiv_rare_all <- data.frame(
+  "Richness" = phyloseq::estimate_richness(ps_rare, measures = "Observed"),
+  "Shannon" = phyloseq::estimate_richness(ps_rare, measures = "Shannon"),
+  "Simpson" = phyloseq::estimate_richness(ps_rare, measures = "Simpson"),
+  "Taxa" = phyloseq::sample_data(ps_rare)$Taxa, 
+  "Location" = phyloseq::sample_data(ps_rare)$Location,
+  "Lifestage" = phyloseq::sample_data(ps_rare)$Lifestage,
+  "Site_ID" = phyloseq::sample_data(ps_rare)$Site_ID, 
+  "Sample_Type" = phyloseq::sample_data(ps_rare)$Sample_Type, 
+  "Site" = phyloseq::sample_data(ps_rare)$Site)
+
+
+adiv_rare_all %>%
+  gather(key = metric, value = value, c("Shannon", "Simpson", "Observed")) %>%
+  mutate(metric = factor(metric, levels = c("Shannon", "Simpson", "Observed"))) %>%
+  ggplot(aes(x = Site_ID, y = value)) +
+  geom_boxplot(outlier.color = NA) +
+  geom_jitter(aes(color = Site_ID, shape=Lifestage), height = 0, width = .3) +
+  labs(x = "", y = "") +
+  facet_wrap(Lifestage~ metric, scales = "free")+ theme_bw(base_size = 14)+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+scale_shape_manual(values=c(1, 16, 8, 14))
+
+
+adiv_rare_all %>%
+  gather(key = metric, value = value, c("Observed")) %>%
+  mutate(metric = factor(metric, levels = c("Observed"))) %>%
+  ggplot(aes(x = Taxa, y = value)) +
+  geom_boxplot(outlier.color = NA) +
+  geom_jitter(aes(color = Taxa, shape=Location), height = 0, width = .3) +
+  labs(x = "", y = "") + theme_bw(base_size = 14)+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+scale_shape_manual(values=c(1, 16, 8, 14))+ scale_color_OkabeIto()+
+  ggh4x::facet_grid2(. ~ Taxa, scales = "free_x", independent = "x")
+
+adiv_rare_all %>%
+  gather(key = metric, value = value, c("Observed")) %>%
+  mutate(metric = factor(metric, levels = c("Observed"))) %>%
+  ggplot(aes(x = Taxa, y = value)) +
+  geom_boxplot(outlier.color = NA) +
+  geom_jitter(aes(color = Lifestage, shape=Site), height = 0, width = .3) +
+  labs(x = "", y = "") + theme_bw(base_size = 14)+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+scale_shape_manual(values=c(1, 16, 8, 14))+ scale_color_OkabeIto()+
+  ggh4x::facet_grid2(. ~ Lifestage, scales = "free_x", independent = "x")
+
+
+adiv_rare_all %>%
+  gather(key = metric, value = value, c("Observed")) %>%
+  mutate(metric = factor(metric, levels = c("Observed"))) %>%
+  ggplot(aes(x = Taxa, y = value)) +
+  geom_boxplot(outlier.color = NA) +
+  geom_jitter(aes(color = Lifestage, shape=Location), height = 0, width = .3) +
+  labs(x = "", y = "") + theme_bw(base_size = 14)+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+scale_shape_manual(values=c(1, 16, 8, 14))+ scale_color_OkabeIto()+
+  ggh4x::facet_grid2(. ~ Site, scales = "free_x", independent = "x")
+
+
+```
+
+```{r top percent taxa}
+
+get_taxa_unique(ps_alt, "Family")
+
+sample_data(ps_alt)$Site_ID<-factor(sample_data(ps_alt)$Site_ID)
+
+sample_data(ps_alt)$Lifestage<-factor(sample_data(ps_alt)$Lifestage)
+
+sample_data(ps_alt)$Taxa<-factor(sample_data(ps_alt)$Taxa)
+
+sample_data(ps_alt)$Sample_Type<-factor(sample_data(ps_alt)$Sample_Type)
+
+sample_data(ps_alt)$Site<-factor(sample_data(ps_alt)$Site)
+
+phy2 <- ps_alt %>% microbiomeutilities::aggregate_top_taxa2(level = "Family", top = 50) %>%
+  
+          microbiome::transform(transform = "compositional")
+
+phy2
+
+phy3 <- ps_alt %>% microbiomeutilities::aggregate_top_taxa2(level = "Family", top = 15000)
+
+phy4 <- ps_alt %>% microbiomeutilities::aggregate_top_taxa2(level = "Phylum", top = 15000)
+phy2
+
+head(otu_table(phy2))
+
+phy2 %>%  plot_composition(average_by = "Site_ID")+ scale_y_continuous()
+phy2 %>%  plot_composition(average_by = "Lifestage")+ scale_y_continuous()
+phy2 %>%  plot_composition(average_by = "Sample_Type")+ scale_y_continuous()
+get_group_abundances(ps_alt, level = "Phylum", group = "Site_ID",transform = "compositional")
+#get_group_abundances(ps_alt, level = "Phylum", group = "Lake_Sample_Type",transform = "compositional")
+#a<-get_group_abundances(phy3, level = "Family", group = "Lake_Sample_Type",transform = "compositional")
+#ab<-separate_wider_delim(data=a, col=Lake_Sample_Type, " ", names = c("Lake", "Sample", "Type"))
+#family_percent<-ab%>%filter(mean_abundance>0)
+#family_percent_sum<-ab%>%filter(mean_abundance>0.1)
+
+#kable(family_percent_sum, "html") %>%
+  #kable_styling("striped")%>%
+  #save_kable(file = "family_percent_sum.jpg")
+
+#b<-get_group_abundances(phy4, level = "Phylum", group = "Lake_Sample_Type",transform = "compositional")
+#ac<-separate_wider_delim(data=b, col=Lake_Sample_Type, " ", names = c("Lake", "Sample", "Type"))
+#phylum_percent<-ac%>%filter(mean_abundance>0)
+#phylum_percent_sum<-ac%>%filter(mean_abundance>0.30)
+
+#kable(phylum_percent_sum, "html") %>%
+# kable_styling("striped")%>%
+  #save_kable(file = "phylum_percent_sum.jpg")
+
+```
+
+```{r beta diversity - all taxa}
+
+
+ps_alt_NMDS<-ps_alt
+sample_data(ps_alt_NMDS)['new_id'] <- row.names(sample_data(ps_alt_NMDS)) 
+#ps_alt_NMDS = subset_samples(ps_alt_NMDS, new_id != "KK1695" & new_id != "KK1672" & new_id != "KK1543" & new_id != "KK1611"& new_id != "KK1506" & new_id != "KK1732")
+
+#all data. NMDS converges
+
+ps_unrare_bray <- ordinate(ps_alt_NMDS, "NMDS", "bray", trymax=5000, k=3)
+
+plot_ordination(ps_alt_NMDS, ps_unrare_bray, type="samples", color="Site_ID", shape = "Lifestage") + geom_point(size = 3)+theme_bw()
+
+#ggsave("beta_diversityall.png")
+
+
+plot_ordination(ps_alt_NMDS, ps_unrare_bray, type="samples", color="Site_ID", shape = "Lifestage") + geom_point(size=3)+scale_shape_manual(values=c(1, 16, 0))+theme_bw()+scale_color_manual(values=c("#E69F00", "#0072B2"))
+
+#ggsave("beta_diversityall_Lake.png", dpi = 300, height = 7, width = 7)
+
+
+plot_ordination(ps_alt_NMDS, ps_unrare_bray, type="samples", color="Taxa", shape = "Site_ID") + geom_point(size=3)+scale_shape_manual(values=c(1, 16, 0))+theme_bw()
+
+plot_ordination(ps_alt_NMDS, ps_unrare_bray, type="samples", color="Site_ID", shape = "Lifestage") + geom_point(size=3)+scale_shape_manual(values=c(1, 16, 0))+theme_bw()+scale_color_manual(values=c("#E69F00", "#0072B2")) + stat_ellipse(type = "t", linetype = 1) + theme_bw()
+
+plot_ordination(ps_alt_NMDS, ps_unrare_bray, type="samples", shape = "Lifestage") + geom_point(size=3)+scale_shape_manual(values=c(1, 16, 0))+theme_bw()+scale_color_manual(values=c("#E69F00", "#0072B2")) + stat_ellipse(type = "t", linetype = 1) 
+
+#ggsave("beta_diversityall_Lake_ellipse.png", dpi = 300, height = 7, width = 7)
+
+plot_ordination(ps_alt_NMDS, ps_unrare_bray, type="samples", shape = "Site_ID") + geom_point(size=3)+scale_shape_manual(values=c(1, 16, 0))+theme_bw()+scale_color_manual(values=c("#E69F00", "#0072B2")) + stat_ellipse(type = "t", linetype = 1) + theme_bw()
+
+
+
+```
+
+```{r beta diversity rare - all taxa}
+
+ps_rare_NMDS<-ps_rare
+sample_data(ps_rare_NMDS)['new_id'] <- row.names(sample_data(ps_alt_NMDS)) 
+ps_rare_NMDS = subset_samples(ps_rare_NMDS, new_id != "KK2793" & new_id != "KK2662" & new_id != "KK2647"& new_id != "KK2668")
+
+ps_rare_bray <- ordinate(ps_rare_NMDS, "NMDS", "bray", trymax=100, k=2)
+
+plot_ordination(ps_rare, ps_rare_bray, type="samples", color="Site_ID", shape = "Lifestage") + geom_point(size = 3)+theme_bw()
+
+#ggsave("beta_diversityall.png")
+
+
+plot_ordination(ps_rare, ps_rare_bray, type="samples", color="Taxa", shape = "Site") + geom_point(size=3)+theme_bw()
+
+plot_ordination(ps_rare, ps_rare_bray, type="samples", color="Lifestage", shape = "Taxa") + geom_point(size=3)+theme_bw()
+
+
+```
+
+```{r beta diversity stats, include=FALSE}
+
+metadata <- as(sample_data(ps_alt_NMDS), "data.frame")
+dist.uf <- phyloseq::distance(ps_alt_NMDS, method = "bray")
+ps.adonis <- adonis2(dist.uf ~  Site_ID * Taxa *Lifestage , permutations = 1000, method = "bray", data = metadata)
+summary(ps.adonis)
+ps.adonis
+
+
+mod<-betadisper(dist.uf,metadata$Taxa)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+mod<-betadisper(dist.uf,metadata$Site_ID)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+
+mod<-betadisper(dist.uf,metadata$Lifestage)
+mod
+anova(mod)
+TukeyHSD(mod)
+adonis2(dist.uf ~ metadata$Lifestage, permutations = 1000, method = "bray", data = metadata)
+
+```
+
+```{r beta diversity - larvae, include=FALSE}
+
+ps_alt_NMDS_larvae<-subset_samples(ps_alt_NMDS, Lifestage=="Larvae")
+
+#all data. NMDS converges
+
+ps_unrare_bray_larvae <- ordinate(ps_alt_NMDS_larvae, "NMDS", "bray", trymax=5000, k=2)
+
+plot_ordination(ps_alt_NMDS_larvae, ps_unrare_bray_larvae, type="samples", color="Site_ID", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+plot_ordination(ps_alt_NMDS_larvae, ps_unrare_bray_larvae, type="samples", color="Site", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+
+#ggsave("beta_diversitylarvae.png")
+
+
+metadata_larvae <- as(sample_data(ps_alt_NMDS_larvae), "data.frame")
+dist.uf_larvae <- phyloseq::distance(ps_alt_NMDS_larvae, method = "bray")
+ps.adonis_larvae <- adonis2(dist.uf_larvae ~ Site_ID * Taxa, permutations = 1000, method = "bray", data = metadata_larvae)
+summary(ps.adonis_larvae)
+ps.adonis_larvae
+
+
+mod<-betadisper(dist.uf_larvae,metadata_larvae$Taxa)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+mod<-betadisper(dist.uf_larvae,metadata_larvae$Site_ID)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+
+```
+
+```{r beta diversity - larvae rare, include=FALSE}
+
+ps_rare_NMDS_larvae<-subset_samples(ps_rare_NMDS, Lifestage=="Larvae")
+
+#all data. NMDS converges
+
+ps_rare_bray_larvae <- ordinate(ps_rare_NMDS_larvae, "NMDS", "bray", trymax=5000, k=2)
+
+plot_ordination(ps_rare_NMDS_larvae, ps_rare_bray_larvae, type="samples", color="Site_ID", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+plot_ordination(ps_rare_NMDS_larvae, ps_rare_bray_larvae, type="samples", color="Site", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+
+#ggsave("beta_diversitylarvae.png")
+
+
+metadata_larvae <- as(sample_data(ps_rare_NMDS_larvae), "data.frame")
+dist.uf_larvae <- phyloseq::distance(ps_rare_NMDS_larvae, method = "bray")
+ps.adonis_larvae <- adonis2(dist.uf_larvae ~ Site_ID * Taxa, permutations = 1000, method = "bray", data = metadata_larvae)
+summary(ps.adonis_larvae)
+ps.adonis_larvae
+
+
+mod<-betadisper(dist.uf_larvae,metadata_larvae$Taxa)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+mod<-betadisper(dist.uf_larvae,metadata_larvae$Site_ID)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+
+```
+
+```{r beta diversity - adult, include=FALSE}
+
+ps_alt_NMDS_adult<-subset_samples(ps_alt_NMDS, Lifestage=="Adult")
+
+#all data. NMDS converges
+
+ps_unrare_bray_adult <- ordinate(ps_alt_NMDS_adult, "NMDS", "bray", trymax=5000, k=3)
+
+plot_ordination(ps_alt_NMDS_adult, ps_unrare_bray_adult, type="samples", color="Site_ID", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+
+#ggsave("beta_diversityadult.png")
+
+
+metadata_adult <- as(sample_data(ps_alt_NMDS_adult), "data.frame")
+dist.uf_adult <- phyloseq::distance(ps_alt_NMDS_adult, method = "bray")
+ps.adonis_adult <- adonis2(dist.uf_adult ~ Site_ID * Taxa, permutations = 1000, method = "bray", data = metadata_adult)
+summary(ps.adonis_adult)
+ps.adonis_adult
+
+
+mod<-betadisper(dist.uf_adult,metadata_adult$Taxa)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+mod<-betadisper(dist.uf_adult,metadata_adult$Site_ID)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+
+```
+
+```{r beta diversity - adult rare, include=FALSE}
+
+ps_rare_NMDS_adult<-subset_samples(ps_rare_NMDS, Lifestage=="Adult")
+
+#all data. NMDS converges
+
+ps_rare_bray_adult <- ordinate(ps_rare_NMDS_adult, "NMDS", "bray", trymax=5000, k=2)
+
+plot_ordination(ps_rare_NMDS_adult, ps_rare_bray_adult, type="samples", color="Site_ID", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+plot_ordination(ps_rare_NMDS_adult, ps_rare_bray_adult, type="samples", color="Site", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+
+
+#ggsave("beta_diversityadult.png")
+
+
+metadata_adult <- as(sample_data(ps_alt_NMDS_adult), "data.frame")
+dist.uf_adult <- phyloseq::distance(ps_alt_NMDS_adult, method = "bray")
+ps.adonis_adult <- adonis2(dist.uf_adult ~ Site_ID * Taxa, permutations = 1000, method = "bray", data = metadata_adult)
+summary(ps.adonis_adult)
+ps.adonis_adult
+
+
+mod<-betadisper(dist.uf_adult,metadata_adult$Taxa)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+mod<-betadisper(dist.uf_adult,metadata_adult$Site_ID)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+
+```
+
+```{r beta diversity - spider, include=FALSE}
+
+ps_alt_NMDS_spider<-subset_samples(ps_alt_NMDS, Lifestage=="Spider")
+
+#all data. NMDS converges
+
+ps_unrare_bray_spider <- ordinate(ps_alt_NMDS_spider, "NMDS", "bray", trymax=5000, k=3)
+
+plot_ordination(ps_alt_NMDS_spider, ps_unrare_bray_spider, type="samples", color="Site_ID", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+
+#ggsave("beta_diversityspider.png")
+
+
+metadata_spider <- as(sample_data(ps_alt_NMDS_spider), "data.frame")
+dist.uf_spider <- phyloseq::distance(ps_alt_NMDS_spider, method = "bray")
+ps.adonis_spider <- adonis2(dist.uf_spider ~ Taxa * Site_ID, permutations = 1000, method = "bray", data = metadata_spider)
+summary(ps.adonis_spider)
+ps.adonis_spider
+
+
+mod<-betadisper(dist.uf_spider,metadata_spider$Taxa)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+mod<-betadisper(dist.uf_spider,metadata_spider$Site_ID)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+```
+
+```{r beta diversity - spider rare, include=FALSE}
+
+ps_rare_NMDS_spider<-subset_samples(ps_rare_NMDS, Lifestage=="Spider")
+
+#all data. NMDS converges
+
+ps_rare_bray_spider <- ordinate(ps_rare_NMDS_spider, "NMDS", "bray", trymax=5000, k=2)
+
+
+plot_ordination(ps_rare_NMDS_spider, ps_rare_bray_spider, type="samples", color="Location", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+plot_ordination(ps_rare_NMDS_spider, ps_rare_bray_spider, type="samples", color="Site_ID", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+plot_ordination(ps_rare_NMDS_spider, ps_rare_bray_spider, type="samples", color="Site", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+
+
+#ggsave("beta_diversityspider.png")
+
+
+metadata_spider <- as(sample_data(ps_alt_NMDS_spider), "data.frame")
+dist.uf_spider <- phyloseq::distance(ps_alt_NMDS_spider, method = "bray")
+ps.adonis_spider <- adonis2(dist.uf_spider ~ Site_ID * Taxa, permutations = 1000, method = "bray", data = metadata_spider)
+summary(ps.adonis_spider)
+ps.adonis_spider
+
+
+mod<-betadisper(dist.uf_spider,metadata_spider$Taxa)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+mod<-betadisper(dist.uf_spider,metadata_spider$Site_ID)
+mod
+anova(mod)
+TukeyHSD(mod)
+
+
+```
+
+```{r differential abundance}
+ taxa_nonordered<-read.csv("Data\\taxa_KKBrittany-GrandRiver-June2023_v34_silva138wsp.csv", header = TRUE)
+ 
+ seqtab_nochim_nonordered<-read.csv("Data\\seqtab_nochim_transposed_KKBrittany-GrandRiver-June2023_v34.csv", header = TRUE)
+ 
+ metadata_nonordered<-read_xlsx(path = "Data\\KK-Brittany-sample info sheet June2023.xlsx")
+
+ metadata_updated <- as.data.frame(metadata_nonordered)
+rownames(metadata_updated) <- metadata_updated[,2]
+metadata_updated_matrix<-as(metadata_updated, "matrix")
+
+seqtab_nochim2_updated <- seqtab_nochim_nonordered[,-1]
+rownames(seqtab_nochim2_updated) <- seqtab_nochim_nonordered[,1]
+seqtab_nochim2_updated<-as(seqtab_nochim2_updated, "matrix")
+
+taxa2_updated<- taxa_nonordered
+rownames(taxa2_updated) <- taxa_nonordered[,1]
+taxa2_updated <- taxa2_updated[,-1]
+taxa2_updated<-as(taxa2_updated, "matrix")
+
+OTU_updated = otu_table(seqtab_nochim2_updated, taxa_are_rows = TRUE)
+TAX_updated = tax_table(taxa2_updated)
+sam_data = sample_data(metadata_updated)
+
+
+ps_unordered <- phyloseq(OTU_updated, sam_data, TAX_updated)
+ 
+dna_ASV <- Biostrings::DNAStringSet(taxa_names(ps_unordered))
+names(dna_ASV) <- taxa_names(ps_unordered)
+ps_unordered <- merge_phyloseq(ps_unordered, dna_ASV)
+taxa_names(ps_unordered) <- paste0("ASV", seq(ntaxa(ps_unordered)))
+
+ps_subset_unordered <- ps_filter(ps_unordered, Study == "Grand River T3 2022")
+BLANK = c("MBDI", "SHEET")
+ps_subset_unordered<-subset_samples(ps_subset_unordered, ! Lifestage %in% BLANK)
+
+ x1_unor = prune_taxa(taxa_sums(ps_subset_unordered) > 0, ps_subset_unordered)
+ x2_unor = prune_samples(sample_sums(x1_unor)>=1000, x1_unor)
+ ps_alt_unordered = filter_taxa(x2_unor, function(x) sum(x > 10) > (0*length(x)), TRUE)
+ps.21_unor <- subset_taxa(ps_alt_unordered, !is.na(Phylum) & !Phylum %in% c("", "uncharacterized", "NA"))
+ pseq.core <- core(ps.21_unor, detection = 0, prevalence = .1)
+ filtered_unordered_ps<-pseq.core
+```
+
+```{r adult vs larvae differential abundance}
+ps_alt_noSpider<-subset_samples(filtered_unordered_ps, ! Lifestage %in% c("Spider"))
+diagdds = phyloseq_to_deseq2(ps_alt_noSpider, ~ Lifestage)
+
+
+#diagdds = phyloseq_to_deseq2(ps_alt_noSpider, ~ Life_Stage)
+keep <- rowSums(counts(diagdds)) >= 10
+diagdds <- diagdds[keep,]
+diagdds$Life_Stage <- relevel(diagdds$Lifestage, ref = "Larvae")
+
+gm_mean = function(x, na.rm=TRUE){
+  exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+}
+geoMeans = apply(counts(diagdds), 1, gm_mean)
+
+diagdds = estimateSizeFactors(diagdds, geoMeans = geoMeans)
+diagdds = DESeq(diagdds, fitType="parametric")
+
+res = results(diagdds, cooksCutoff = FALSE)
+alpha = 0.01
+sigtab = res[which(res$padj < alpha), ]
+sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(ps_alt_noSpider)[rownames(sigtab), ], "matrix"))
+head(sigtab)
+dim(sigtab)
+
+#sigtab_lowlfc<-sigtab%>%filter(log2FoldChange<15, log2FoldChange>-15)
+
+
+# Phylum order
+x = tapply(sigtab$log2FoldChange, sigtab$Phylum, function(x) max(x))
+x = sort(x, TRUE)
+sigtab$Phylum = factor(as.character(sigtab$Phylum), levels=names(x))
+# Genus order
+x = tapply(sigtab$log2FoldChange, sigtab$Genus, function(x) max(x))
+x = sort(x, TRUE)
+sigtab$Genus = factor(as.character(sigtab$Genus), levels=names(x))
+ggplot(sigtab, aes(x=Genus, y=log2FoldChange, color=Phylum)) + geom_point(size=3) + 
+  theme(axis.text.x = element_text(angle = -90, hjust = 0, vjust=0.5))
+
+d <- plotCounts(diagdds, gene=which.min(res$padj), intgroup="Lifestage", 
+                returnData=TRUE)
+
+ggplot(d, aes(x=Lifestage, y=count)) + 
+  geom_point(position=position_jitter(w=0.1,h=0)) + 
+  scale_y_log10()
+
+
+ggsave("gratiot lar ad diff abund.png")
+
+ 
+```
+
+```{r up vs down differential abundance}
+
+diagdds = phyloseq_to_deseq2(filtered_unordered_ps, ~ Location)
+
+
+#diagdds = phyloseq_to_deseq2(ps_alt_noSpider, ~ Life_Stage)
+keep <- rowSums(counts(diagdds)) >= 10
+diagdds <- diagdds[keep,]
+diagdds$Location <- relevel(diagdds$Location, ref = "UP")
+
+gm_mean = function(x, na.rm=TRUE){
+  exp(sum(log(x[x > 0]), na.rm=na.rm) / length(x))
+}
+geoMeans = apply(counts(diagdds), 1, gm_mean)
+
+diagdds = estimateSizeFactors(diagdds, geoMeans = geoMeans)
+diagdds = DESeq(diagdds, fitType="parametric")
+
+res = results(diagdds, cooksCutoff = FALSE)
+alpha = 0.01
+sigtab = res[which(res$padj < alpha), ]
+sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(ps_alt_noSpider)[rownames(sigtab), ], "matrix"))
+head(sigtab)
+dim(sigtab)
+
+#sigtab_lowlfc<-sigtab%>%filter(log2FoldChange<15, log2FoldChange>-15)
+
+
+# Phylum order
+x = tapply(sigtab$log2FoldChange, sigtab$Phylum, function(x) max(x))
+x = sort(x, TRUE)
+sigtab$Phylum = factor(as.character(sigtab$Phylum), levels=names(x))
+# Genus order
+x = tapply(sigtab$log2FoldChange, sigtab$Genus, function(x) max(x))
+x = sort(x, TRUE)
+sigtab$Genus = factor(as.character(sigtab$Genus), levels=names(x))
+ggplot(sigtab, aes(x=Genus, y=log2FoldChange, color=Phylum)) + geom_point(size=3) + 
+  theme(axis.text.x = element_text(angle = -90, hjust = 0, vjust=0.5))
+
+d <- plotCounts(diagdds, gene=which.min(res$padj), intgroup="Location", 
+                returnData=TRUE)
+
+ggplot(d, aes(x=Location, y=count)) + 
+  geom_point(position=position_jitter(w=0.1,h=0)) + 
+  scale_y_log10()
+
+
+x = tapply(sigtab_lowlfc$log2FoldChange, sigtab_lowlfc$Phylum, function(x) max(x))
+x = sort(x, TRUE)
+sigtab_lowlfc$Phylum = factor(as.character(sigtab_lowlfc$Phylum), levels=names(x))
+# Genus order
+x = tapply(sigtab_lowlfc$log2FoldChange, sigtab_lowlfc$Genus, function(x) max(x))
+x = sort(x, TRUE)
+sigtab_lowlfc$Genus = factor(as.character(sigtab_lowlfc$Genus), levels=names(x))
+ggplot(sigtab_lowlfc, aes(x=Genus, y=log2FoldChange, color=Phylum)) + geom_point(size=2) + 
+  theme(axis.text.x = element_text(angle = -90, hjust = 0, vjust=0.5))
+
+
+ 
+```
+
+```{r relative abundance}
+
+filt.Phy <- tax_glom(ps_alt, taxrank = "Phylum")
+N <- 50
+top <- names(sort(taxa_sums(filt.Phy), decreasing = TRUE))[1:N]
+filt.Phy.prop <- transform_sample_counts(filt.Phy, function(x) x / sum(x) )
+filt.Phy.prop.top <- prune_taxa(top, filt.Phy.prop)
+phyloseq::plot_bar(filt.Phy.prop.top, fill = "Phylum") +
+  geom_bar(aes(color = Phylum, fill = Phylum), stat = "identity", position = "stack") +
+  labs(x = "", y = "Top 50 Phylum - Relative Abundance\n") +
+  facet_wrap(Site_ID~ Lifestage, scales = "free") +
+  theme(panel.background = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(), legend.position="right")
+
+
+filt.Family <- tax_glom(ps_alt, taxrank = "Family")
+N <- 100
+top <- names(sort(taxa_sums(filt.Phy), decreasing = TRUE))[1:N]
+filt.family.prop <- transform_sample_counts(filt.Family, function(x) x / sum(x) )
+filt.family.prop.top <- prune_taxa(top, filt.family.prop)
+phyloseq::plot_bar(filt.family.prop.top, fill = "Family") +
+  geom_bar(aes(color = Family, fill = Family), stat = "identity", position = "stack") +
+  labs(x = "", y = "Top 50 Families - Relative Abundance\n") +
+  facet_wrap(Site_ID~ Lifestage, scales = "free") +
+  theme(panel.background = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(), legend.position="right")
+
+filt.Phylym <- tax_glom(ps_alt, taxrank = "Phylum")
+N <- 5
+top <- names(sort(taxa_sums(filt.Phylym), decreasing = TRUE))[1:N]
+filt.phy.top <- prune_taxa(top, filt.Phylym)
+#physeq_phy <- microbiome::aggregate_rare(ps_alt, level = "Phylum", detection = 0.1/100, prevalence = 5/100)
+physeq.phy.rel <- microbiome::transform(filt.phy.top, "compositional")
+
+plot_composition(physeq.phy.rel,sample.sort = "Type", x.label = "SampleID", average_by ="Lake_Sample_Type", group_by = "Sample.Type") + theme(legend.position = "bottom") + theme_bw() + theme(axis.text.x = element_text(angle = 90)) + ggtitle("Relative abundance - Phyla") + theme(legend.title = element_text(size = 18), legend.position="right")
+
+
+physeq_phy <- microbiome::aggregate_rare(ps_alt, level = "Phylum", detection = 0.1/100, prevalence = 5/100)
+physeq.phy.rel <- microbiome::transform(physeq_phy, "compositional")
+
+plot_composition(physeq.phy.rel,sample.sort = "Type", x.label = "SampleID", average_by ="Lake_Sample_Type", group_by = "Sample.Type") + theme(legend.position = "bottom") + theme_bw() + theme(axis.text.x = element_text(angle = 90)) + ggtitle("Relative abundance - Phyla") + theme(legend.title = element_text(size = 18), legend.position="none")
+
+```
+
+```{r endosymbiont}
+
+#Endosymbiont Analysis
+
+endo_ps <- subset_taxa(ps_rare, Genus=="Buchnera" | Genus=="Candidatus Cardinium" | Genus=="Rickettsia"| Genus=="Rickettsiella" | Genus=="Wolbachia" | Genus=="Spiroplasma"| Genus=="Candudatus_Hamiltonella" |Family =="Diplorickettsiaceae")
+
+endo_ps = prune_samples(sample_sums(endo_ps)>=1, endo_ps)
+
+ps_endo_bray <- ordinate(endo_ps, "NMDS", "bray", k=2)
+
+plot_ordination(endo_ps, ps_endo_bray, type="samples", color="Site_ID", shape = "Taxa") + geom_point(size = 3)+theme_bw()
+
+endo_rel_abund = phyloseq::transform_sample_counts(endo_ps, function(x){x / sum(x)})
+phyloseq::otu_table(endo_rel_abund)[1:5, 1:5]
+
+rel_abund_endo<-phyloseq::plot_bar(endo_rel_abund, fill = "Genus") +
+  geom_bar(aes(fill = Genus), stat = "identity", position = "stack") +
+  labs(x = "", y = "Relative Abundance\n") +
+  facet_wrap(Site_ID~Life_Stage, scales = "free") + scale_fill_brewer(palette = "Paired")+
+  theme(panel.background = element_blank(),
+        axis.text.x=element_blank())
+rel_abund_endo+labs(title = "Both Lakes")
+
+
+phyloseq::plot_bar(endo_rel_abund, fill = "Genus") +
+  geom_bar(aes(fill = Genus), stat = "identity", position = "stack") +
+  labs(x = "", y = "Relative Abundance\n") +
+  facet_wrap(Type~Life_Stage, scales = "free") + scale_fill_brewer(palette = "Paired")+
+  theme(panel.background = element_blank(),
+        axis.text.x=element_blank())
+
+endo_ps_torch<-subset_samples(endo_ps, Lake=="Torch")
+
+phyloseq::plot_bar(endo_rel_abund, fill = "Genus") +
+  geom_bar(aes(fill = Genus), stat = "identity", position = "stack") +
+  labs(x = "", y = "Relative Abundance\n") +
+  facet_wrap(sample_Order~Life_Stage, scales = "free") + scale_fill_brewer(palette = "Paired")+
+  theme(panel.background = element_blank(),
+        axis.text.x=element_blank())
+
+pseq6 <- endo_ps %>%
+          aggregate_taxa(level = "Genus") %>% 
+          microbiome::transform(transform = "compositional")
+
+p <- plot_composition(pseq6,
+                      average_by = "Site_ID", transform = "compositional")
+p+labs(title = "Both Lakes")
+
+pseq7 <- endo_ps_torch %>%
+          aggregate_taxa(level = "Genus") %>% 
+          microbiome::transform(transform = "compositional")
+
+p2 <- plot_composition(pseq7,
+                      average_by = "Order", group_by = "Life_Stage", transform = "compositional")
+p2+labs(title = "Torch")
+
+p4<-plot_composition(pseq7,
+                      average_by = "Type", group_by = "Life_Stage", transform = "compositional")
+p4+labs(title = "Torch")
+
+
+
+endo_ps_gratiot<-subset_samples(endo_ps, Lake=="Gratiot")
+pseq8 <- endo_ps_gratiot %>%
+          aggregate_taxa(level = "Genus") %>% 
+          microbiome::transform(transform = "compositional")
+
+p8 <- plot_composition(pseq8,
+                      average_by = "Order", group_by = "Life_Stage", transform = "compositional")
+p8+labs(title = "Gratiot")
+
+p9<-plot_composition(pseq8,
+                      average_by = "Type", group_by = "Life_Stage", transform = "compositional")
+p9+labs(title = "Gratiot")
+
+
+
+pseq10 <- endo_ps %>%
+          aggregate_taxa(level = "Genus") %>% 
+          microbiome::transform(transform = "compositional")
+
+p10 <- plot_composition(pseq10,
+                      average_by = "Lake_Sample_Type", group_by = "Lake_Life", transform = "compositional")
+p10
+ggsave("endosymbiont only all abund.png")
+
+p11 <- plot_composition(pseq10,
+                      average_by = "Lake_Sample_Type", group_by = "Lake_Sample_Type", transform = "compositional")
+p11
+
+pseq12 <- filtered_ps %>%
+          aggregate_taxa(level = "endo_desc") %>% 
+          microbiome::transform(transform = "compositional")
+
+phyloseq::plot_bar(pseq12, fill = "endo_desc") +
+  geom_bar(aes(fill = endo_desc), stat = "identity", position = "stack") +
+  labs(x = "", y = "Relative Abundance\n") +
+  facet_wrap(~Lake_Life, scales = "free") + scale_fill_brewer(palette = "Paired")+
+  theme(panel.background = element_blank(),
+        axis.text.x=element_blank())
+rel_abund_endo+labs(title = "Both Lakes")
+
+pseq12_rare <- ps_rare %>%
+          aggregate_taxa(level = "endo_desc") %>% 
+          microbiome::transform(transform = "compositional")
+
+phyloseq::plot_bar(pseq12_rare, fill = "endo_desc") +
+  geom_bar(aes(fill = endo_desc), stat = "identity", position = "stack") +
+  labs(x = "", y = "Relative Abundance\n") +
+  facet_wrap(~Lake_Sample_Type, scales = "free") + scale_fill_brewer(palette = "Paired")+
+  theme(panel.background = element_blank(),axis.text.x=element_blank())
+
+ggsave("endo all abund.png", width=10, height=7)
+
+
+phyloseq::plot_bar(pseq12_rare, fill = "endo_desc") +
+  geom_bar(aes(fill = endo_desc), stat = "identity", position = "stack") +
+  labs(x = "", y = "Relative Abundance\n") +
+  facet_wrap(~Lake_Sample_Type, scales = "free") + scale_fill_brewer(palette = "Paired")+
+  theme(panel.background = element_blank(),axis.text.x=element_blank())
+
+p10 <- plot_composition(pseq12_rare,
+                      average_by = "Lake_Sample_Type", group_by = "Lake", transform = "compositional")
+
+endo_desc_ps <- tax_glom(ps_rare, "endo_desc")
+endo_desc_ps0 <- transform_sample_counts(endo_desc_ps, function(x) x / sum(x))
+endo_desc_ps1 <- merge_samples(endo_desc_ps0, "Lake_Sample_Type")
+endo_desc_ps2 <- transform_sample_counts(endo_desc_ps1, function(x) x / sum(x))
+plot_bar(endo_desc_ps2, fill="endo_desc")
+
+
+```

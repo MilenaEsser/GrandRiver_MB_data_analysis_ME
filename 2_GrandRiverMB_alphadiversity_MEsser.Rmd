@@ -1,0 +1,253 @@
+---
+title: "GrandRiver22:microbiome_alphadiversity"
+author: "Milena Esser"
+date: "2025-05-20"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Set up
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      results = "hide")
+rm(list=ls()) #Clears environment
+#Change margin size to be smaller so graphs fit in the plot panel
+par(mar = c(2, 2, 2, 2)) # Set the margin on all sides to 2
+
+###Loading packages
+library(phyloseq) #phyloseq will be the main package used for structuring microbiome data and diversity comparisons
+library(ggplot2) #For creating graphs
+library(ggtext)
+library(plyr) #if you load this after dpylr it messes up the dplyr functions
+library(dplyr) #Helps with data wrangling 
+library(vegan)
+library(tidyverse) #data wrangling
+library(knitr) #For R Markdown knitting
+library(RColorBrewer)
+library(ggpubr)
+library(MicEco) #to prune based on prevalence
+library(picante)
+library(ggh4x) # For facet_nested_wrap()
+library(rstatix)
+```
+
+## Loading Data
+
+Loading the phyloseq objects
+
+```{r Loading data}
+#not rarefied dataset "ps_final"
+load("GrandRiverMB_phyloseq_filt_unnorm.RData")
+
+#rarefied dataset "ps_rare"
+load("GrandRiverMB_phyloseq_filt_rar.RData")
+
+```
+
+## Alpha diversity
+
+```{r Alpha diversity}
+
+#PDtree <- phy_tree(ps_rare)
+otu <- otu_table(ps_final)
+otu <- as.data.frame(t(otu))
+
+alpha.pd.sr<-otu
+
+
+#Adding vector to summarize replicates
+alpha.pd.sr$site <- sample_data(ps_final)$Site_ID
+alpha.pd.sr$taxa <- sample_data(ps_final)$Taxa
+alpha.pd.sr$lifestage <- sample_data(ps_final)$Lifestage
+alpha.pd.sr$location<- sample_data(ps_final)$Location
+alpha.pd.sr$city<- sample_data(ps_final)$Site
+alpha.pd.sr$sample_type<- sample_data(ps_final)$Sample_Type
+#---------------------------------------------------
+#### Eveness
+alpha_diversity <- estimate_richness(ps_final, measure = c("Shannon", "Observed"))
+alpha_diversity
+H <- alpha_diversity$Shannon
+S1 <- alpha_diversity$Observed
+S <- log(S1)
+eveness <- H/S
+eveness
+alpha.pd.sr$Evenness = eveness
+
+
+alpha.pd.sr$site<-factor(alpha.pd.sr$site, levels=c("WAT_DWN","WAT_UP","HESP_UP","HESP_DWN","KIT_DWN","CAL_UP","CAL_DWN","KIT_UP", "KIT_DWN" ))
+
+alpha.pd.sr$taxa<-factor(alpha.pd.sr$taxa, levels=c("Hydropsychidae", "Chironomidae", "Heptageniidae", "Araneid", "Tetragnatha"))
+
+alpha.pd.sr$location<-factor(alpha.pd.sr$location, levels=c("UP", "DWN" ))
+
+# Plot
+p_all <- ggplot(data = alpha.pd.sr, aes(x = location, y = Evenness, fill = site)) + 
+  facet_nested_wrap(~ city + lifestage + taxa, scales = "free_x", nrow = 1) +
+  geom_boxplot(position = position_dodge2(preserve = "single")) +
+  
+  # Labels
+  labs(x = "Sample", y = "Evenness") +
+  
+  # Theme
+  theme_bw(base_size = 13) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, face = "bold", size = 10),
+    axis.title.x = element_text(margin = margin(t = 6), face = "bold", size = 14),
+    axis.title.y = element_text(margin = margin(r = 6), face = "bold", size = 14),
+    axis.text.y = element_text(size = 12),
+    axis.text = element_text(face = "italic"),
+    strip.text.x = element_text(size = 13, face = "bold"),
+    legend.position = "right"
+  ) +
+  
+  # Color palette
+  scale_fill_brewer(palette = "Accent")
+
+# Show plot
+p_all
+#save plot
+ggsave(filename="R_output/Alpha_diversity/Evenness_all.pdf", height=6, width=24)
+ggsave(filename="R_output/Alpha_diversity/Evenness_all.png", height=6, width=24)
+
+
+#plot each city individually
+city_list <- unique(alpha.pd.sr$city)
+
+for (cty in city_list) {
+  p <- ggplot(subset(alpha.pd.sr, city == cty), 
+              aes(x = location, y = Evenness, fill = site)) +
+    facet_nested(~ lifestage + taxa, scales = "free_x") +
+    geom_boxplot(position = position_dodge2(preserve = "single")) +
+    labs(#title = paste("City:", cty),
+         x = "Location",
+         y = "Evenness",
+         fill = "Site") +
+    theme_bw(base_size = 13) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, face = "bold", size = 9),
+      strip.text.x = element_text(size = 12, face = "bold"),
+      axis.text = element_text(face = "italic"),
+      plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+      legend.position = "none"
+    ) +
+    scale_fill_brewer(palette = "Accent")
+  
+  print(p)
+  # save each plot:
+  ggsave(filename = paste0("R_output/Alpha_diversity/Evenness_", cty, ".png"), plot = p, width = 12, height = 5)
+ggsave(filename = paste0("R_output/Alpha_diversity/Evenness_", cty, ".pdf"), plot = p, width = 12, height = 5)
+}
+
+#---------------------------------------------------    
+#Shannon/Simson/invsimson in vegan
+#--------------------------------------------------- 
+
+# Calculate diversity indices
+alpha.pd.sr$Shannon <- diversity(otu, index = "shannon")
+alpha.pd.sr$Simpson <- diversity(otu, index = "simpson")
+alpha.pd.sr$InvSimpson <- 1 / alpha.pd.sr$Simpson
+
+
+#---------------------------------------------------    
+#plot
+#---------------------------------------------------   
+# Plot
+p_all <- ggplot(data = alpha.pd.sr, aes(x = location, y = Shannon, fill = site)) + 
+  facet_nested_wrap(~ city + lifestage + taxa, scales = "free_x", nrow = 1) +
+  geom_boxplot(position = position_dodge2(preserve = "single")) +
+  
+  # Labels
+  labs(x = "Sample", y = "Shannon") +
+  
+  # Theme
+  theme_bw(base_size = 13) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, face = "bold", size = 10),
+    axis.title.x = element_text(margin = margin(t = 6), face = "bold", size = 14),
+    axis.title.y = element_text(margin = margin(r = 6), face = "bold", size = 14),
+    axis.text.y = element_text(size = 12),
+    axis.text = element_text(face = "italic"),
+    strip.text.x = element_text(size = 13, face = "bold"),
+    legend.position = "right"
+  ) +
+  
+  # Color palette
+  scale_fill_brewer(palette = "Accent")
+
+# Show plot
+p_all
+#save plot
+ggsave(filename="R_output/Alpha_diversity/Shannon_all.pdf", height=6, width=24)
+ggsave(filename="R_output/Alpha_diversity/Shannon_all.png", height=6, width=24)
+
+
+#plot each city individually
+city_list <- unique(alpha.pd.sr$city)
+
+for (cty in city_list) {
+  p <- ggplot(subset(alpha.pd.sr, city == cty), 
+              aes(x = location, y = Shannon, fill = site)) +
+    facet_nested(~ lifestage + taxa, scales = "free_x") +
+    geom_boxplot(position = position_dodge2(preserve = "single")) +
+    labs(#title = paste("City:", cty),
+         x = "Location",
+         y = "Shannon",
+         fill = "Site") +
+    theme_bw(base_size = 13) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, face = "bold", size = 9),
+      strip.text.x = element_text(size = 12, face = "bold"),
+      axis.text = element_text(face = "italic"),
+      plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+      legend.position = "none"
+    ) +
+    scale_fill_brewer(palette = "Accent")
+  
+  print(p)
+  # save each plot:
+  ggsave(filename = paste0("R_output/Alpha_diversity/Shannon_", cty, ".png"), plot = p, width = 12, height = 5)
+ggsave(filename = paste0("R_output/Alpha_diversity/Shannon_", cty, ".pdf"), plot = p, width = 12, height = 5)
+}
+
+
+
+
+```
+
+### Statistics - Wilcoxon
+
+checking if diversity differed significantly between sites
+
+```{r}
+#Testing with Wilcoxon
+alpha.pd.sr %>% 
+  group_by(city, location, sample_type) %>%
+  get_summary_stats(Evenness, type = "common")
+
+pwc_Even <- alpha.pd.sr %>% 
+  group_by(city, sample_type) %>%
+  filter(n_distinct(site) > 1) %>%
+  wilcox_test(Evenness ~ site, p.adjust.method = "BH")
+
+pwc_Even
+
+# Export to CSV
+readr::write_csv(pwc_Even, "R_output/Alpha_diversity/wilcoxon_results_evenness.csv")
+
+#Shannon diversity
+alpha.pd.sr %>% 
+  group_by(city, location, sample_type) %>%
+  get_summary_stats(Shannon, type = "common")
+
+pwc_Shan <- alpha.pd.sr %>% 
+  group_by(city, sample_type) %>%
+  filter(n_distinct(site) > 1) %>%
+  wilcox_test(Shannon ~ site, p.adjust.method = "BH")
+
+# Export to CSV
+readr::write_csv(pwc_Shan, "R_output/Alpha_diversity/wilcoxon_results_shannon.csv")
+
+readr::write_csv(alpha.pd.sr, "R_output/Alpha_diversity/alphadiversity_results.csv")
+```
