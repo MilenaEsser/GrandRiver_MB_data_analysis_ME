@@ -1,17 +1,20 @@
 ---
-title: "GrandRiver22:microbiome_alphadiversity"
+title: "Grand River 2022 - microbiome beta diversity analysis"
 author: "Milena Esser"
 date: "2025-05-20"
-output: pdf_document
-editor_options: 
+output:
+  html_document: 
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    toc_float: true
+  pdf_document: default
+editor_options:
   chunk_output_type: console
 ---
 
-# Set up
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      results = "hide")
+```{r 3-setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 rm(list=ls()) #Clears environment
 #Change margin size to be smaller so graphs fit in the plot panel
 par(mar = c(2, 2, 2, 2)) # Set the margin on all sides to 2
@@ -37,73 +40,38 @@ library(rdacca.hp) #package for hierarchical and variation partitioning in multi
 library(data.table)
 ```
 
-## Loading Data
-
-Loading the phyloseq objects
-
 ```{r Loading data}
 #not rarefied dataset "Bow_ps"
-load("GrandRiverMB_phyloseq_filt_unnorm.RData")
+load("R_output/ps_objects/GrandRiverMB_phyloseq_filt_unnorm.RData")
 
 #rarefied dataset "ps_rare"
-load("GrandRiverMB_phyloseq_filt_rar.RData")
+load("R_output/ps_objects/GrandRiverMB_phyloseq_filt_rar.RData")
 
 #css-normalized dataset "ps_css"
-load("GrandRiverMB_phyloseq_filt_css.RData")
+load("R_output/ps_objects/GrandRiverMB_phyloseq_filt_css.RData")
 
 #TSS-normalized dataset "ps_prop"
-load("GrandRiverMB_phyloseq_filt_propnorm.RData")
+load("R_output/ps_objects/GrandRiverMB_phyloseq_filt_propnorm.RData")
 ```
 
-#### Select data set for analysis
-
-```{r}
+```{r select-data-for-beta}
 dataset <- "css"
 ps <- get(paste0("ps_", dataset))
 
 # Create output directory
-output_dir <- paste0("R_output//Beta_diversity//", dataset) 
+output_dir <- paste0("R_output/Beta_diversity/", dataset) 
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
-```
-
-## Beta diversity
-
-```{r Beta diversity}
-#### Redundancy analysis (RDA) ALL SAMPLES ####
-
-ps_bray<-phyloseq::distance(ps, method="bray") #convert to distance matrix
-
-t_otu_all <- t(abundances(ps_bray)) #transpose distance matrix
-metadata_all <- meta(ps) #get sample data
-
-metadata_all
-
-#Only looking at site and Family
-predictors <- metadata_all[, c("Site_ID", "Sample_Type")]
-
-
-rdacca.hp(t_otu_all, predictors, method="RDA", type = "adjR2") #Run the RDA to see the percent explained by each factor
-#quantify how much each predictor (or group of predictors) uniquely and jointly explains the variation in your response data.
-
-
 ```
 
 ### PCoA Bray Curtis - ALL SAMPLES
 
-```{r}
-#ordination
-bray <- ordinate(
-  physeq = ps, 
-  method = "PCoA", 
-  distance = "bray" 
-)
+Performed Principal Coordinates Analysis (PCoA) on the phyloseq object using Bray-Curtis distance. This method reduces multidimensional microbial community data into principal axes to visualize sample similarities.
 
+***PCoA plot***
 
-#Scree plot of PCoA
-scree <- plot_scree(bray)
-scree + theme(axis.text.x=element_text(size=8, color="black"), axis.text.y=element_text(size=18, color="black"), 
-        axis.text=element_text(size=18, color="black"), axis.title=element_text(size=18)) 
-#axis 1, 2, and 3 account for most variation explained (mostly axis 1)
+```{r Plot-PCoA}
+
+bray <- ordinate(ps, method = "PCoA", distance = "bray")
 
 metadata<- data.frame(sample_data(ps))
 
@@ -111,39 +79,70 @@ metadata$Site_ID <- factor(metadata$Site_ID)
 metadata$Sample_Type <- factor(metadata$Sample_Type)
 
 #All together
-plot_ordination(ps, bray, shape="Site_ID", color="Sample_Type") + #Plots the ordination
-  theme_classic() +
-  theme(strip.background = element_blank())
+shape_values <- c(0, 1, 2, 3, 4, 5, 6, 7)  # Extend this if needed
 
+p <- plot_ordination(ps, bray, shape = "Site_ID", color = "Sample_Type") +
+  scale_shape_manual(values = shape_values) +
+  theme_classic()
+
+p
 #save plot
 filename <- file.path(output_dir, paste0("PCoA_Bray_ALLsamples_", dataset, ".png"))
 ggsave(filename = filename, height = 5, width = 7)
 
 #Faceted by stage (larvae, adults, spiders)
-plot_ordination(ps, bray, shape="Site_ID", color="Sample_Type") + 
-  theme_classic() +
-  theme(strip.background = element_blank())+
-  facet_wrap(~Sample_Type)
-
-
+#plot_ordination(ps, bray, shape="Site_ID", color="Sample_Type") + 
+#  theme_classic() +
+#  theme(strip.background = element_blank())+
+#  facet_wrap(~Sample_Type)
 
 ```
 
 ### NMDS Bray Curtis -ALL SAMPLES
 
-```{r}
+I looked at 2D (k=2) and 3D (k=3) NMDS
+
+Interpretation of stress values:
+
+-   \< 0.05 = excellent,
+
+-   0.05–0.1 = very good,
+
+-   0.1–0.2 = usable but some distortion,
+
+-   \> 0.2 = not reliable
+
+Weak ties mean that few identical distances were tied during ranking, which is good, it indicates the data have good variability.
+
+```{r NMDS-all-samples}
 # NMDS 
 set.seed(501)
-ord_NMDS = ordinate(ps, "NMDS", "bray", trymax=100, k=3) 
-ord_NMDS #< 0.05 = excellent, 0.05–0.1 = very good, 0.1–0.2 = usable but some distortion, > 0.2 = not reliable
-ord_NMDS = ordinate(ps, "NMDS", "bray", trymax=100, k=2) 
-ord_NMDS #< 0.05 = excellent, 0.05–0.1 = very good, 0.1–0.2 = usable but some distortion, > 0.2 = not reliable
+# Run NMDS with k=3
+ord_NMDS_k3 <- ordinate(ps, method = "NMDS", distance = "bray", trymax = 100, k = 3)
+cat("NMDS with k=3 results:\n")
+cat("Stress value:", ord_NMDS_k3$stress, "\n")
+
+
+# Run NMDS with k=2
+ord_NMDS_k2 <- ordinate(ps, method = "NMDS", distance = "bray", trymax = 100, k = 2)
+cat("NMDS with k=2 results:\n")
+cat("Stress value:", ord_NMDS_k2$stress, "\n")
 
 #Weak ties mean that few identical distances were tied during ranking, which is good — it indicates the data have good variability.
 
-#Test wether 3D may be better k=3 than k=2
+```
 
+Based on stress values, I continued with:
 
+```{r select-NMDS-model}
+
+selected_model_name <- "ord_NMDS_k2"
+ord_NMDS <- ord_NMDS_k2
+
+cat("Selected model:", selected_model_name, "; Stress value:", ord_NMDS$stress, "\n")
+```
+
+```{r plotting-NMDS, fig.height=10, fig.width=14, message=FALSE}
 #Plotting all sites and taxa in one facet
 plotNMDS1<-plot_ordination(ps, ord_NMDS, shape="Site_ID", color = "Sample_Type") + 
   theme_classic() +
@@ -168,8 +167,6 @@ print(plotNMDS1)
 #save plot
 filename <- file.path(output_dir, paste0("NMDS_Bray_ALLsamples_", dataset, ".png"))
 ggsave(filename = filename, height = 10, width = 14)
-
-
 
 #Ellipses by taxa
 plotNMDStaxa<-plot_ordination(ps, ord_NMDS, color = "Sample_Type", shape="Site_ID") + 
@@ -226,37 +223,41 @@ ggsave(filename = filename, height = 10, width = 14)
 
 ```
 
-### Statistics
+#### Statistics
 
-#### PERMANOVA
+##### PERMANOVA
 
-```{r}
-##Create Bray curtis distance matrix
+```{r PERMANOVA-all-samples-together}
+## Create Bray-Curtis distance matrix
 df_bray <- phyloseq::distance(ps, method = "bray")
 
-## PERMANOVA by site and invertebrate taxa ##
+## PERMANOVA testing for effects of Site and Sample Type on community composition
+test.adonis.all <- adonis2(df_bray ~ Site_ID * Sample_Type, data = metadata)
 
-test.adonis.all <- adonis2(df_bray ~ Site_ID*Sample_Type, data = metadata)
-test.adonis.all
+## Print a clean, reader-friendly summary for the report
+cat("PERMANOVA Results for Bray-Curtis Distance:\n")
+cat("Testing effects of Site_ID, Sample_Type, and their interaction on microbial community composition.\n\n")
 
+# Format the output nicely
+adonis_table <- as.data.frame(test.adonis.all)
 
+print(adonis_table)
 
-
+cat("\nInterpretation:\n")
+cat("- Significant p-values (< 0.05) indicate a statistically significant effect of that factor on community composition.\n")
+cat("- R² values represent the proportion of variation explained by each factor.\n")
 ```
 
-#### Beta dispersion
+##### Beta dispersion
 
 betadisper measures the spread (i.e., variability) of samples around the group centroid in NMDS (or distance) space. It’s analogous to a Levene’s test for homogeneity of variance, but for multivariate data. It helps to understand if your PERMANOVA results are driven more by location (centroid differences) or spread (dispersion differences).
 
 If dispersions differ too much, you have to be cautious in interpreting PERMANOVA results. As this is highly significant: Differences in microbial composition among Families are not only due to changes in the mean community but also because some Families are more variable than others.
 
 -   **If p \> 0.05**: No evidence of unequal dispersion → You can trust group separation in PERMANOVA.
-
-<!-- -->
-
 -   **If p \< 0.05**: Significant dispersion → Group differences in PERMANOVA **may be confounded** by group variance, **not just location**.
 
-```{r}
+```{r beta-dispersion-all-samples-together}
 
 #Are microbial (or community) compositions more variable in some Families than in others?
 bd_all_fam<-betadisper(df_bray, metadata$Sample_Type) 
@@ -270,26 +271,28 @@ beta_df <- data.frame(
   DistanceToCentroid = bd_all_fam$distances
 )
 
-# Quick look at the structure
-head(beta_df)
+# Show first few rows to verify structure
+cat("Summary of distances to group centroids:\n")
+print(head(beta_df))
 
 ```
 
 In case of p\< 0.05: pairwise comparison to identify group with significantly different dispersion
 
-```{r}
+```{r tukey-to-identify-sig-diff-dispersion}
 tukey_res <- TukeyHSD(bd_all_fam)
 sig_disp <- as.data.frame(tukey_res$group)
 sig_disp$Comparison <- rownames(sig_disp)
 sig_disp <- sig_disp[sig_disp$`p adj` < 0.05, ]
 
 # View the significant ones
+cat("All significant results:\n")
 sig_disp[order(sig_disp$`p adj`), ]
 ```
 
 Create boxplot
 
-```{r}
+```{r beta-dispersion-boxplot-all, fig.height=5, fig.width=8}
 # Create a ggplot boxplot
 ggplot(beta_df, aes(x = Family, y = DistanceToCentroid, fill = Family)) +
   geom_boxplot(alpha = 0.7, outlier.color = "black", outlier.size = 1.5) +
@@ -322,12 +325,13 @@ ggsave(filename = filename, height = 5, width = 8)
 
 
 bd_all_site<-betadisper(df_bray, metadata$Site_ID) 
+cat("Beta Dispersion Test (betadisper) by Site:\n")
 anova(bd_all_site) 
 ```
 
 ### NMDS Bray Curtis - IND. TAXA (Adult vs Larvae)
 
-```{r}
+```{r NMDS-by-taxa-adult-vs-larvae, fig.height=6, fig.width=8, message=FALSE}
 # Define your list of Taxa
 unique_taxa <- unique(sample_data(ps)$Taxa)
 
@@ -413,6 +417,7 @@ for (taxon in unique_taxa) {
     theme_classic() +
     labs(title = paste("NMDS -", taxon), color = color_var, shape = "Location")
 
+  print(plot)
   # Save plot
   ggsave(file.path(output_dir, paste0("NMDS_", taxon, "_", dataset, "_Bray.png")), plot = plot, width = 8, height = 6, dpi = 300)
   ggsave(file.path(output_dir, paste0("NMDS_", taxon, "_", dataset, "_Bray.pdf")), plot = plot, width = 8, height = 6, dpi = 300)
@@ -422,9 +427,9 @@ for (taxon in unique_taxa) {
 
 ```
 
-Looking up individual results and running Stats
+#### Summary stats
 
-```{r}
+```{r summary-stats-by-taxa}
 summary_table <- data.frame(
   Taxa = character(),
   Permanova_Site_R2 = numeric(),
@@ -487,7 +492,7 @@ cat("NMDS stress values saved as 'NMDS_Stress_Values_", dataset, ".csv'\n")
 
 ### NMDS Bray Curtis - IND. TAXA and LIFESTAGES
 
-```{r}
+```{r NMDS-by-taxa-and-lifstage, fig.height=6, fig.width=8}
 # Define your list of Sample_Types
 unique_sample_type <- unique(sample_data(ps)$Sample_Type)
 
@@ -558,6 +563,8 @@ for (sample_type in unique_sample_type) {
     theme_classic() +
     labs(title = paste("NMDS -", sample_type), color = "Location", shape = "Location")
 
+  
+  print(plot)
   # Save plots
   ggsave(file.path(output_dir, paste0("NMDS_", sample_type, "_", dataset, "_Bray.png")), plot = plot, width = 8, height = 6, dpi = 300)
   ggsave(file.path(output_dir, paste0("NMDS_", sample_type, "_", dataset, "_Bray.pdf")), plot = plot, width = 8, height = 6, dpi = 300)
@@ -566,9 +573,9 @@ for (sample_type in unique_sample_type) {
 
 ```
 
-Summary stats
+#### Summary stats
 
-```{r}
+```{r summary-stats-by-sampletype}
 summary_table <- data.frame(
   Sample_Type = character(),
   Permanova_Site_R2 = numeric(),
@@ -610,12 +617,10 @@ cat("NMDS stress values saved as 'NMDS_Stress_Values_", dataset, ".csv'\n")
 
 ```
 
-### Identifying outlier
+```{r identify-outlier, eval = FALSE}
+#There seems to be an outlier in Heptageniidae Adults with MDS1 > 4000
 
-There seems to be an outlier in Heptageniidae Adults with MDS1 \> 4000
-
-```{r, eval = FALSE}
-# Define the sample_type you're interested in
+#Define the sample_type you're interested in
 target_sample_type <- "Adult_Heptageniidae"  # Replace with your actual sample_type name
 
 # Extract NMDS results from the list
@@ -628,7 +633,5 @@ ord <- nmds_results[[target_sample_type]]
   # Identify samples with extreme NMDS1 values
   outliers <- nmds_points[nmds_points$MDS1 > 4000, ]
 
-#identified KK2580 as outlier
+#identified KK2580 (WAT_DWN3_Ad_Mayfly_MB_3) as outlier (will sort out in first script (creating phyloseq object) and rerun this analysis
 ```
-
-identified KK2580 (WAT_DWN3_Ad_Mayfly_MB_3) as outlier (will sort out in first script (creating phyloseq object) and rerun this analysis
