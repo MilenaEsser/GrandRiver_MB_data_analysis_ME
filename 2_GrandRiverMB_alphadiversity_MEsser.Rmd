@@ -1,17 +1,22 @@
 ---
-title: "GrandRiver22:microbiome_alphadiversity"
+title: "Grand River 2022 - microbiome alpha diversity analysis"
 author: "Milena Esser"
 date: "2025-05-20"
-output: pdf_document
-editor_options: 
+output:
+  html_document: 
+    toc: true
+    toc_depth: 4
+    number_sections: true
+    toc_float: true
+  pdf_document: default
+editor_options:
   chunk_output_type: console
 ---
 
-# Set up
+## Set up
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      results = "hide")
+```{r 2-setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 rm(list=ls()) #Clears environment
 #Change margin size to be smaller so graphs fit in the plot panel
 par(mar = c(2, 2, 2, 2)) # Set the margin on all sides to 2
@@ -31,25 +36,33 @@ library(MicEco) #to prune based on prevalence
 library(picante)
 library(ggh4x) # For facet_nested_wrap()
 library(rstatix)
+library(tidyr)
+library(purrr)
+library(readr)
+
+# Create output directory if it doesn't exist
+output_dir <- "R_output/Alpha_diversity"
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir, recursive = TRUE)
+}
 ```
 
 ## Loading Data
 
 Loading the phyloseq objects
 
-```{r Loading data}
+```{r Loading-data}
 #not rarefied dataset "ps_final"
-load("GrandRiverMB_phyloseq_filt_unnorm.RData")
+load("R_output//ps_objects//GrandRiverMB_phyloseq_filt_unnorm.RData")
 
 #rarefied dataset "ps_rare"
-load("GrandRiverMB_phyloseq_filt_rar.RData")
+load("R_output//ps_objects//GrandRiverMB_phyloseq_filt_rar.RData")
 
 ```
 
-## Alpha diversity
+## Data wrangling & calc
 
-```{r Alpha diversity}
-
+```{r data-wrangling-and-calc, echo=TRUE}
 #PDtree <- phy_tree(ps_rare)
 otu <- otu_table(ps_final)
 otu <- as.data.frame(t(otu))
@@ -72,15 +85,21 @@ H <- alpha_diversity$Shannon
 S1 <- alpha_diversity$Observed
 S <- log(S1)
 eveness <- H/S
-eveness
+#eveness
 alpha.pd.sr$Evenness = eveness
 
 
-alpha.pd.sr$site<-factor(alpha.pd.sr$site, levels=c("WAT_DWN","WAT_UP","HESP_UP","HESP_DWN","KIT_DWN","CAL_UP","CAL_DWN","KIT_UP", "KIT_DWN" ))
+alpha.pd.sr$site<-factor(alpha.pd.sr$site, levels=c("WAT_DWN","WAT_UP","HESP_UP","HESP_DWN","CAL_UP","CAL_DWN","KIT_UP", "KIT_DWN" ))
 
 alpha.pd.sr$taxa<-factor(alpha.pd.sr$taxa, levels=c("Hydropsychidae", "Chironomidae", "Heptageniidae", "Araneid", "Tetragnatha"))
 
 alpha.pd.sr$location<-factor(alpha.pd.sr$location, levels=c("UP", "DWN" ))
+```
+
+## Plots
+
+```{r Plot-all}
+
 
 # Plot
 p_all <- ggplot(data = alpha.pd.sr, aes(x = location, y = Evenness, fill = site)) + 
@@ -108,10 +127,12 @@ p_all <- ggplot(data = alpha.pd.sr, aes(x = location, y = Evenness, fill = site)
 # Show plot
 p_all
 #save plot
-ggsave(filename="R_output/Alpha_diversity/Evenness_all.pdf", height=6, width=24)
-ggsave(filename="R_output/Alpha_diversity/Evenness_all.png", height=6, width=24)
+ggsave(filename = file.path(output_dir, "Evenness_all.pdf"), height = 6, width = 24)
+ggsave(filename = file.path(output_dir, "Evenness_all.png"), height = 6, width = 24)
 
+```
 
+```{r Plot-city-by-city}
 #plot each city individually
 city_list <- unique(alpha.pd.sr$city)
 
@@ -136,10 +157,9 @@ for (cty in city_list) {
   
   print(p)
   # save each plot:
-  ggsave(filename = paste0("R_output/Alpha_diversity/Evenness_", cty, ".png"), plot = p, width = 12, height = 5)
-ggsave(filename = paste0("R_output/Alpha_diversity/Evenness_", cty, ".pdf"), plot = p, width = 12, height = 5)
-}
-
+ggsave(filename = file.path(output_dir, paste0("Evenness_", cty, ".png")), plot = p, width = 12, height = 5)
+ggsave(filename = file.path(output_dir, paste0("Evenness_", cty, ".pdf")), plot = p, width = 12, height = 5)
+} 
 #---------------------------------------------------    
 #Shannon/Simson/invsimson in vegan
 #--------------------------------------------------- 
@@ -179,8 +199,8 @@ p_all <- ggplot(data = alpha.pd.sr, aes(x = location, y = Shannon, fill = site))
 # Show plot
 p_all
 #save plot
-ggsave(filename="R_output/Alpha_diversity/Shannon_all.pdf", height=6, width=24)
-ggsave(filename="R_output/Alpha_diversity/Shannon_all.png", height=6, width=24)
+ggsave(filename = file.path(output_dir, "Shannon_all.pdf"), height = 6, width = 24)
+ggsave(filename = file.path(output_dir, "Shannon_all.png"), height = 6, width = 24)
 
 
 #plot each city individually
@@ -207,47 +227,49 @@ for (cty in city_list) {
   
   print(p)
   # save each plot:
-  ggsave(filename = paste0("R_output/Alpha_diversity/Shannon_", cty, ".png"), plot = p, width = 12, height = 5)
-ggsave(filename = paste0("R_output/Alpha_diversity/Shannon_", cty, ".pdf"), plot = p, width = 12, height = 5)
+ggsave(filename = file.path(output_dir, paste0("Shannon_", cty, ".png")), plot = p, width = 12, height = 5)
+ggsave(filename = file.path(output_dir, paste0("Shannon_", cty, ".pdf")), plot = p, width = 12, height = 5)
+
 }
-
-
-
 
 ```
 
-### Statistics - Wilcoxon
+## Statistics - Wilcoxon
 
 checking if diversity differed significantly between sites
 
-```{r}
-#Testing with Wilcoxon
-alpha.pd.sr %>% 
-  group_by(city, location, sample_type) %>%
-  get_summary_stats(Evenness, type = "common")
-
-pwc_Even <- alpha.pd.sr %>% 
-  group_by(city, sample_type) %>%
-  filter(n_distinct(site) > 1) %>%
-  wilcox_test(Evenness ~ site, p.adjust.method = "BH")
-
-pwc_Even
-
-# Export to CSV
-readr::write_csv(pwc_Even, "R_output/Alpha_diversity/wilcoxon_results_evenness.csv")
-
-#Shannon diversity
+```{r Statistical-tests, echo=TRUE, cache=TRUE}
 alpha.pd.sr %>% 
   group_by(city, location, sample_type) %>%
   get_summary_stats(Shannon, type = "common")
 
-pwc_Shan <- alpha.pd.sr %>% 
+# Filter out groups with only one site and nest data for grouped testing
+alpha_grouped <- alpha.pd.sr %>%
   group_by(city, sample_type) %>%
   filter(n_distinct(site) > 1) %>%
-  wilcox_test(Shannon ~ site, p.adjust.method = "BH")
+  nest()
 
-# Export to CSV
-readr::write_csv(pwc_Shan, "R_output/Alpha_diversity/wilcoxon_results_shannon.csv")
+# Apply Wilcoxon tests across groups using purrr::map
+wilcox_results <- alpha_grouped %>%
+  mutate(
+    pwc_Even = map(data, ~ wilcox_test(.x, Evenness ~ site, p.adjust.method = "BH")),
+    pwc_Shan = map(data, ~ wilcox_test(.x, Shannon ~ site, p.adjust.method = "BH"))
+  )
 
-readr::write_csv(alpha.pd.sr, "R_output/Alpha_diversity/alphadiversity_results.csv")
+# Unnest and write output
+pwc_Even <- wilcox_results %>%
+  select(city, sample_type, pwc_Even) %>%
+  unnest(pwc_Even)
+
+pwc_Shan <- wilcox_results %>%
+  select(city, sample_type, pwc_Shan) %>%
+  unnest(pwc_Shan)
+
+# Export results to CSV
+readr::write_csv(pwc_Even, file.path(output_dir, "wilcoxon_results_evenness.csv"))
+readr::write_csv(pwc_Shan, file.path(output_dir, "wilcoxon_results_shannon.csv"))
+
+# Save full alpha diversity data (optional)
+readr::write_csv(alpha.pd.sr, file.path(output_dir, "alphadiversity_results.csv"))
+
 ```

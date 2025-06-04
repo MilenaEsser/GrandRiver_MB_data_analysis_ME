@@ -5,7 +5,7 @@ date: "2025-05-20"
 output:
   html_document: 
     toc: true
-    toc_depth: 2
+    toc_depth: 4
     number_sections: true
     toc_float: true
   pdf_document: default
@@ -331,7 +331,7 @@ anova(bd_all_site)
 
 ### NMDS Bray Curtis - IND. TAXA (Adult vs Larvae)
 
-```{r NMDS-by-taxa-adult-vs-larvae, fig.height=6, fig.width=8, message=FALSE}
+```{r NMDS-by-taxa-adult-vs-larvae, fig.height=6, fig.width=8}
 # Define your list of Taxa
 unique_taxa <- unique(sample_data(ps)$Taxa)
 
@@ -347,6 +347,9 @@ location_colors <- c("Upstream" = "#e31a1c", "Downstream" = "#ff7f00")
 
 # Loop over each Taxa
 for (taxon in unique_taxa) {
+   # === ADD DYNAMIC HEADER ===
+  cat("\n\n#### NMDS ", taxon, "\n\n")
+  
   cat("\nProcessing Taxa:", taxon, "\n")
 
   # Subset data by Taxa
@@ -507,6 +510,9 @@ location_colors <- c("UP" = "#009900", "DWN" = "#e31a1c")
 
 # Loop over each Sample_Type
 for (sample_type in unique_sample_type) {
+  # === ADD DYNAMIC HEADER ===
+  cat("\n\n#### NMDS ", sample_type, "\n\n")
+  
   cat("\nProcessing Sample_Type:", sample_type, "\n")
 
   # Subset data by Sample_Type
