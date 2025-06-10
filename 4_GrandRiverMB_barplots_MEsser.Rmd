@@ -81,7 +81,7 @@ top_n <- 9           # Number of top taxa to display
 
 ```
 
-### Individual plots by city
+### Plots by city
 
 ```{r plots-by-sample-type-phy, results='asis', fig.height=6, fig.width=12}
 #### STEP 1: Aggregate and transform to relative abundance ####
@@ -180,8 +180,6 @@ for (current_city in cities) {
 }
 ```
 
-### Barplot all together
-
 ```{r plots-all-together-phy, fig.height=8, fig.width=30}
 # Combined plot faceted by city:
 p_combined <- ggplot(plot_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
@@ -212,6 +210,80 @@ ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_
        plot = p_combined, width = 30, height = 8, dpi = 300)
 ```
 
+### Plots by taxon
+
+```{r plots-by-sample-type2-phy, results='asis', fig.height=6, fig.width=12}
+
+#### Loop through taxa and create plots ####
+taxa <- unique(plot_data$taxa)
+plot_list <- list()
+
+for (current_taxa in taxa) {
+  
+  taxa_data <- plot_data %>% filter(taxa == current_taxa)
+  
+  p <- ggplot(taxa_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
+    geom_bar(stat = "identity", position = "stack", color = "black") +
+    facet_nested_wrap(~ lifestage + city, scales = "free_x", nrow = 1) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    fill_scale +
+    labs(
+    #  title = paste("City:", current_city),
+      x = "Location",
+      y = "Mean Relative Abundance"
+    ) +
+    theme_bw(base_size = 14) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      strip.text = element_text(size = 14, face = "bold"),
+      legend.position = "right",
+      legend.title = element_text(size = 14),
+      legend.text = element_text(size = 12)
+    )
+  
+  # === ADD DYNAMIC HEADER ===
+  cat("\n\n#### Taxon: ", current_taxa, "\n\n")
+  print(p)
+  
+  # === SAVE PLOTS ===
+  output_base <- file.path(output_dir, paste0(tolower(taxrank), "_top", top_n, "_plot_", current_taxa))
+  ggsave(paste0(output_base, ".png"), plot = p, width = 12, height = 6, dpi = 300)
+  ggsave(paste0(output_base, ".pdf"), plot = p, width = 12, height = 6, dpi = 300)
+  
+  plot_list[[as.character(current_taxa)]] <- p
+}
+```
+
+```{r plots-all-together-phy2, fig.height=8, fig.width=30}
+# Combined plot faceted by city:
+p_combined <- ggplot(plot_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
+  geom_bar(stat = "identity", position = "stack", color = "black") +
+  facet_nested_wrap(taxa ~  lifestage + city, scales = "free_x", nrow = 1) +  # city as rows, taxa+lifestage as columns
+  scale_y_continuous(labels = scales::percent_format()) +
+  fill_scale +
+  labs(
+    title = paste("Mean Relative Abundance by City"),
+    x = "Location",
+    y = "Mean Relative Abundance"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.position = "bottom",
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
+
+print(p_combined)
+
+# Save the combined plot
+ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_plot_combined_bytaxon.png")), 
+       plot = p_combined, width = 30, height = 8, dpi = 300)
+ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_plot_combined_bytaxon.pdf")), 
+       plot = p_combined, width = 30, height = 8, dpi = 300)
+```
+
 ## Family level
 
 ```{r select-family-number-taxa}
@@ -220,7 +292,7 @@ top_n <- 12           # Number of top taxa to display
 
 ```
 
-### Individual plots by city
+### Plots by city
 
 ```{r plots-by-sample-type-fam, results='asis', fig.height=6, fig.width=12}
 #### STEP 1: Aggregate and transform to relative abundance ####
@@ -319,8 +391,6 @@ for (current_city in cities) {
 }
 ```
 
-### Barplot all together
-
 ```{r plots-all-together-fam, fig.height=8, fig.width=30}
 # Combined plot faceted by city:
 p_combined <- ggplot(plot_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
@@ -348,5 +418,78 @@ print(p_combined)
 ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_plot_combined.png")), 
        plot = p_combined, width = 30, height = 8, dpi = 300)
 ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_plot_combined.pdf")), 
+       plot = p_combined, width = 30, height = 8, dpi = 300)
+```
+
+### Plots by taxon
+
+```{r plots-by-sample-type-fam2, results='asis', fig.height=6, fig.width=12}
+#### Loop through taxa and create plots ####
+taxa <- unique(plot_data$taxa)
+plot_list <- list()
+
+for (current_taxa in taxa) {
+  
+  taxa_data <- plot_data %>% filter(taxa == current_taxa)
+  
+  p <- ggplot(taxa_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
+    geom_bar(stat = "identity", position = "stack", color = "black") +
+    facet_nested_wrap(~ lifestage + city, scales = "free_x", nrow = 1) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    fill_scale +
+    labs(
+    #  title = paste("City:", current_city),
+      x = "Location",
+      y = "Mean Relative Abundance"
+    ) +
+    theme_bw(base_size = 14) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      strip.text = element_text(size = 14, face = "bold"),
+      legend.position = "right",
+      legend.title = element_text(size = 14),
+      legend.text = element_text(size = 12)
+    )
+  
+# === ADD DYNAMIC HEADER ===
+  cat("\n\n#### Taxon: ", current_taxa, "\n\n")
+  print(p)
+  
+  # === SAVE PLOTS ===
+  output_base <- file.path(output_dir, paste0(tolower(taxrank), "_top", top_n, "_plot_", current_taxa))
+  ggsave(paste0(output_base, ".png"), plot = p, width = 12, height = 6, dpi = 300)
+  ggsave(paste0(output_base, ".pdf"), plot = p, width = 12, height = 6, dpi = 300)
+  
+  plot_list[[as.character(current_taxa)]] <- p
+}
+```
+
+```{r plots-all-together-fam2, fig.height=8, fig.width=30}
+# Combined plot faceted by taxa:
+p_combined <- ggplot(plot_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
+  geom_bar(stat = "identity", position = "stack", color = "black") +
+  facet_nested_wrap(taxa ~ Lifestage + city, scales = "free_x", nrow = 1) +  
+  scale_y_continuous(labels = scales::percent_format()) +
+  fill_scale +
+  labs(
+    title = paste("Mean Relative Abundance"),
+    x = "Location",
+    y = "Mean Relative Abundance"
+  ) +
+  theme_bw(base_size = 14) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(size = 14, face = "bold"),
+    legend.position = "bottom",
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
+
+print(p_combined)
+
+# Save the combined plot
+ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_plot_combined_bytaxon.png")), 
+       plot = p_combined, width = 30, height = 8, dpi = 300)
+ggsave(filename = file.path(output_dir, paste0(tolower(taxrank),"_top",top_n, "_plot_combined_bytaxon.pdf")), 
        plot = p_combined, width = 30, height = 8, dpi = 300)
 ```
