@@ -468,7 +468,7 @@ for (current_taxa in taxa) {
 # Combined plot faceted by taxa:
 p_combined <- ggplot(plot_data, aes(x = location, y = mean_abundance, fill = .data[[taxrank]])) +
   geom_bar(stat = "identity", position = "stack", color = "black") +
-  facet_nested_wrap(taxa ~ Lifestage + city, scales = "free_x", nrow = 1) +  
+  facet_nested_wrap(taxa ~ lifestage + city, scales = "free_x", nrow = 1) +  
   scale_y_continuous(labels = scales::percent_format()) +
   fill_scale +
   labs(
